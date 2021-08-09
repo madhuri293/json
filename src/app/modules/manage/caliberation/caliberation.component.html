@@ -1,0 +1,195 @@
+<div class="main-container mb-5 float-left">
+    <div class="col-lg-12 pt-4">
+
+        <div class="inner-container">
+            <h3 class="pt-3 pb-3 pl-3 pr-3">Manage - Calibration </h3>
+            <div *ngIf="caliberationService.loading" class="overlay_loader">
+                <div class="overlay__inner">
+                    <div class="overlay__content"><span class="spinner"></span></div>
+                </div>
+            </div>
+
+            <form class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" [formGroup]="caliberationDTO.caliberationForm">
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                        <div class="form-group">
+                            <label>Plant Code <span class="mandatory-feild"></span></label>
+
+                            <input type="text" formControlName="plantCode" disabled class="form-control"
+                                placeholder="Plant Code" [(ngModel)]="caliberation.plantCode">
+
+                            <app-error [control]=caliberationDTO.caliberationForm.controls.plantCode></app-error>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                        <div class="form-group">
+                            <label>Equipment Name <span class="mandatory-feild"></span></label>
+                            <input type="text" formControlName="equipmentName" disabled class="form-control"
+                                placeholder="Equipment Name" [(ngModel)]="caliberation.equipmentName">
+                            <app-error [control]=caliberationDTO.caliberationForm.controls.equipmentName></app-error>
+
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                        <div class="form-group">
+                            <label>Fit R<sup>2</sup> <span class="mandatory-feild"></span></label>
+                            <input type="number" formControlName="fitR2Measurement" class="form-control"
+                                placeholder="Fit R²" [(ngModel)]="caliberation.fitR2Measurement">
+                            <app-error [control]=caliberationDTO.caliberationForm.controls.fitR2Measurement></app-error>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                        <div class="form-group">
+                            <label>Slope (m) <span class="mandatory-feild"></span></label>
+                            <input type="number" formControlName="slopeValueMeasurement" class="form-control"
+                                placeholder="Slope (m)" min=1.00 max="999999999.00"
+                                [(ngModel)]="caliberation.slopeValueMeasurement">
+                            <app-error [control]=caliberationDTO.caliberationForm.controls.slopeValueMeasurement>
+                            </app-error>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                        <div class="form-group">
+                            <label>Intercept (b) <span class="mandatory-feild"></span></label>
+                            <input type="number" formControlName="interceptValueMeasurement" class="form-control"
+                                placeholder="Intercept (b)" [(ngModel)]="caliberation.interceptValueMeasurement">
+                            <app-error [control]=caliberationDTO.caliberationForm.controls.interceptValueMeasurement>
+                            </app-error>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                        <div class="form-group">
+                            <label>Min Calibration Range (sccm) <span class="mandatory-feild"></span></label>
+                            <input type="number" maxlength="20" (keyup)=checkmin($event.target.value)
+                                formControlName="minValueMeasurement" class="form-control"
+                                placeholder="Min Calibration Range (sccm)"
+                                [(ngModel)]="caliberation.minValueMeasurement">
+                            <app-error [control]=caliberationDTO.caliberationForm.controls.minValueMeasurement>
+                            </app-error>
+                            <span class="error-msg"
+                                *ngIf="caliberationDTO.minerrormsg!==''">{{caliberationDTO.minerrormsg}}</span>
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                        <div class="form-group">
+                            <label>Max Calibration Range (sccm) <span class="mandatory-feild"></span></label>
+                            <input type="number" maxlength="20" (keyup)=checkmax($event.target.value)
+                                formControlName="maxValueMeasurement" class="form-control"
+                                placeholder="Max Calibration Range (sccm)"
+                                [(ngModel)]="caliberation.maxValueMeasurement">
+                            <app-error [control]=caliberationDTO.caliberationForm.controls.maxValueMeasurement>
+                            </app-error>
+
+                        </div>
+                    </div>
+
+
+
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                        <div class="input-group mb-3">
+                            <div class="col-lg-12 p-0">
+                                <label class="col-lg-12 pl-0">Calibration Date Time<span
+                                        class="mandatory-feild"></span></label>
+
+                                <p-calendar class="calendar-container full-datepicker" [(ngModel)]="caliberation.calibrationDateTime" [monthNavigator]="true"
+                                    [yearNavigator]="true" yearRange="2000:2030" formControlName="calibrationDateTime"
+                                    showTime="showTime" hourFormat="24" hideOnDateTimeSelect="true" [showIcon]="true"
+                                    dataType="string" placeholder="yyyy-mm-dd" dateFormat="yy-mm-dd"></p-calendar>
+
+                                <app-error [control]=caliberationDTO.caliberationForm.controls.calibrationDateTime>
+                                </app-error>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                        <div class="form-group">
+                            <label>Calibration Factor <span class="mandatory-feild"></span></label>
+                            <select class="form-control" formControlName="calibrationFactorId"
+                                [(ngModel)]="caliberation.calibrationFactorId">
+
+                                <option [ngValue]="null" disabled [selected]="caliberationDTO.caliberationFactorList">
+                                    Select</option>
+                                <option *ngFor="let caliberationFactor of caliberationDTO.caliberationFactorList"
+                                    [value]="caliberationFactor.id">
+                                    {{caliberationFactor.calibrationTypeName}}</option>
+                            </select>
+                            <app-error [control]=caliberationDTO.caliberationForm.controls.calibrationFactorId>
+                            </app-error>
+
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                        <div class="form-group">
+                            <label>Control Min Range</label>
+                            <input type="number" formControlName="controlMinRange" maxlength="20" class="form-control"
+                                placeholder="Control Min Range" [(ngModel)]="caliberation.controlMinRange"
+                                (keyup)=checkControlMin($event.target.value)
+                                (keyup)="minNMaxValue(caliberation.controlMinRange, caliberation.controlMaxRange)">
+                            <app-error [control]=caliberationDTO.caliberationForm.controls.controlMinRange></app-error>
+                            <span class="error-msg"
+                                *ngIf="caliberationDTO.controlMinErrorMsg!==''">{{caliberationDTO.controlMinErrorMsg}}</span>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                        <div class="form-group">
+                            <label>Control Max Range</label>
+                            <input type="number" formControlName="controlMaxRange" maxlength="20" class="form-control"
+                                placeholder="Control Max Range" [(ngModel)]="caliberation.controlMaxRange"
+                                (keyup)=checkControlMax($event.target.value)
+                                (keyup)="minNMaxValue(caliberation.controlMinRange, caliberation.controlMaxRange)">
+                            <app-error [control]=caliberationDTO.caliberationForm.controls.controlMaxRange></app-error>
+
+                        </div>
+                    </div>
+
+
+                    <div class="col-lg-12 col-xl-12 mt-2">
+                        <p class="mandatory-para p-0 mt-0 mb-2 ml-0 mr-0">All fields marked with <span
+                                class="mandatory-feild"></span> are mandatory.</p>
+                        <button type="button" class="btn btn-transparent mr-3 mb-3" data-dismiss="modal"
+                            (click)="onBackClick()">Back</button>
+                        <button type="button" class="btn btn-transparent mr-3 mb-3" (click)="onResetClick()"
+                            data-dismiss="modal">Reset</button>
+                        <button type="button" class="btn btn-transparent mr-3 mb-3" (click)="find(caliberation)"
+                            data-dismiss="modal"
+                            [disabled]="!(caliberationDTO.caliberationForm.dirty || caliberationDTO.isEnable)">Find</button>
+                        <button id="submit" type="button"
+                            [disabled]="!(caliberationDTO.caliberationForm.valid && caliberationDTO.formValid && caliberationDTO.controlFlag) ||  caliberationDTO.isDisabled"
+                            class="btn btn-default mb-3"  (click)="calibrationSave(caliberation)">Save</button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 col-xl-12 pt-2 mb-2">
+
+                <div *ngIf="caliberationDTO.totalRecords > 0 then dataTable else noData"></div>
+                <ng-template #dataTable>
+                    <app-custom-table [columns]="caliberationDTO.columns" [value]="caliberationDTO.caliberationList"
+                        [nOfRecordPage]="caliberationDTO.nOfRecordPage" [totalRecords]="caliberationDTO.totalRecords"
+                        (ondelete)="deleteConfirmation($event)" (onEdit)="onRoleEditClick($event)"
+                        [selectedRows]="caliberation"></app-custom-table>
+                </ng-template>
+
+                <ng-template #noData>
+                    <div class="inner-container mt-3 mb-2 p-2">No Records found</div>
+                </ng-template>
+            </div>
+        </div>
+
+    </div>
+</div>

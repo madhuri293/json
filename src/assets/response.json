@@ -1,0 +1,143 @@
+{
+	"technologyList":[
+		{  "id":1,
+			"name":"Technology1",
+			"description":"Technology1 Technology1",
+			"colorCode":"blue"
+		}, 
+		{   "id":2,
+			"name":"Technology3",
+			"description":"Technology3 Technology1",
+			"colorCode":"orange"
+		},
+		{    "id":3,
+			"name":"Technology2",
+			"description":"Technology2 Technology2",
+			"colorCode":"#ede78"
+		}
+	],
+	"reportList":[
+		{   "technologyId":1,
+			"name":"Report1",
+			"description":"http://www.google.com",
+			"colorCode":"#84545"
+		},
+		{  "technologyId":2,
+			"name":"Report2",
+			"description":"http://www.google.com",
+			"colorCode":"orange"
+		},
+		{   "technologyId":1,
+			"name":"Report3",
+			"description":"http://www.google.com",
+			"colorCode":"#ede78"
+		},
+		{  "technologyId":1,
+			"name":"Report1",
+			"description":"http://www.google.com",
+			"colorCode":"#84545"
+		},
+		{ "technologyId":3,
+			"name":"Report2",
+			"description":"http://www.google.com",
+			"colorCode":"orange"
+		},
+		{  "technologyId":3,
+			"name":"Report3",
+			"description":"http://www.google.com",
+			"colorCode":"#ede78"
+		},
+		{   "technologyId":3,
+			"name":"Report1",
+			"description":"http://www.google.com",
+			"colorCode":"#84545"
+		},  
+		{   "technologyId":3,
+			"name":"Report2",
+			"description":"http://www.google.com",
+			"colorCode":"orange"
+		},
+		{   "technologyId":1,
+			"name":"Report3",
+			"description":"http://www.google.com",
+			"colorCode":"#ede78"
+		},
+		{ "technologyId":1,
+			"name":"Report1",
+			"description":"http://www.google.com",
+			"colorCode":"#84545"
+		},
+		{ "technologyId":1,
+			"name":"Report2",
+			"description":"http://www.google.com",
+			"colorCode":"orange"
+		},
+		{ "technologyId":1,
+			"name":"Report3",
+			"description":"http://www.google.com",
+			"colorCode":"#ede78"
+		}
+	],
+	"graphList":[
+		{ "technologyId":1,
+			"name":"Graph1",
+			"description":"http://www.google.com",
+			"colorCode":"#ede78"
+		},
+		{ "technologyId":1,
+			"name":"Graph12",
+			"description":"http://www.google.com",
+			"colorCode":"#84545"
+		},
+		{ "technologyId":2,
+			"name":"Graph1",
+			"description":"http://www.google.com",
+			"colorCode":"orange"
+		},
+		{ "technologyId":3,
+			"name":"Graph1",
+			"description":"http://www.google.com",
+			"colorCode":"#ede78"
+		},
+		{   "technologyId":3,
+			"name":"Graph12",
+			"description":"https://canvasjs.com/angular-charts/",
+			"colorCode":"#84545"
+		},
+		{ "technologyId":2,
+			"name":"Graph1",
+			"description":"https://canvasjs.com/angular-charts/",
+			"colorCode":"orange"
+		}, 
+		{ "technologyId":1,
+			"name":"Graph1",
+			"description":"https://canvasjs.com/angular-charts/",
+			"colorCode":"#ede78"
+		},
+		{ "technologyId":1,
+			"name":"Graph12",
+			"description":"https://canvasjs.com/angular-charts/",
+			"colorCode":"#84545"
+		},
+		{ "technologyId":1,
+			"name":"Graph1",
+			"description":"https://canvasjs.com/angular-charts/",
+			"colorCode":"orange"
+		},
+		{   "technologyId":1,
+			"name":"Report1",
+			"description":"https://canvasjs.com/angular-charts/",
+			"colorCode":"#84545"
+		},
+		{ "technologyId":1,
+			"name":"Report2",
+			"description":"https://canvasjs.com/angular-charts/",
+			"colorCode":"orange"
+		},
+		{    "technologyId":2,
+			"name":"Report3",
+			"description":"https://canvasjs.com/angular-charts/",
+			"colorCode":"#ede78"
+		}
+	]
+}

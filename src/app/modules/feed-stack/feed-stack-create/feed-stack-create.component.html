@@ -1,0 +1,274 @@
+<div class="main-container mb-5 float-left">
+  <div class="col-lg-12 pt-4">
+
+    <div class="inner-container">
+      <h3 class="pt-3 pb-3 pl-3 pr-3">FeedStock - Create</h3>
+      <div *ngIf="feedCreateService.loading" class="overlay_loader">
+        <div class="overlay__inner">
+          <div class="overlay__content"><span class="spinner"></span></div>
+        </div>
+      </div>
+
+      <form class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" [formGroup]="feedStackDTO.creatFeedForm">
+        <div class="row">
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label for="inputState">Technology <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="technologyCode" [(ngModel)]="createFeed.technologyId"
+                disabled>
+                <option *ngFor="let technology of feedStackDTO.technologyData" [selected]="feedStackDTO.technologyData"
+                  [value]="technology.technologyId">
+                  {{technology.technologyName}}</option>
+              </select>
+              <app-error [control]=feedStackDTO.creatFeedForm.controls.technologyCode></app-error>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label class="col-lg-12 p-0">UOP# <span class="mandatory-feild"></span></label>
+              <input type="text" class="form-control" formControlName="uopNumber" [(ngModel)]="createFeed.uopNumber"
+                placeholder="UOP#">
+              <app-error [control]=feedStackDTO.creatFeedForm.controls.uopNumber></app-error>
+            </div>
+
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Book# <span class="mandatory-feild"></span></label>
+              <input type="text" class="form-control" formControlName="bookNumber" [(ngModel)]="createFeed.bookNumber"
+                placeholder="Book#">
+
+              <app-error [control]=feedStackDTO.creatFeedForm.controls.bookNumber></app-error>
+            </div>
+
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>SFDC# <span class="mandatory-feild"></span></label>
+              <input type="text" formControlName="sfdcNumber" [(ngModel)]="createFeed.sfdcNumber" class="form-control"
+                placeholder="SFDC#">
+              <app-error [control]=feedStackDTO.creatFeedForm.controls.sfdcNumber></app-error>
+            </div>
+
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Name <span class="mandatory-feild"></span></label>
+              <input type="text" class="form-control" [(ngModel)]="createFeed.feedName" formControlName="name"
+                placeholder="Name">
+              <app-error [control]=feedStackDTO.creatFeedForm.controls.name></app-error>
+            </div>
+
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Feed Type <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="type" [(ngModel)]="createFeed.feedType">
+                <option [value]="null" [selected]="feedStackDTO.feedTypeData" disabled>Select</option>
+                <option *ngFor="let feedType of  feedStackDTO.feedTypeData" [value]="feedType.id">{{feedType.typeName}}
+                </option>
+              </select>
+              <app-error [control]=feedStackDTO.creatFeedForm.controls.type></app-error>
+            </div>
+
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Category <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="category" (change)="changeCategory($event.target.value)"
+                [(ngModel)]="createFeed.categoryId">
+                <option [value]="null" [selected]="feedStackDTO.categoryTypeData" disabled>Select</option>
+                <option *ngFor="let categoryType of  feedStackDTO.categoryTypeData" [value]="categoryType.id">
+                  {{categoryType.categoryName}}
+                </option>
+              </select>
+              <app-error [control]=feedStackDTO.creatFeedForm.controls.category></app-error>
+            </div>
+
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Sub Category <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="subCategory"
+                (change)="changesubCategory($event.target.value)" [(ngModel)]="createFeed.subCategoryId">
+                <option [value]="null" [selected]="feedStackDTO.subCatRecords" disabled>Select</option>
+                <option *ngFor="let subCategoryType of  feedStackDTO.subCatRecords"  [value]="subCategoryType.id">
+                  {{subCategoryType.categoryName}}</option>
+              </select>
+              <app-error [control]=feedStackDTO.creatFeedForm.controls.subCategory></app-error>
+            </div>
+
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group col-lg-12">
+              <div class="row">
+                <div
+                  class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 pl-0 pr-0 pr-sm-3  pr-md-3  pr-lg-3  pr-xl-3 d-inline">
+                  <app-uom-ctrl [(basevalue1)]="categoryValue" [pHolder]="categoryPlaceHolder"
+                    variableCategory="Manage Feed Variables" variableName="IBP" uomCtrl=true feedData=true
+                    (newbaseValueChange)="feedValue1($event)" (loadUnits)="units($event)"></app-uom-ctrl>
+                  <app-error [control]=feedStackDTO.creatFeedForm.controls.ibp></app-error>
+                </div>
+
+              </div>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <div class="input-group">
+                <label class="col-lg-12 p-0">Customer/Supplier <span class="mandatory-feild"></span></label>
+                <input type="text" class="form-control" placeholder="Customer/Supplier" formControlName="customer"
+                  [(ngModel)]="createFeed.customerName" readonly>
+                <div class="input-group-append" data-toggle="modal" data-target="#flyoutModal"
+                  (click)="onClickFeedFlyOut($event)">
+                  <span class="input-group-text rounded-0"><em class="fa fa-search-plus"></em></span>
+                </div>
+                <div class="col-lg-12 p-0">
+                  <app-error [control]=feedStackDTO.creatFeedForm.controls.customer></app-error>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Description</label>
+              <textarea class="form-control" placeholder="Description" formControlName="description"
+                [(ngModel)]="createFeed.description"></textarea>
+              <app-error [control]=feedStackDTO.creatFeedForm.controls.description></app-error>
+            </div>
+
+          </div>
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Status <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="status" [(ngModel)]="createFeed.status"
+                (change)="onChangeStatus(createFeed.status)">
+                <option [ngValue]="null" [selected]="feedStackDTO.statusList" disabled>Select </option>
+                <option *ngFor="let status of feedStackDTO.statusList" [ngValue]="status.id">{{status.status}}</option>
+              </select>
+              <app-error [control]=feedStackDTO.creatFeedForm.controls.status></app-error>
+
+            </div>
+          </div>
+
+
+
+          <div class="col-lg-12 mt-2">
+            <p class="mandatory-para p-0 mt-0 mb-2 ml-0 mr-0">All fields marked with <span
+                class="mandatory-feild"></span> are mandatory.</p>
+            <button type="button" class="btn btn-transparent mr-3 mb-3" data-dismiss="modal"
+              (click)="onResetClick()">Reset</button>
+            <button type="button" class="btn btn-transparent mr-3 mb-3" data-dismiss="modal"
+              (click)="onFindClick(createFeed)"
+              [disabled]="!(feedStackDTO.creatFeedForm.dirty || feedStackDTO.uomFlag || feedStackDTO.creatFeedForm.controls.customer.valid)">Find</button>
+            <button id="submit" type="button" class="btn btn-default mb-3"
+              [disabled]="!((feedStackDTO.creatFeedForm.valid  && feedStackDTO.formValid && feedStackDTO.uomFlag) && feedStackDTO.isDisable)"
+              (click)="onSaveClick(createFeed)" [hidden]="!feedStackDTO.privilege">Save</button>
+
+
+          </div>
+
+        </div>
+      </form>
+
+    </div>
+  </div>
+
+
+  <div class="col-lg-12 pt-2">
+    <div *ngIf="feedStackDTO.totalRecords > 0 then dataTable else noData"></div>
+    <ng-template #dataTable>
+      <app-custom-table [nOfRecordPage]="feedStackDTO.nOfRecordPage" [totalRecords]="feedStackDTO.totalRecords"
+        [columns]="feedStackDTO.colsData" [value]="feedStackDTO.feedStackDataList" [selectedRows]="createFeed"
+        (onEdit)="onEditClick($event)" (ondelete)="deleteConfirmation($event)">
+      </app-custom-table>
+    </ng-template>
+    <ng-template #noData>
+      <div class="inner-container mt-3 mb-2 p-2 ng-star-inserted">No Records Found</div>
+    </ng-template>
+  </div>
+
+</div>
+
+<div  id="flyoutModal" *ngIf="feedStackDTO.flyOutPopUp" class="stickyFlyoutModal modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="gridModalLabel" style="display: none;" aria-hidden="true">
+  <div class="flyout-overlay" data-dismiss="modal" aria-label="Close" aria-hidden="true" (click)="closeFlyout()"></div>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="mb-0">Customer/Supplier</h3>
+        <button type="button" id="feedFlyOut" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true" (click)="closeFlyout()">×</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid bd-example-row">
+          <div class="row">
+            <form class="col-lg-12" [formGroup]="feedStackDTO.creatFeedPopUpForm">
+              <div class="row">
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label>Name</label>
+                    <input ref-name type="text" class="form-control" placeholder="Name" formControlName="customerName"
+                      [(ngModel)]="customer.name">
+                  </div>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label>City</label>
+                    <input ref-city type="text" class="form-control" placeholder="City" formControlName="city"
+                      [(ngModel)]="customer.city">
+                  </div>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label>Country</label>
+                    <input ref-country type="text" class="form-control" placeholder="Country" formControlName="country"
+                      [(ngModel)]="customer.country">
+                  </div>
+                </div>
+
+
+                <div class="col-lg-12 mt-2 mb-3">
+                  <button type="button" class="btn btn-transparent mr-3" (click)="onResetClickPop()">Reset</button>
+                  <button type="button" class="btn btn-default"
+                    [disabled]="!(name.value || city.value || country.value)"
+                    (click)="onFindClickPop(customer)">Find</button> </div>
+              </div>
+            </form>
+          </div>
+
+
+          <div class="row">
+            <div class="col-lg-12 pt-2">
+              <div *ngIf="feedStackDTO.totalRecords1 > 0  then dataTable1 else noData1"></div>
+              <ng-template #dataTable1>
+                <app-custom-table class="flyout-table" [columns]="feedStackDTO.cols" [value]="feedStackDTO.customerDataList"
+                  (onEdit)="onCustomerEdit($event)" (ondelete)="deleteConfirmation($event)" [selectedRows]="customer"
+                  [totalRecords]="feedStackDTO.totalRecords1" [nOfRecordPage]="feedStackDTO.customernOfRecordPage">
+                </app-custom-table>
+              </ng-template>
+              <ng-template #noData1>
+                <div class="inner-container mt-3 mb-2 p-2">No Records found</div>
+              </ng-template>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>

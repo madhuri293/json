@@ -1,0 +1,56 @@
+<div class="main-container mb-5 float-left">
+  <div class="col-lg-12 pt-4">
+
+    <div class="inner-container">
+      <h3 class="pt-3 pb-3 pl-3 pr-3">Manage - MPT Unit Ops</h3>
+      <div *ngIf="mptUnitsDTO.loading" class="overlay_loader">
+        <div class="overlay__inner">
+          <div class="overlay__content"><span class="spinner"></span></div>
+        </div>
+      </div>
+      <form class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" [formGroup]="mptUnitsDTO.mptUnitsForm">
+        <div class="row">
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Technology <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="catalystTechnology" [(ngModel)]="mpt.technologyId" disabled>
+                <option *ngFor="let technology of mpt.technology" [selected]="technology.technologyId"
+                  [ngValue]="technology.technologyId">{{technology.technologyName}}</option>
+              </select>
+              <app-error [control]=mptUnitsDTO.mptUnitsForm.controls.catalystTechnology></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-lg-12 mt-2">
+            <p class="mandatory-para p-0 mt-0 mb-2 ml-0 mr-0">All fields marked with <span
+                class="mandatory-feild"></span> are mandatory.</p>
+            <button type="button" class="btn btn-transparent mr-3 mb-3" (click)="onReset()">Reset</button>
+            <button type="button" class="btn btn-default mb-3"
+              (click)="saveMptOpsData(mptUnitsDTO.operationsCheckList)">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="inner-container mt-4">
+      <h3 class="pt-3 pb-3 pl-3 pr-3">MPT Unit Ops by Technology</h3>
+
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <div class="row">
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3"
+            *ngFor="let chkbox of mptUnitsDTO.operationsCheckList;let i= index">
+            <div class="row">
+              <div class="form-group col-lg-12">
+                <input type="checkbox" class="pos-absolute mt-1 d-inline" [(ngModel)]="chkbox.isChecked" />
+                <span class="checkbox-wrap">{{chkbox.unitOperationName}}</span>
+              </div>
+            </div>            
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>

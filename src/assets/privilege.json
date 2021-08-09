@@ -1,0 +1,74 @@
+
+    [{
+        "label": "Technology",
+        "functionCode": "FUN004",
+        "functionName": "Technology",
+        "isEnabled": true,
+        "privilege": [{
+          "label": "Edit",
+          "functionCode": "PRI01",
+          "functionName": "Edit",
+          "isEnabled": true
+        }, {
+          "label": "View",
+          "functionCode": "PRI02",
+          "functionName": "View",
+          "isEnabled": true
+        }]
+    
+      },
+      {
+    
+        "label": "Role",
+        "functionCode": "FUN005",
+        "functionName": "User",
+        "isEnabled": true,
+        "privilege": [{
+          "label": "Edit",
+          "functionCode": "PRI01",
+          "functionName": "Edit",
+          "isEnabled": true
+        }, {
+          "label": "View",
+          "functionCode": "PRI02",
+          "functionName": "View",
+          "isEnabled": true
+        }]
+      },
+      {
+        "label": "User",
+        "functionCode": "FUN004",
+        "functionName": "User",
+        "isEnabled": true,
+        "privilege": [{
+          "label": "Edit",
+          "functionCode": "PRI01",
+          "functionName": "Edit",
+          "isEnabled": true
+        }, {
+          "label": "View",
+          "functionCode": "PRI02",
+          "functionName": "View",
+          "isEnabled": true
+        }]
+    
+      },
+      {
+        "label": "Privilege",
+        "functionCode": "FUN004",
+        "functionName": "Technology",
+        "isEnabled": true,
+        "privilege": [{
+          "label": "Edit",
+          "functionCode": "PRI01",
+          "functionName": "Edit",
+          "isEnabled": true
+        }, {
+          "label": "View",
+          "functionCode": "PRI02",
+          "functionName": "View",
+          "isEnabled": true
+        }]
+    
+      }]
+     

@@ -1,0 +1,91 @@
+<div class="main-container mb-5 float-left">
+  <div class="col-lg-12 pt-4">
+
+    <div class="inner-container">
+
+
+      <h3 class="pt-3 pb-3 pl-3 pr-3">Catalyst - Catalyst Shape</h3>
+      <div *ngIf="catalystShapeDto.loading" class="overlay_loader">
+        <div class="overlay__inner">
+          <div class="overlay__content"><span class="spinner"></span></div>
+        </div>
+      </div>
+      <form class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" [formGroup]="catalystShapeDto.catalystShapeForm">
+        <div class="row">
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Catalyst Shape <span class="mandatory-feild"></span></label>
+              <input type="text" formControlName="catalystShapeName" [(ngModel)]="catalystShape.shapeName"
+                class="form-control" placeholder="Catalyst Shape">
+              <app-error [control]=catalystShapeDto.catalystShapeForm.controls.catalystShapeName></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Assumed Void Fraction <span class="mandatory-feild"></span></label>
+              <input type="number" formControlName="assumedVoidFractionMsr"
+                [(ngModel)]="catalystShape.assumedVoidFraction"
+                class="form-control"
+                placeholder="Assumed Void Fraction">
+              <app-error [control]=catalystShapeDto.catalystShapeForm.controls.assumedVoidFractionMsr></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Crushed Void Fraction <span class="mandatory-feild"></span></label>
+              <input type="number" formControlName="crushedFractionMsr" [(ngModel)]="catalystShape.crushedFraction"
+                class="form-control"
+                placeholder="Crushed Void Fraction">
+              <app-error [control]=catalystShapeDto.catalystShapeForm.controls.crushedFractionMsr></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Status <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="status" [(ngModel)]="catalystShape.status">
+                <option [ngValue]="null" disabled [selected]="true">Select </option>
+                <option *ngFor="let data of catalystShapeDto.statusList" [value]="data.status">{{data.status}}
+                </option>
+              </select>
+              <app-error [control]=catalystShapeDto.catalystShapeForm.controls.status></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-lg-12 mt-2">
+            <p class="mandatory-para p-0 mt-0 mb-2 ml-0 mr-0">All fields marked with <span
+                class="mandatory-feild"></span> are mandatory.</p>
+            <button type="button" class="btn btn-transparent mr-3 mb-3" (click)="onResetClick()">Reset</button>
+            <button type="button" class="btn btn-transparent mr-3 mb-3"
+              [disabled]="!(catalystShapeDto.catalystShapeForm.dirty || catalystShapeDto.isEnable)"
+              (click)="find(catalystShape)">Find</button>
+            <button id="submit" type="button" [disabled]="(!catalystShapeDto.catalystShapeForm.valid || catalystShapeDto.isDisabled)"
+              class="btn btn-default mb-3" [hidden]="!catalystShapeDto.privilege" (click)="saveCatalystShapeData(catalystShape)">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12 pt-2">
+              <div *ngIf="catalystShapeDto.totalRecords > 0 then dataTable else noData"></div>
+        <ng-template #dataTable>
+          <app-custom-table [totalRecords]="catalystShapeDto.totalRecords"
+            [nOfRecordPage]="catalystShapeDto.nOfRecordPage" [columns]="catalystShapeDto.columns"
+            [value]="catalystShapeDto.rows" [selectedRows]="catalystShape" (onEdit)="onRoleEditClick($event)"
+            (ondelete)="deleteConfirmation($event)" > </app-custom-table>
+        </ng-template>
+        <ng-template #noData>
+          <div class="inner-container mt-3 mb-2 p-2">No Records found</div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

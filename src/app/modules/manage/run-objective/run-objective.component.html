@@ -1,0 +1,85 @@
+<div class="main-container mb-5 float-left">
+  <div class="col-lg-12 pt-4">
+
+    <div class="inner-container">
+      <h3 class="pt-3 pb-3 pl-3 pr-3">Manage - Run Objective</h3>
+      <div *ngIf="runObjectiveDto.loading" class="overlay_loader">
+        <div class="overlay__inner">
+          <div class="overlay__content"><span class="spinner"></span></div>
+        </div>
+      </div>
+      <form class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" [formGroup]="runObjectiveDto.runObjectiveForm">
+        <div class="row">
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Technology <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="technology" [(ngModel)]="runObjective.technologyId"
+                disabled>
+
+
+                <option *ngFor="let technology of runObjectiveDto.technology" [ngValue]="technology.technologyId">
+                  {{technology.technologyName}}</option>
+              </select>
+              <app-error [control]=runObjectiveDto.runObjectiveForm.controls.technology></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Process Name <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="processName" [(ngModel)]="runObjective.processId">
+
+                <option [ngValue]="null" disabled [selected]="runObjectiveDto.processList">Select</option>
+                <option *ngFor="let process of runObjectiveDto.processList" [ngValue]="process.id">
+                  {{process.processName}}</option>
+              </select>
+              <app-error [control]=runObjectiveDto.runObjectiveForm.controls.processName></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Objective Name <span class="mandatory-feild"></span></label>
+              <input type="text" value="" class="form-control" placeholder="Objective Name"
+                formControlName="objectiveName" [(ngModel)]="runObjective.objectiveName" />
+              <app-error [control]=runObjectiveDto.runObjectiveForm.controls.objectiveName></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-lg-12 mt-2 ">
+            <p class="mandatory-para p-0 mt-0 mb-2 ml-0 mr-0">All fields marked with <span
+                class="mandatory-feild"></span> are mandatory.</p>
+            <button type="button" class="btn btn-transparent mr-3 mb-3" (click)="reset()">Reset</button>
+            <button type="button" [disabled]="!(runObjectiveDto.runObjectiveForm.valid || runObjectiveDto.runObjectiveForm.dirty)" class="btn btn-transparent mr-3  mb-3" (click)="find(runObjective)">Find</button>
+            <button type="button" class="btn btn-default mb-3" [hidden]="!runObjectiveDto.privilege"
+              [disabled]="(!runObjectiveDto.runObjectiveForm.valid || runObjectiveDto.isDisabled)"
+              (click)="save(runObjective)">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12 pt-2">
+
+
+
+        <div *ngIf="runObjectiveDto.totalRecords > 0 then dataTable else noData"></div>
+        <ng-template #dataTable>
+          <app-custom-table [nOfRecordPage]="runObjectiveDto.nOfRecordPage"
+            [totalRecords]="runObjectiveDto.totalRecords" [columns]="runObjectiveDto.columns"
+            [value]="runObjectiveDto.runObjectiveRecords" (onEdit)="onEdit($event)"
+            (ondelete)="deleteConfirmation($event)" [selectedRows]="runObjective"> </app-custom-table>
+        </ng-template>
+        <ng-template #noData>
+          <div class="inner-container mt-3 mb-2 p-2">No Records found</div>
+        </ng-template>
+      </div>
+    </div>
+
+  </div>
+</div>

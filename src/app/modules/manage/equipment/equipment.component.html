@@ -1,0 +1,132 @@
+<div class="main-container mb-5 float-left">
+  <div class="col-lg-12 pt-4">
+
+    <div class="inner-container">
+      <h3 class="pt-3 pb-3 pl-3 pr-3">Plant - Equipment</h3>
+      <div *ngIf="equipmentService.loading" class="overlay_loader">
+        <div class="overlay__inner">
+          <div class="overlay__content"><span class="spinner"></span></div>
+        </div>
+      </div>
+      <form class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" [formGroup]="equipmentDTO.equipmentForm">
+        <div class="row">
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+                <label>Technology <span class="mandatory-feild"></span></label>
+                <select class="form-control" formControlName="technology" [(ngModel)]="equipment.technologyId"
+                    disabled>
+                    <option *ngFor="let technology of equipmentDTO.technology"
+                        [value]="technology.technologyId">{{technology.technologyName}}</option>
+                </select>
+                <app-error [control]=equipmentDTO.equipmentForm.controls.technology></app-error>
+            </div>
+        </div>
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+
+            <div class="form-group">
+              <label for="inputState">Plant Code <span class="mandatory-feild"></span></label>
+              <select id="inputState" class="form-control" formControlName="plantCode" [(ngModel)]="equipment.plantId">
+                <option [ngValue]="null" disabled [selected]="equipmentDTO.plantCodedrop">select</option>
+                <option *ngFor="let plantcode of equipmentDTO.plantCodedrop" [value]="plantcode.id" [disabled]=''>
+                  {{plantcode.code}}</option>
+              </select>
+              <app-error [control]=equipmentDTO.equipmentForm.controls.plantCode></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Equipment Name <span _ngcontent-c1="" class="mandatory-feild"></span></label>
+              <input type="text" class="form-control" formControlName="equipmentName" placeholder="Equipment Name"
+                [(ngModel)]="equipment.equipmentName">
+              <app-error [control]=equipmentDTO.equipmentForm.controls.equipmentName></app-error>
+            </div>
+
+          </div>
+
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Equipment Type <span _ngcontent-c1="" class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="equipmentType" [(ngModel)]="equipment.vesselTypeId" (change)="changeEquipment(equipment.vesselTypeId)">
+
+                <option [ngValue]="null" disabled [selected]="equipmentDTO.equipmentType">select</option>
+                <option *ngFor="let equipType of equipmentDTO.equipmentType" [value]="equipType.id">{{equipType.vesselTypeName}}
+                </option>
+              </select>
+              <app-error [control]=equipmentDTO.equipmentForm.controls.equipmentType></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Calculation Module <span _ngcontent-c1="" class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="calculationModule"
+                [(ngModel)]="equipment.calculationModuleId">
+
+                <option [ngValue]="null" disabled [selected]="true">select</option>
+                <option *ngFor="let equicalculation of equipmentDTO.equipmentcalculation" [value]="equicalculation.id"
+                  >{{equicalculation.code}}</option>
+              </select>
+              <app-error [control]=equipmentDTO.equipmentForm.controls.calculationModule></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>VCF Type <span _ngcontent-c1="" class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="vcfType" [(ngModel)]="equipment.vcfTypeId">
+
+                <option [ngValue]="null" disabled [selected]="equipmentDTO.equipmentVcf">select</option>
+                <option *ngFor="let equipVcf of equipmentDTO.equipmentVcf" [ngValue]="" [value]="equipVcf.id"
+                  [disabled]=''>{{equipVcf.vcfTypeName}}</option>
+              </select>
+              <app-error [control]=equipmentDTO.equipmentForm.controls.vcfType></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Status <span _ngcontent-c1="" class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="equipmentStatus" [(ngModel)]="equipment.status">
+                <option [ngValue]="null" disabled [selected]="equipmentDTO.statusList">Select</option>
+                <option *ngFor="let status of equipmentDTO.statusList" [value]="status.id">{{status.status}}</option>
+
+              </select>
+              <app-error [control]=equipmentDTO.equipmentForm.controls.equipmentStatus></app-error>
+            </div>
+          </div>
+
+          <div class="col-lg-12 col-xl-12 mt-2">
+            <p class="mandatory-para p-0 mt-0 mb-2 ml-0 mr-0">All fields marked with <span
+                class="mandatory-feild"></span> are mandatory.</p>
+            <button type="button" class="btn btn-transparent mr-3 mb-3" data-dismiss="modal"
+              (click)="onResetClick()">Reset</button>
+            <button type="button" class="btn btn-transparent mr-3 mb-3" data-dismiss="modal" (click)="find(equipment)"
+              [disabled]="!(equipmentDTO.equipmentForm.dirty || equipmentDTO.isEnable)">Find</button>
+            <button id="submit" type="button" class="btn btn-default mb-3" (click)="saveEquipmentData(equipment)"
+              [disabled]="(!equipmentDTO.equipmentForm.valid || equipmentDTO.isDisabled)" [hidden]="!equipmentDTO.privilege">Save</button>
+          </div>
+
+        </div>
+      </form>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12 col-xl-12 pt-2 mb-2">
+        <div *ngIf="equipmentDTO.totalRecords > 0 then dataTable else noData"></div>
+        <ng-template #dataTable>
+          <app-custom-table [nOfRecordPage]="equipmentDTO.nOfRecordPage" [columns]="equipmentDTO.cols"
+            [value]="equipmentDTO.equipmenttableData" (onEdit)="onRoleEditClick($event)" [selectedRows]="equipment"
+            (ondelete)="deleteConfirmation($event)" (onEquipmentClick)="navigateToCalibration($event)"
+            [totalRecords]="equipmentDTO.totalRecords"> </app-custom-table>
+        </ng-template>
+
+        <ng-template #noData>
+          <div class="inner-container mt-3 mb-2 p-2">No Records found</div>
+        </ng-template>
+      </div>
+    </div>
+
+  </div>
+</div>

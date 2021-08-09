@@ -1,0 +1,153 @@
+<div class="main-container mb-5 float-left">
+  <div class="col-lg-12 pt-4">
+
+    <div class="inner-container">
+      <h3 class="pt-3 pb-3 pl-3 pr-3">Manage - Mode</h3>
+      <div *ngIf="modeService.loading" class="overlay_loader">
+        <div class="overlay__inner">
+          <div class="overlay__content"><span class="spinner"></span></div>
+        </div>
+      </div>
+      <form class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" [formGroup]="modeDTO.modeForm">
+        <div class="row">
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+
+            <div class="form-group">
+              <label>Technology <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="technology" [(ngModel)]="mode.technologyId" disabled>
+                <option *ngFor="let technology of modeDTO.technology" [value]="technology.technologyId">
+                  {{technology.technologyName}}</option>
+              </select>
+              <app-error [control]=modeDTO.modeForm.controls.technology></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Mode # <span class="mandatory-feild"></span></label>
+              <input type="text" formControlName="modeNumber" [(ngModel)]="mode.modeNumber" class="form-control"
+                placeholder="Mode Number">
+              <app-error [control]=modeDTO.modeForm.controls.modeNumber></app-error>
+            </div>
+          </div>
+
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Mode <span class="mandatory-feild"></span></label>
+
+              <select class="form-control" formControlName="modeObjectiveId" [(ngModel)]="mode.objectiveId"
+                (change)="updateDescUOMChange($event.target.value,'modeType',mode)">
+                <option [value]="null" disabled [selected]="modeDTO.modeDataList">Select</option>
+                <option *ngFor="let mode of modeDTO.modeDataList" [value]="mode.id">{{mode.objectiveName}}</option>
+              </select>
+              <app-error [control]=modeDTO.modeForm.controls.modeObjectiveId></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Control <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="control" [(ngModel)]="mode.controlMethodId"
+                (change)="updateDescUOMChange($event.target.value,'controltype',mode)">
+                <option [value]="null" disabled [selected]="modeDTO.controlDataList">Select</option>
+                <option *ngFor="let control of modeDTO.controlDataList" [value]="control.id">{{control.controlName}}
+                </option>
+              </select>
+              <app-error [control]=modeDTO.modeForm.controls.control></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Sulfiding <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="sulfiding" [(ngModel)]="mode.sulfindingId"
+                (change)="updateDescUOMChange($event.target.value,'sulfidingtype',mode)">
+                <option [value]="null" disabled [selected]="modeDTO.sulfidingDataList">Select</option>
+                <option *ngFor="let sulfiding of modeDTO.sulfidingDataList" [value]="sulfiding.id">
+                  {{sulfiding.sulfindingName}}</option>
+              </select>
+              <app-error [control]=modeDTO.modeForm.controls.sulfiding></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+
+            <div class="form-group">
+              <app-uom-ctrl [(basevalue)]="mode.pressure" pHolder="Pressure" variableCategory="Mode Variables"
+                [resetUnit]='modeDTO.isReset' variableName="Pressure" uomCtrl=true feedData=false
+                (uomInstanceChange)="modePressureValue($event)" (loadUnits)="units($event)"></app-uom-ctrl>
+              <app-error [control]=modeDTO.modeForm.controls.pressure></app-error>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+
+            <div class="form-group">
+              <app-uom-ctrl [(basevalue)]="mode.lhsv" pHolder="LHSV" variableCategory="Mode Variables"
+                [resetUnit]='modeDTO.isReset' variableName="LHSV" uomCtrl=true feedData=false
+                (uomInstanceChange)="modeLhsvValue($event)"></app-uom-ctrl>
+              <app-error [control]=modeDTO.modeForm.controls.lhsv></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+
+            <div class="form-group">
+              <app-uom-ctrl [(basevalue)]="mode.scfb" pHolder="H2/HC" variableCategory="Mode Variables"
+                [resetUnit]='modeDTO.isReset' variableName="H2/HC" uomCtrl=true feedData=false
+                (uomInstanceChange)="modeScfbValue($event)"></app-uom-ctrl>
+              <app-error [control]=modeDTO.modeForm.controls.scfb></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Conditions <span class="mandatory-feild"></span></label>
+              <input type="number" formControlName="condition" [(ngModel)]="mode.condition" class="form-control"
+                placeholder="CONDITIONS" (ngModelChange)="updateDescUOMChange($event,'conditions',mode)">
+              <app-error [control]=modeDTO.modeForm.controls.condition></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-9">
+            <div class="form-group">
+              <label>Description <span class="mandatory-feild"></span></label>
+              <textarea placeholder="Description" class="form-control" formControlName="modeDescription"
+                [(ngModel)]="mode.modeDescription"></textarea>
+              <app-error [control]=modeDTO.modeForm.controls.modeDescription></app-error>
+            </div>
+          </div>
+
+
+          <div class="col-lg-12 mt-2">
+            <p class="mandatory-para p-0 mt-0 mb-2 ml-0 mr-0">All fields marked with<span
+                class="mandatory-feild"></span> are mandatory.</p>
+            <button type="button" class="btn btn-transparent mr-3 mb-3" (click)="reset()">Reset</button>
+            <button type="button" class="btn btn-transparent mr-3 mb-3" (click)="find(mode)"
+              [disabled]="!(modeDTO.modeForm.dirty || modeDTO.uomInput|| modeDTO.uomDirty)">Find</button>
+            <button type="button" class="btn btn-default mb-3" (click)="save(mode)"
+              [disabled]="!(modeDTO.modeForm.valid && modeDTO.uomFlag && (modeDTO.modeForm.controls.modeDescription.dirty||modeDTO.modeForm.controls.modeDescription.valid) )" [hidden]="!modeDTO.privilege">Save</button>
+
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12 pt-2">
+        <div *ngIf="modeDTO.totalRecords > 0 then dataTable else noData"> </div>
+        <ng-template #dataTable>
+          <app-custom-table [columns]="modeDTO.columns" [value]="modeDTO.modeGridDataList"
+            [nOfRecordPage]="modeDTO.nOfRecordPage" [totalRecords]="modeDTO.totalRecords" [selectedRows]="mode"
+            (ondelete)="deleteConfirmation($event)" (onEdit)="onEditClick($event)"></app-custom-table>
+        </ng-template>
+
+        <ng-template #noData>
+          <div class="inner-container mt-3 mb-2 p-2">No Records found</div>
+        </ng-template>
+
+      </div>
+    </div>
+
+  </div>
+</div>

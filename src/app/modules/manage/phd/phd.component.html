@@ -1,0 +1,205 @@
+<div class="main-container mb-5 float-left">
+  <div class="col-lg-12 pt-4">
+
+    <div class="inner-container">
+      <h3 class="pt-3 pb-3 pl-3 pr-3">Manage - PHD Tag</h3>
+      <div *ngIf="phdService.loading" class="overlay_loader">
+        <div class="overlay__inner">
+          <div class="overlay__content"><span class="spinner"></span></div>
+        </div>
+      </div>
+      <form class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" [formGroup]="phdDTO.PHDform">
+        <div class="row">
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Technology <span class="mandatory-feild"></span></label>
+
+              <select class="form-control" formControlName="technology" [(ngModel)]="phd.technologyId" disabled>
+                <option *ngFor="let technology of phdDTO.technology" [value]="technology.id">
+                  {{technology.technologyName}}</option>
+              </select>
+              <app-error [control]=phdDTO.PHDform.controls.technology></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="input-group form-group mb-0">
+              <label class="col-lg-12 p-0">Plant Code <span class="mandatory-feild"></span></label>
+              <input type="text" formControlName="plantCode" class="form-control" placeholder="Plant Code"
+                [(ngModel)]="phd.plantId" readonly />
+              <div class="input-group-append" data-toggle="modal" data-target="#PHDPlantFlyOut" (click)="getPlantList();onFlyoutLoad()">
+                <span class="input-group-text rounded-0"><em class="fa fa-search-plus"></em></span>
+              </div>
+            </div>
+            <app-error [control]=phdDTO.PHDform.controls.plantCode></app-error>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Log Reading Label <span class="mandatory-feild"></span></label>
+              <input type="text" formControlName="readingLabel" class="form-control" [(ngModel)]="phd.logReadingLabel"
+                placeholder="Log Reading Label" />
+              <app-error [control]=phdDTO.PHDform.controls.readingLabel></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>PHD Tag Name <span class="mandatory-feild"></span></label>
+              <input type="text" formControlName="tagName" class="form-control" [(ngModel)]="phd.phdTagName"
+                placeholder="PHD Tag Name" />
+              <app-error [control]=phdDTO.PHDform.controls.tagName></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Display Order <span class="mandatory-feild"></span></label>
+              <input type="number" formControlName="displayOrder" class="form-control" [(ngModel)]="phd.displayOrder"
+                placeholder="Display Order" />
+              <app-error [control]=phdDTO.PHDform.controls.displayOrder></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>PHD Value Type <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="valueType" [(ngModel)]="phd.phdTypeId">
+                <option [ngValue]="null" disabled [selected]="phdDTO.phdTypeList">Select</option>
+                <option *ngFor="let type of phdDTO.phdTypeList" [ngValue]="type.id">{{type.typeName}}</option>
+              </select>
+              <app-error [control]=phdDTO.PHDform.controls.valueType></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Min Range</label>
+              <input type="number" formControlName="minRange" class="form-control" [(ngModel)]="phd.minRange"
+                placeholder="Min Range" />
+              <app-error [control]=phdDTO.PHDform.controls.minRange></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Max Range</label>
+              <input type="number" formControlName="maxRange" class="form-control" [(ngModel)]="phd.maxRange"
+                placeholder="Max Range" />
+              <app-error [control]=phdDTO.PHDform.controls.maxRange></app-error>
+            </div>
+          </div>
+
+          <div class="col-lg-12 mt-2">
+            <p class="mandatory-para p-0 mt-0 mb-2 ml-0 mr-0">All fields marked with <span
+                class="mandatory-feild"></span> are mandatory.</p>
+            <button type="button" class="btn btn-transparent mr-3 mb-3" (click)="onResetClick()">Reset</button>
+            <button type="button" class="btn btn-transparent mr-3 mb-3"
+              [disabled]="!(phdDTO.PHDform.touched || phdDTO.PHDform.dirty || phdDTO.PHDform.controls.plantCode.valid)"
+              (click)="find(phd)">Find</button>
+            <button type="button" class="btn btn-default mb-3" [hidden]="!phdDTO.privilege"
+              [disabled]="(!phdDTO.PHDform.valid || phdDTO.isDisabled)" (click)="save(phd)">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12 pt-2">
+        <!-- Add Grid here -->
+
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-lg-12 pt-2">
+        <div *ngIf="phdDTO.totalRecords > 0 then dataTable else noData"></div>
+        <ng-template #dataTable>
+          <app-custom-table [totalRecords]="phdDTO.totalRecords" (onEdit)="onPhdEdit($event)"
+            (ondelete)="deleteConfirmation($event)" [nOfRecordPage]="phdDTO.nOfRecordPage" [columns]="phdDTO.columns"
+            [value]="phdDTO.phdList" [selectedRows]="phd"></app-custom-table>
+        </ng-template>
+        <ng-template #noData>
+          <div class="inner-container mt-3 mb-2 p-2">No Records found</div>
+        </ng-template>
+      </div>
+    </div>
+
+
+
+  </div>
+</div>
+
+<!-- Modal Pop up start-->
+<!-- Catalyst Family flyout -->
+<div id="PHDPlantFlyOut" class="stickyFlyoutModal modal fade" tabindex="-1" role="dialog"
+  aria-labelledby="gridModalLabel" style="display: none;" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="mb-0">Plants</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">×</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid bd-example-row">
+          <div class="row">
+            <form class="col-lg-12" [formGroup]="phdPlantFlyoutDTO.plantFlyOutForm">
+              <div class="row">
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label>Plant Code</label>
+                    <input ref-plantc type="text" class="form-control" formControlName="code" [(ngModel)]="plant.code"
+                      placeholder="Plant Code">
+                    <app-error [control]=phdPlantFlyoutDTO.plantFlyOutForm.controls.code></app-error>
+                  </div>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label>Plant Location</label>
+                    <input ref-codeloc type="text" class="form-control" formControlName="location"
+                      [(ngModel)]="plant.locationName" placeholder="Plant Location">
+                    <app-error [control]=phdPlantFlyoutDTO.plantFlyOutForm.controls.location></app-error>
+                  </div>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label>Building Number</label>
+                    <input ref-buildingb type="text" formControlName="building" class="form-control"
+                      [(ngModel)]="plant.buildingName" placeholder="Building Number">
+                    <app-error [control]=phdPlantFlyoutDTO.plantFlyOutForm.controls.building></app-error>
+                  </div>
+                </div>
+
+                <div class="col-lg-12 mt-2 mb-3">
+                  <button type="button" class="btn btn-transparent mr-3" (click)="onReset()">Reset</button>
+                  <button type="button" class="btn btn-default"
+                    [disabled]="!(codeloc.value || buildingb.value || plantc.value)" (click)="onFind(plant)">Find</button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+
+          <div *ngIf="phdPlantFlyoutDTO.flyTotalRecords>0 then dataTable1 else noData1"></div>
+          <div class="col-lg-12 pt-2">
+            <ng-template #dataTable1>
+              <app-custom-table class="flyout-table" [totalRecords]="phdPlantFlyoutDTO.flyTotalRecords" [selectedRows]="plant"
+                [nOfRecordPage]="phdPlantFlyoutDTO.nOfFlyRecordPage" [columns]="phdPlantFlyoutDTO.cols"
+                [value]="phdPlantFlyoutDTO.plantList" (onEdit)="onPlantSelect($event)"></app-custom-table>
+            </ng-template>
+            <ng-template #noData1>
+              <div class="inner-container mt-3 mb-2 p-2 ng-star-inserted">No Records Found</div>
+            </ng-template>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 pt-2">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

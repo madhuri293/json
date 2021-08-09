@@ -1,0 +1,36 @@
+[{
+    "modeId": 1,
+    "description": "Description1",
+    "mode": "Distillate",
+    "control":"NIR Net Conv",
+    "sulfiding":"Gas Ex-Situ",
+    "conditions":"1"
+
+},
+{
+    "modeId": 2,
+    "description": "Description2",
+    "mode": "Distillate2",
+    "control":"NIR Net Conv2",
+    "sulfiding":"Gas Ex-Situ2",
+    "conditions":"2"
+
+},
+{
+    "modeId": 2,
+    "description": "Description2",
+    "mode": "Distillate2",
+    "control":"NIR Net Conv2",
+    "sulfiding":"Gas Ex-Situ2",
+    "conditions":"2"
+
+},
+{
+    "modeId": 2,
+    "description": "Description2",
+    "mode": "Distillate2",
+    "control":"NIR Net Conv2",
+    "sulfiding":"Gas Ex-Situ2",
+    "conditions":"2"
+
+}]

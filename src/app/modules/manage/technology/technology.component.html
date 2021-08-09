@@ -1,0 +1,101 @@
+<div class="main-container mb-5 float-left">
+  <div class="col-lg-12 pt-4">
+    <div class="inner-container">
+      <h3 class="pt-3 pb-3 pl-3 pr-3">Manage - Technology</h3>
+
+
+      <div *ngIf="technologyService.loading" class="overlay_loader">
+        <div class="overlay__inner">
+          <div class="overlay__content"><span class="spinner"></span></div>
+        </div>
+      </div>
+
+      <form class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" [formGroup]="technologyDTO.technologyForm">
+        <div class="row">
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Technology Code <span class="mandatory-feild"></span></label>
+              <input type="text" class="form-control" formControlName="technologyCode" placeholder="Technology Code"
+                [(ngModel)]="technologyDTO.technology.technologyCode">
+              <app-error [control]=technologyDTO.technologyForm.controls.technologyCode></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Technology Name <span class="mandatory-feild"></span></label>
+              <input type="text" class="form-control" formControlName="technologyName" placeholder="Technology Name"
+                [(ngModel)]="technologyDTO.technology.technologyName">
+              <app-error [control]=technologyDTO.technologyForm.controls.technologyName></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Technology Description</label>
+              <textarea class="form-control" formControlName="technologyDescription"
+                placeholder="Technology Description" [(ngModel)]="technologyDTO.technology.description"></textarea>
+              <app-error [control]=technologyDTO.technologyForm.controls.technologyDescription></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group color-inputpicker">
+              <label>Technology Color Code <span class="mandatory-feild"></span></label>
+              <input [(colorPicker)]="technologyDTO.technology.colorCode"
+                [style.background]="technologyDTO.technology.colorCode" [value]="technologyDTO.technology.colorCode"
+                [cpSaveClickOutside]="true" [cpOKButton]="false" class="form-control col-lg-5" style="color:#eeeeee;"
+                [cpOKButtonClass]="'btn btn-primary btn-xs'" [cpOKButtonText]="'Ok'"
+                formControlName="technologyColorCode" [(ngModel)]="technologyDTO.technology.colorCode"
+                [cpOutputFormat]="'hex'" readonly />
+              <app-error [control]=technologyDTO.technologyForm.controls.technologyColorCode></app-error>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Status <span class="mandatory-feild"></span></label>
+              <select id="inputState" class="form-control" formControlName="status"
+                [(ngModel)]="technologyDTO.technology.status">
+                <option value="null" disabled [selected]="technologyDTO.statusList">Select</option>
+                <option *ngFor="let status of technologyDTO.statusList" [value]="status.id">{{status.status}}</option>
+              </select>
+              <app-error [control]=technologyDTO.technologyForm.controls.status></app-error>
+            </div>
+          </div>
+
+          <div class="col-lg-12 col-xl-12 mt-2 mb-3">
+            <p class="mandatory-para p-0 mt-0 mb-2 ml-0 mr-0">All fields marked with <span
+                class="mandatory-feild"></span> are mandatory.</p>
+            <button type="button" class="btn btn-transparent mr-3" data-dismiss="modal"
+              (click)="onResetClick()">Reset</button>
+            <button type="button" class="btn btn-transparent mr-3" (click)="findTechnology(technologyDTO.technology)"
+              data-dismiss="modal"
+              [disabled]="!(technologyDTO.technologyForm.valid || technologyDTO.technologyForm.dirty || technologyDTO.technology.colorCode)">Find</button>
+            <button id="submit" type="button" class="btn btn-default" (click)="saveTechnology(technologyDTO.technology)"
+              [disabled]="(!technologyDTO.technologyForm.valid || technologyDTO.isDisabled)"
+              [hidden]="!technologyDTO.privilege">Save</button>
+          </div>
+
+        </div>
+      </form>
+    </div>
+
+
+    <div class="row">
+      <div class="col-lg-12 pt-2">
+        <div *ngIf="technologyDTO.totalRecords > 0 then dataTable else noData"></div>
+        <ng-template #dataTable>
+          <app-custom-table [nOfRecordPage]="technologyDTO.nOfRecordPage" [totalRecords]="technologyDTO.totalRecords"
+            [columns]="technologyDTO.colsData" [value]="technologyDTO.technologyList"
+            (onEdit)="onTechnologyEditClick($event)" (ondelete)="deleteConfirmation($event)"
+            [selectedRows]="technologyDTO.technology"  > </app-custom-table>
+        </ng-template>
+        <ng-template #noData>
+          <div class="inner-container mt-3 mb-2 p-2">No Records found</div>
+        </ng-template>
+      </div>
+    </div>
+
+
+  </div>
+</div>

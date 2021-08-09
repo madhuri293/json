@@ -1,0 +1,77 @@
+<div class="main-container mb-5 float-left">
+  <div class="col-lg-12 pt-4">
+
+    <div class="inner-container">
+      <h3 class="pt-3 pb-3 pl-3 pr-3">Manage Variables -{{manageVariableDTO.templateName}}</h3>
+      <div *ngIf="manageVariableService.loading" class="overlay_loader">
+        <div class="overlay__inner">
+            <div class="overlay__content"><span class="spinner"></span></div>
+        </div>
+    </div>
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <div class="row">
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-4">
+            <div class="form-group">
+              <label>Module Name <span class="mandatory-feild"></span></label>
+              <select class="form-control" (change)="onSelect($event.target.value)" >
+              
+              <option value="null" disabled [selected]="manageVariableDTO.applicationList" >Select</option>
+              <option *ngFor="let application of manageVariableDTO.applicationList" [value]="application.id" >{{application.categoryName}}</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="col-lg-12 mt-1 mb-1">
+            <p class="mandatory-para p-0 mt-0 mb-2 ml-0 mr-0">All fields marked with <span class="mandatory-feild"></span> are mandatory.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div *ngIf="manageVariableDTO.disableFlag; else noData" class="row">
+      <div class="col-lg-12 col-xl-12 mt-3 pt-2">
+        <form  [formGroup]="manageVariableDTO.variableForm">
+          <div class="table-responsive">
+            <table class="table custom-table" aria-describedby="table">
+              <thead [hidden]="!manageVariableDTO.variablesData">
+                <th id="var-name">Variable Name</th>
+                <th id="unit-name">Default Unit Name</th>
+                <th id="precision">Precision</th>
+              </thead>
+              <tbody>                
+                <tr [formGroup]="control" *ngFor="let control of manageVariableDTO.variableForm.get('variables').controls; let i=index">                 
+                  <td>{{this.manageVariableDTO.variablesData[i].variableName}}</td>
+                  <td>
+                    <select class="form-control" formControlName="defaultUOMId">
+                      <option [ngValue]="null" disabled selected>Select</option>
+                      <option *ngFor="let unitlist of this.manageVariableDTO.variablesData[i].defaultUnits" [value]="unitlist.id">
+                          {{unitlist.unitName}}
+                      </option>
+                  </select>
+                  </td>
+                  <td><input class="form-control" formControlName="variableDecimalPoint" type="number">
+                    <app-error [control]=control.controls.variableDecimalPoint></app-error>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </form>
+
+      </div>
+
+      <div class="col-lg-12 mt-4 text-right">
+          <button type="button" class="btn btn-transparent mb-3" data-dismiss="modal"  (click)="onBackClick()">Back</button>
+          <button type="button" [disabled]="!(manageVariableDTO.variableForm.valid && manageVariableDTO.disableFlag)"  class="btn btn-default ml-3 mb-3" (click)="onUpdateClick()">Update</button>
+      </div>
+    </div>
+    <ng-template #noData>
+      <div class="inner-container mt-3 mb-2 p-2">No Records found</div>
+      <div class="row">
+        <div class="col-lg-12 mt-4 text-right">
+          <button type="button" class="btn btn-transparent mb-3" data-dismiss="modal"  (click)="onBackClick()">Back</button>
+        </div>
+      </div>
+    </ng-template>
+  </div>
+</div>

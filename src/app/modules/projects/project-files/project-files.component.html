@@ -1,0 +1,21 @@
+<div class="row">
+  <div class="col-lg-12 pt-2">
+    <div class="inner-container">
+      <h3 class="pt-3 pb-3 pl-3 pr-3">Project - Project Files</h3>
+    </div>
+    <div *ngIf="projectService.loading" class="overlay_loader">
+      <div class="overlay__inner">
+        <div class="overlay__content"><span class="spinner"></span></div>
+      </div>
+    </div>
+    <div *ngIf="totalRecords > 0  then dataTable else noData"></div>
+    <ng-template #dataTable>
+      <app-custom-table [nOfRecordPage]="nOfRecords" [totalRecords]="totalRecords" [columns]="cols"
+        [value]="projectFileList"> </app-custom-table>
+    </ng-template>
+
+    <ng-template #noData>
+      <div class="inner-container mt-3 mb-2 p-2">No Records found</div>
+    </ng-template>
+  </div>
+</div>

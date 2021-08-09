@@ -1,0 +1,268 @@
+<div class="main-container mb-5 float-left">
+  <div class="col-lg-12 pt-4">
+    <form [formGroup]="inventoryDTO.inventoryForm">
+      <div class="inner-container">
+        <h3 class="pt-3 pb-3 pl-3 pr-3">Inventory - Catalyst Inventory Management</h3>
+        <div *ngIf="catalystInventoryServiceService.loading" class="overlay_loader">
+          <div class="overlay__inner">
+            <div class="overlay__content"><span class="spinner"></span></div>
+          </div>
+        </div>
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+          <div class="row">
+            <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 mb-3">
+              <div class="input-group form-group mb-0">
+                <label class="col-lg-12 p-0">Designation <span class="mandatory-feild"></span></label>
+                <input type="text" class="form-control" placeholder="Designation" formControlName="catalystName"
+                  [(ngModel)]="inventory.catalystName" readonly />
+                <div class="input-group-append" data-toggle="modal" data-target="#flyoutModal"  (click)="getMainMasterData();closeFlyout()">
+                  <span class="input-group-text rounded-0"><em class="fa fa-search-plus"></em></span>
+                </div>
+              </div>
+              <app-error [control]=inventoryDTO.inventoryForm.controls.catalystName></app-error>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="inner-container mt-4">
+        <h3 class="pt-3 pb-3 pl-3 pr-3">Inventory Info</h3>
+        <div class="col-lg-12 customize_loading_container">
+          <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 pb-3 customize_loading_container">
+              <div class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 customize_loading_label">
+                  <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-11 col-xl-11">
+                      <div class="row">
+
+                        <div class="col-6 col-sm-2 col-md-2 col-lg-3 col-xl-2">
+                          <div class="form-group">
+                            <label>Container <span class="mandatory-feild"></span> </label>
+                          </div>
+                        </div>
+
+                        <div class="col-12 col-sm-5 col-md-5 col-lg-3 col-xl-2">
+                          <div class="form-group">
+                            <label>Book # </label>
+                          </div>
+                        </div>
+
+                        <div class="col-6 col-sm-5 col-md-4 col-lg-3 col-xl-2">
+                          <div class="form-group">
+                            <label>Location </label>
+                          </div>
+                        </div>
+
+                        <div class="col-12 col-sm-5 col-md-6 col-lg-3 col-xl-2">
+                          <div class="form-group">
+                            <label>Site </label>
+                          </div>
+                        </div>
+
+                        <div class="col-12 col-sm-5 col-md-5 col-lg-3 col-xl-3">
+                          <div class="form-group">
+                            <label class="col-lg-12 p-0">Net Quantity </label>
+                          </div>
+                        </div>
+
+                        <div class="col-4 col-sm-2 col-md-2 col-lg-3 col-xl-1">
+                          <div class="form-group">
+                            <label>Remove </label>
+                          </div>
+                        </div>
+
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+              </div>
+            </div>
+            <div class="col-12 col-sm-12 col-md-1 col-lg-1 col-xl-1 customize_loading_label">
+            </div>
+
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 customize_loading_field-container">
+              <div class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-11 customize_loading_fields"
+                  formArrayName="catalystInventoryDetails"
+                  *ngFor="let item of inventoryDTO.inventoryForm.get('catalystInventoryDetails')['controls'];let i = index;">
+                  <div class="row" [formGroupName]="i">
+                    <div class="col-md-3 col-lg-3 col-xl-2">
+                      <div class="form-group">
+                        <label>Container <span class="mandatory-feild"></span></label>
+                        <input type="text" class="form-control" placeholder="Container" formControlName="container" />
+                        <app-error [control]="formArray.controls[i].get('container')"></app-error>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-4 col-lg-3 col-xl-2">
+                      <div class="form-group">
+                        <label>Book # </label>
+                        <input type="text" class="form-control" placeholder="Book #" formControlName="book" />
+                        <app-error [control]="formArray.controls[i].get('book')"></app-error>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-4 col-lg-3 col-xl-2">
+                      <div class="form-group">
+                        <label>Location </label>
+                        <input type="text" class="form-control" placeholder="Location" formControlName="location" />
+                        <app-error [control]="formArray.controls[i].get('location')"></app-error>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-4 col-lg-3 col-xl-2">
+                      <div class="form-group">
+                        <label>Site </label>
+                        <input type="text" class="form-control" placeholder="Site" formControlName="site" />
+                        <app-error [control]="formArray.controls[i].get('site')"></app-error>
+                      </div>
+                    </div>
+
+                    <div class="col-sm-12 col-md-6 col-lg-3 col-xl-3">
+                      <div class="form-group">
+                        <app-uom-ctrl [(basevalue)]="inventoryDTO.quantityArray[i]" pHolder="Net Quantity"
+                        variableCategory="Catalyst Variables" 
+                          variableName="Quantity" [unitItems]="unitItems"
+                          uomCtrl=true feedData=false (uomInstanceChange)="netQuantityValueChange($event,i)"
+                          ></app-uom-ctrl>
+                      </div>
+                    </div>
+
+                    <div class="col-3 col-sm-4 col-md-2 col-lg-3 col-xl-1">
+                      <div class="form-group">
+                        <label>Remove </label>
+                        <div class="form-control text-center border">
+                          <em class="fa fa-trash" (click)="remove(i)"></em>
+                        </div>
+                      </div>
+                    </div>
+
+                  </div>
+                </div>
+
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-1">
+                  <div class="position-relative">
+                    <em class="fa fa-plus-circle mt-2" (click)="addInventoryData()"></em>
+                  </div>
+                </div>
+              </div>
+            </div>
+                        
+            <div class="col-lg-12  col-xl-11 total_quantity_row pb-3 mt-3 mt-sm-3 mt-md-3 mt-lg-3 mt-xl-0">
+              <div class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-2 col-xl-8">
+                </div>
+                <div class="col-12 col-sm-12 col-md-9 col-lg-8 col-xl-4">
+                  <div class="row">
+                    <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-9">
+                      <div class="form-group">
+                        <app-uom-ctrl *ngIf="unitItems?.length"  [(basevalue)]="inventory.totalQuantity" pHolder="Total Quantity"
+                          variableCategory="Catalyst Variables" [unitItems]="unitItems"
+                          variableName="Quantity" uomCtrl=true feedData=false 
+                          (uomInstanceChange)="totalQuantityValueChange($event)"></app-uom-ctrl>
+                      </div>
+                      <app-error [control]=inventoryDTO.inventoryForm.controls.totalQuantity></app-error>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col-lg-12 mt-2">
+              <p class="mandatory-para p-0 mt-0 mb-2 ml-0 mr-0">All fields marked with  <span
+                  class="mandatory-feild"></span> are mandatory.</p>
+              <button type="button" class="btn btn-transparent mr-3 mb-3" (click)="reset()">Reset</button>
+              <button type="button" class="btn btn-transparent mr-3 mb-3"
+                (click)="find(inventoryDTO.inventoryForm.value)"
+                [disabled]="!(inventoryDTO.inventoryForm.dirty || inventoryDTO.enableFind ||inventoryDTO.inventoryForm.controls['catalystName'].valid) ">Find</button>
+              <button type="button" class="btn btn-default mb-3" [hidden]="!inventoryDTO.privilege"
+                [disabled]="(!inventoryDTO.inventoryForm.valid || inventoryDTO.isDisabled)"
+                (click)="save(inventoryDTO.inventoryForm.value)">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+
+    <div class="row">
+      <div class="col-lg-12 pt-2">
+        <div *ngIf="inventoryDTO.inventoryRecords?.length>0 then dataTable else noData"></div>
+        <ng-template #dataTable>
+          <app-custom-table [totalRecords]="inventoryDTO.totalRecords" 
+            [nOfRecordPage]="inventoryDTO.numberOfRecordsPerPage" [columns]="inventoryDTO.columns"
+            [value]="inventoryDTO.inventoryRecords" [selectedRows]="inventory" (onEdit)="inventoryEdit($event)"
+            (ondelete)="inventoryDelete($event)"></app-custom-table>
+
+        </ng-template>
+        <ng-template #noData>
+          <div class="inner-container mt-3 mb-2 p-2">No Records found</div>
+        </ng-template>
+      </div>
+    </div>
+
+
+  </div>
+</div>
+
+
+<div id="flyoutModal" class="stickyFlyoutModal modal fade" tabindex="-1" role="dialog" aria-labelledby="gridModalLabel"
+  style="display: none;" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="mb-0">Designation</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close" (click)="closeFlyout()"><span
+            aria-hidden="true">×</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid bd-example-row">
+          <div class="row">
+            <form class="col-lg-12" [formGroup]="inventoryFlyoutDTO.flyoutForm">
+              <div class="row">
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label>Designation</label>
+                    <input ref-designation type="text" class="form-control" placeholder="Designation"
+                      formControlName="designation" [(ngModel)]="mainMaster.designationName">
+                  </div>
+                </div>
+
+                <div class="col-lg-12 mt-2 mb-3">
+                  <button type="button" class="btn btn-transparent mr-3" (click)="onFlyoutReset()">Reset</button>
+                  <button type="button" class="btn btn-default" [disabled]="!designation.value"
+                    (click)="flyoutFind(mainMaster)"> Find</button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+
+          <div *ngIf="inventoryFlyoutDTO.flyTotalRecords > 0 then dataTable1 else noData1"></div>
+          <div class="col-lg-12 pt-2">
+            <ng-template #dataTable1>
+              <app-custom-table class="flyout-table" [totalRecords]="inventoryFlyoutDTO.flyTotalRecords" 
+                [nOfRecordPage]="inventoryFlyoutDTO.nOfFlyRecordPage" [columns]="inventoryFlyoutDTO.cols"
+                [selectedRows]="mainMaster" [value]="inventoryFlyoutDTO.mainMasterList"
+                (onEdit)="designationSelect($event)"></app-custom-table>
+
+            </ng-template>
+            <ng-template #noData1>
+              <div class="inner-container mt-3 mb-2 p-2 ng-star-inserted">No Records Found</div>
+            </ng-template>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

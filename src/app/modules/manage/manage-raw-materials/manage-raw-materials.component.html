@@ -1,0 +1,107 @@
+<div class="main-container mb-5 float-left">
+  <div class="col-lg-12 pt-4">
+
+    <div *ngIf="manageRawMaterialsService.loading" class="overlay_loader">
+      <div class="overlay__inner">
+        <div class="overlay__content"><span class="spinner"></span></div>
+      </div>
+    </div>
+    <div class="inner-container">
+      <h3 class="pt-3 pb-3 pl-3 pr-3">Manage - Raw Materials</h3>
+      <div *ngIf="manageRawMaterialsDTO.loading" class="overlay_loader">
+        <div class="overlay__inner">
+          <div class="overlay__content"><span class="spinner"></span></div>
+        </div>
+      </div>
+      <form class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"
+        [formGroup]="manageRawMaterialsDTO.manageRawMaterialsForm">
+        <div class="row">
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Raw Material Name <span class="mandatory-feild"></span></label>
+              <input type="text" formControlName="rawMaterialName" [(ngModel)]="manageRawMaterials.materialName"
+                class="form-control" placeholder="Raw Material Name" />
+              <app-error [control]=manageRawMaterialsDTO.manageRawMaterialsForm.controls.rawMaterialName></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Raw Material State <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="rawMaterialState" [(ngModel)]="manageRawMaterials.stateId">
+                <option [ngValue]="null" disabled [selected]="manageRawMaterialsDTO.rawMaterialStateList">Select
+                </option>
+                <option *ngFor="let rawMaterialState of manageRawMaterialsDTO.rawMaterialStateList"
+                  [ngValue]="rawMaterialState.id">{{rawMaterialState.state}}</option>
+
+              </select>
+              <app-error [control]=manageRawMaterialsDTO.manageRawMaterialsForm.controls.rawMaterialState></app-error>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Designation <span class="mandatory-feild"></span></label>
+              <input type="text" formControlName="designation" [(ngModel)]="manageRawMaterials.designation"
+                class="form-control" placeholder="Designation" />
+              <app-error [control]=manageRawMaterialsDTO.manageRawMaterialsForm.controls.designation></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Status <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="status" [(ngModel)]="manageRawMaterials.status">
+                <option [ngValue]="null" disabled [selected]="manageRawMaterialsDTO.statusList">Select</option>
+                <option *ngFor="let status of manageRawMaterialsDTO.statusList" [ngValue]="status.id">{{status.status}}
+                </option>
+              </select>
+              <app-error [control]=manageRawMaterialsDTO.manageRawMaterialsForm.controls.status></app-error>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+
+
+            <div class="form-check">
+              <input type="checkbox" formControlName="indicator" [(ngModel)]="manageRawMaterials.isRawMaterial"
+                class="form-check-input" id="rawmaterial" />
+              <label class="form-check-label" for="rawmaterial">
+              Raw Material Type
+              </label>
+              <app-error [control]=manageRawMaterialsDTO.manageRawMaterialsForm.controls.indicator></app-error>
+            </div>
+          </div>
+
+          <div class="col-lg-12 mt-2">
+            <p class="mandatory-para p-0 mt-0 mb-2 ml-0 mr-0">All fields marked with <span
+                class="mandatory-feild"></span> are mandatory.</p>
+            <button type="button" class="btn btn-transparent mr-3 mb-3" (click)="onResetClick()">Reset</button>
+            <button type="button" class="btn btn-transparent mr-3 mb-3"
+              [disabled]="!(manageRawMaterialsDTO.manageRawMaterialsForm.valid || manageRawMaterialsDTO.manageRawMaterialsForm.dirty)"
+              (click)="find(manageRawMaterials)">Find</button>
+            <button type="button" [hidden]="!manageRawMaterialsDTO.privilege"
+              [disabled]="(!manageRawMaterialsDTO.manageRawMaterialsForm.valid || manageRawMaterialsDTO.isDisabled)"
+              class="btn btn-default mb-3" (click)="saveManageRawMaterials(manageRawMaterials)">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+
+    <div class="row">
+      <div class="col-lg-12 pt-2">
+        <div *ngIf="manageRawMaterialsDTO.totalRecords > 0 then dataTable else noData"></div>
+        <ng-template #dataTable>
+          <app-custom-table [totalRecords]="manageRawMaterialsDTO.totalRecords"
+            [nOfRecordPage]="manageRawMaterialsDTO.nOfRecordPage" [columns]="manageRawMaterialsDTO.columns"
+            [value]="manageRawMaterialsDTO.manageRawMaterialsList" (onEdit)="edit($event)"
+            (ondelete)="deleteConfirmation($event)" [selectedRows]="manageRawMaterials">
+          </app-custom-table>
+        </ng-template>
+        <ng-template #noData>
+          <div class="inner-container mt-3 mb-2 p-2">No Records found</div>
+        </ng-template>
+      </div>
+    </div>
+
+  </div>
+</div>

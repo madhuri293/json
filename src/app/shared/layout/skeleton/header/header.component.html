@@ -1,0 +1,52 @@
+<header>
+    <nav class="navbar navbar-expand-lg navbar-light fixed-top">
+
+        <a class="toggle-icon mr-3"><img src="assets/images/bar-icon.png" alt="toggle" (click)="sidenavToggle()"></a>
+        <a class="mobiletoggle-icon mr-3"><img src="assets/images/bar-icon.png" alt="mobile-toggle"
+                (click)="mobileSidenavToggle()"></a>
+        <a class="navbar-brand" href="/dashboard"><img src="assets/images/logo.png" alt="logo"></a>
+
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link onedat-logo pl-3" href="/dashboard">OneDAT <span class="sr-only">(current)</span></a>
+            </li>
+        </ul>
+
+        <ul class="header-nav-right m-0 p-0 list-inline">
+            <li class="list-inline-item" *ngIf="dashboardService.showTechnologyHeader">
+                <form class="form-inline" [formGroup]="headerDTO.headerForm">
+                    <div class="form-group mt-1">
+                        <label class="pr-2">Technology: </label>
+                        <select class="form-control" name="technology" formControlName="technology" 
+                            [(ngModel)]="headerDTO.name" (change)="goToDashboard($event.target.value);">
+                            <option value="" [disabled]="true">Select </option>
+                            <option *ngFor="let data of headerDTO.technologyList"
+                                [selected]="headerDTO.selectedTechnologyId === data.technologyId">{{data.technologyName}}
+                            </option>
+                        </select>
+                    </div>
+                </form>
+            </li>
+
+
+            <li class="list-inline-item nav-item dropdown">
+                <a class="nav-circle nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+                    {{headerDTO?.userName}}
+                </a>
+                <div class="dropdown-menu dropdown-menu-right logout-container rounded-0 shadow">
+                    <div class="modal-body p-0">
+                        <a id="submit" class="d-flex m-0 align-items-center btn btn-default pl-3 btn-block rounded-0"
+                         (click)="logout()"><em class="fa fa-sign-out pr-2 pb-1"></em> Logout</a>
+                    </div>
+                </div>
+            </li>
+        </ul>
+
+    </nav>
+</header>
+
+<div *ngIf="headerDTO.loading" class="overlay_loader">
+    <div class="overlay__inner">
+      <div class="overlay__content"><span class="spinner"></span></div>
+    </div>
+  </div>

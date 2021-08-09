@@ -1,0 +1,461 @@
+<div class="main-container mb-5 float-left">
+  <div class="col-lg-12 pt-4">
+
+    <div class="inner-container">
+      <h3 class="pt-3 pb-3 pl-3 pr-3">Catalyst - Catalyst</h3>
+      <div *ngIf="catalystMainMastersService.loading" class="overlay_loader">
+        <div class="overlay__inner">
+          <div class="overlay__content"><span class="spinner"></span></div>
+        </div>
+      </div>
+      <form class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"
+        [formGroup]="catalystMainMastersDTO.catalystMasterForm">
+        <div class="row">
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Technology <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="technology" [(ngModel)]="catalystMainMasters.technologyId"
+                disabled>
+                <option *ngFor="let technology of catalystMainMastersDTO.technology" [value]="technology.technologyId">
+                  {{technology.technologyName}}</option>
+              </select>
+              <app-error [control]=catalystMainMastersDTO.catalystMasterForm.controls.technology></app-error>
+            </div>
+          </div>
+
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>ID/Designation <span class="mandatory-feild"></span></label>
+              <input type="text" class="form-control" placeholder="LIMS User Sample ID"
+                [(ngModel)]="catalystMainMasters.designationName" formControlName="designation">
+              <app-error [control]=catalystMainMastersDTO.catalystMasterForm.controls.designation></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="input-group form-group mb-0">
+              <label class="col-lg-12 p-0">Catalyst Family <span class="mandatory-feild"></span></label>
+              <input type="text" class="form-control" placeholder="Catalyst Family"
+                [(ngModel)]="catalystMainMasters.commercialFamilyName"
+                value="{{catalystMainMasters.commercialFamilyName}}" formControlName="catalystFamily" readonly>
+
+              <div class="input-group-append" data-toggle="modal" (click)="formReset()" data-target="#flyoutModal1"
+                (click)="getFamily()">
+                <span class="input-group-text rounded-0"><em class="fa fa-search-plus"></em></span>
+              </div>
+            </div>
+            <app-error [control]=catalystMainMastersDTO.catalystMasterForm.controls.catalystFamily></app-error>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Type <span class="mandatory-feild"></span></label>
+              <input type="text" class="form-control" [(ngModel)]="catalystMainMasters.catalystTypeName"
+                value="{{catalystMainMasters.catalystTypeName}}" formControlName="type" readonly>
+              <app-error [control]=catalystMainMastersDTO.catalystMasterForm.controls.type></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Alias SS <span class="mandatory-feild"></span></label>
+              <select class="form-control" [(ngModel)]="catalystMainMasters.aliaSSId"
+                (change)="aliasChange(catalystMainMasters.aliaSSId)" formControlName="alias">
+                <option [ngValue]=null disabled [selected]="catalystMainMastersDTO.aliaslist">Select</option>
+                <option *ngFor="let alias of catalystMainMastersDTO.aliaslist" [ngValue]="alias.id">{{alias.aliasName}}
+                </option>
+              </select>
+              <app-error [control]=catalystMainMastersDTO.catalystMasterForm.controls.alias></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Shape <span class="mandatory-feild"></span></label>
+              <select readonly class="form-control" [(ngModel)]="catalystMainMasters.shapeId" formControlName="shape">
+                <option [ngValue]="null" disabled [selected]="true">Select</option>
+                <option *ngIf="catalystMainMasters.shapeId !== null" [ngValue]="catalystMainMasters.shapeId">{{catalystMainMastersDTO.catalystShape}}</option>
+              </select>
+              <app-error [control]=catalystMainMastersDTO.catalystMasterForm.controls.shape></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Size <span class="mandatory-feild"></span></label>
+              <select readonly class="form-control" [(ngModel)]="catalystMainMasters.sizeId" formControlName="size">
+                <option [ngValue]="null" disabled [selected]="true">Select</option>
+                <option *ngIf="catalystMainMasters.sizeId !== null" [ngValue]="catalystMainMasters.sizeId">{{catalystMainMastersDTO.catalystSize}}</option>
+              </select>
+              <app-error [control]=catalystMainMastersDTO.catalystMasterForm.controls.size></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>State <span class="mandatory-feild"></span></label>
+              <select class="form-control" [(ngModel)]="catalystMainMasters.stateId" formControlName="state">
+                <option [ngValue]="null" disabled [selected]="catalystMainMastersDTO.stateslist">Select</option>
+                <option *ngFor="let state of catalystMainMastersDTO.stateslist" [ngValue]="state.id">{{state.stateName}}
+                </option>
+              </select>
+              <app-error [control]=catalystMainMastersDTO.catalystMasterForm.controls.state></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Analytical Status/Quality </label>
+              <input type="text" class="form-control" value="" placeholder="Sample ID Not Found"
+                [(ngModel)]="catalystMainMasters.analyticalStatus" formControlName="analyticalStatus" readonly>
+              <app-error [control]=catalystMainMastersDTO.catalystMasterForm.controls.analyticalStatus></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="input-group form-group mb-0">
+              <label class="col-lg-12 p-0">Catalyst Leader(MPT/RES) <span class="mandatory-feild"></span></label>
+              <input type="text" class="form-control" placeholder="Catalyst Leader"
+                [(ngModel)]="catalystMainMasters.userId" formControlName="catalystLeader" readonly>
+              <div class="input-group-append" data-toggle="modal" data-target="#flyoutModal2" (click)="getLeader()">
+                <span class="input-group-text rounded-0"><em class="fa fa-search-plus"></em></span>
+              </div>
+            </div>
+            <app-error [control]=catalystMainMastersDTO.catalystMasterForm.controls.catalystLeader></app-error>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <app-uom-ctrl [(basevalue)]="catalystMainMasters.apparentBedDensityMeasurement"
+                pHolder="Calculated Bed Density" variableCategory="Catalyst" uomCtrl=true feedData=false
+                [(resetUnit)]='catalystMainMastersDTO.isReset' variableName="Calculated Bed Density"
+                (baseValueChange)="catalystMainMasterValue($event,1)" (loadUnits)="units($event)">
+              </app-uom-ctrl>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <app-uom-ctrl [(basevalue)]="catalystMainMasters.vibratedBedDensityMeasurement"
+                pHolder="Vibrated Bed Density" variableCategory="Catalyst" variableName="Vibrated Bed Density"
+                [(resetUnit)]='catalystMainMastersDTO.isReset' uomCtrl=true feedData=false
+                (baseValueChange)="catalystMainMasterValue($event,2)"></app-uom-ctrl>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Scale <span class="mandatory-feild"></span></label>
+              <select class="form-control" [(ngModel)]="catalystMainMasters.scaleId"
+                (change)="scaleChange(catalystMainMasters.scaleId)" formControlName="scale">
+                <option [ngValue]="null" disabled [selected]="catalystMainMastersDTO.catalystscale">Select</option>
+                <option *ngFor="let scale of catalystMainMastersDTO.catalystscale" [ngValue]="scale.id">
+                  {{scale.scaleName}}</option>
+              </select>
+              <app-error [control]=catalystMainMastersDTO.catalystMasterForm.controls.scale></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <app-uom-ctrl [(basevalue)]="catalystMainMasters.pieceDensityMeasurement" pHolder="Piece Density"
+                variableCategory="Catalyst" variableName="Piece Density" uomCtrl=true feedData=false
+                [(resetUnit)]='catalystMainMastersDTO.isReset' (baseValueChange)="catalystMainMasterValue($event,3)">
+              </app-uom-ctrl>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <app-uom-ctrl [(basevalue)]="catalystMainMasters.loi500Measurement" pHolder="LOI @ 500C"
+                variableCategory="Catalyst" variableName="LOI@500C" uomCtrl=true feedData=false
+                [(resetUnit)]='catalystMainMastersDTO.isReset' (baseValueChange)="catalystMainMasterValue($event,4)">
+              </app-uom-ctrl>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Void Fraction </label>
+              <input type="text" class="form-control" value="" placeholder="Void Fraction"
+                [(ngModel)]="catalystMainMasters.voidFraction" formControlName="voidFraction" readonly>
+              <app-error [control]=catalystMainMastersDTO.catalystMasterForm.controls.voidFraction></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-12 col-xl-3">
+            <div class="form-group">
+              <label>Description </label>
+              <textarea type="text" class="form-control" value="" placeholder="Description"
+                [(ngModel)]="catalystMainMasters.description" formControlName="description"></textarea>
+              <app-error [control]=catalystMainMastersDTO.catalystMasterForm.controls.description></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group onoffswitch">
+              <input type="checkbox" name="referenceSwitch" class="form-control onoffswitch-checkbox"
+                id="referenceSwitch" checked [(ngModel)]="catalystMainMasters.referenceCatalystIndicator"
+                formControlName="referenceCatalystIndicator"
+                (change)="checkboxChange(catalystMainMasters.referenceCatalystIndicator , 1)">
+              <label class="onoffswitch-label" for="referenceSwitch">
+                <span class="onoffswitch-inner"></span>
+                <span class="onoffswitch-switch"></span>
+              </label>
+            </div>
+            <div class="switchLabel">Reference</div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 position-relative">
+            <div class="form-group onoffswitch">
+              <input type="checkbox" name="regeneratedSwitch" class="form-control onoffswitch-checkbox"
+                id="regeneratedSwitch" [(ngModel)]="catalystMainMasters.regenaratedCatalystIndicator"
+                formControlName="regenaratedCatalystIndicator"
+                (change)="checkboxChange(catalystMainMasters.regenaratedCatalystIndicator , 2)">
+              <label class="onoffswitch-label" for="regeneratedSwitch">
+                <span class="onoffswitch-inner"></span>
+                <span class="onoffswitch-switch"></span>
+              </label>
+            </div>
+            <div class="switchLabel">Regenerated</div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 position-relative">
+            <div class="form-group onoffswitch">
+              <input type="checkbox" name="bulLocationSwitch" class="form-control onoffswitch-checkbox"
+                id="bulLocationSwitch" [(ngModel)]="catalystMainMasters.bulkLocationIndicator"
+                formControlName="bulkLocationIndicator"
+                (change)="checkboxChange(catalystMainMasters.bulkLocationIndicator , 3)">
+
+              <label class="onoffswitch-label" for="bulLocationSwitch">
+                <span class="onoffswitch-inner"></span>
+                <span class="onoffswitch-switch"></span>
+              </label>
+            </div>
+            <div class="switchLabel">Bulk Location</div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 position-relative">
+            <div class="form-group onoffswitch">
+              <input type="checkbox" name="analyticalApprovedSwitch" class="form-control onoffswitch-checkbox"
+                id="analyticalApprovedSwitch" [(ngModel)]="catalystMainMasters.analyticalApprovalIndicator"
+                formControlName="analyticalApproveIndicator"
+                (change)="checkboxChange(catalystMainMasters.analyticalApprovalIndicator , 4)">
+
+              <label class="onoffswitch-label" for="analyticalApprovedSwitch">
+                <span class="onoffswitch-inner"></span>
+                <span class="onoffswitch-switch"></span>
+              </label>
+            </div>
+            <div class="switchLabel">Analytical Approved</div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 position-relative">
+            <div class="form-group onoffswitch">
+              <input type="checkbox" name="crushedSwitch" class="form-control onoffswitch-checkbox" id="crushedSwitch"
+                [(ngModel)]="catalystMainMasters.groundIndicator" formControlName="groundIndicator"
+                (change)="checkboxChange(catalystMainMasters.groundIndicator , 5)">
+              <label class="onoffswitch-label" for="crushedSwitch">
+                <span class="onoffswitch-inner"></span>
+                <span class="onoffswitch-switch"></span>
+              </label>
+            </div>
+            <div class="switchLabel">Crushed</div>
+          </div>
+
+          <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-9">
+            <div class="form-group">
+              <label class="col-lg-12 col-xl-12 p-0"><em class="fa fa-minus"></em>Lims Sample IDs <span class="mandatory-feild"></span></label>
+              <div class="row">
+                <div class="col-md-12 col-lg-12 col-xl-12">
+
+                  <p-chips formControlName="limsSampleId" [(ngModel)]="catalystMainMasters.limsSampleId"></p-chips>
+                </div>
+                <div class="col-md-12 col-lg-12 col-xl-12">
+                  <app-error [control]=catalystMainMastersDTO.catalystMasterForm.controls.limsSampleId></app-error>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-12 mt-2 mb-3 catalyst-actions-btns">
+            <p class="mandatory-para p-0 mt-0 mb-2 ml-0 mr-0">All fields marked with <span
+                class="mandatory-feild"></span>
+              are mandatory.</p>
+            <button type="button" class="btn btn-transparent mr-3 mb-3" (click)="onReset(true)">Reset</button>
+            <button type="button" class="btn btn-transparent mr-3 mb-3" [disabled]="!(catalystMainMastersDTO.catalystMasterForm.dirty || catalystMainMastersDTO.uomFlag || catalystMainMastersDTO.catalystMasterForm.controls['catalystFamily'].valid
+              || catalystMainMastersDTO.catalystMasterForm.controls['catalystLeader'].valid)"
+              (click)="find(catalystMainMasters)" data-dismiss="modal">Find</button>
+            <button type="button" class="btn btn-default mb-3" *ngIf="catalystMainMastersDTO.flag"
+              [disabled]="!((catalystMainMastersDTO.catalystMasterForm.valid && catalystMainMastersDTO.formValid) || catalystMainMastersDTO.isDisabled)"
+              (click)="save(catalystMainMasters)" [hidden]="!catalystMainMastersDTO.privilege">Save</button>
+            <button type="button" *ngIf="!catalystMainMastersDTO.flag" class="btn btn-default"
+              [disabled]="!((catalystMainMastersDTO.catalystMasterForm.valid && catalystMainMastersDTO.formValid) || catalystMainMastersDTO.isDisabled)"
+              (click)="updateMainMaster(catalystMainMasters)">Save</button>
+          </div>
+
+        </div>
+      </form>
+    </div>
+
+
+    <div class="row">
+      <div class="col-lg-12 pt-2">
+        <div *ngIf="catalystMainMastersDTO.totalRecords > 0 then dataTable else noData"></div>
+        <ng-template #dataTable>
+          <app-custom-table [columns]="catalystMainMastersDTO.cols" [value]="catalystMainMastersDTO.catalystmainmaster"
+            (ondelete)="deleteConfirmation($event)" (onEdit)="onEdit($event)" [selectedRows]="catalystMainMasters"
+            [totalRecords]="catalystMainMastersDTO.totalRecords" [nOfRecordPage]="catalystMainMastersDTO.nOfRecordPage">
+          </app-custom-table>
+        </ng-template>
+        <ng-template #noData>
+          <div class="inner-container mt-3 mb-2 p-2 ng-star-inserted">No Records Found</div>
+        </ng-template>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+
+
+<div id="flyoutModal1" class="stickyFlyoutModal modal fade" tabindex="-1" role="dialog" aria-labelledby="gridModalLabel"
+  style="display: none;" aria-hidden="true" >
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="mb-0">Catalyst Family Name</h3>
+        <button id="familyclose" type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">×</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid bd-example-row">
+          <div class="row">
+            <form class="col-lg-12" [formGroup]="flyoutCatalystFamilyDTO.catalystFamilyForm">
+              <div class="row">
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label>Catalyst Family Name </label>
+                    <input ref-family type="text" class="form-control" formControlName="catalystFamilyName"
+                      placeholder="Catalyst Family Name" value="catalystMainMasters.commercialFamilyName"
+                      [(ngModel)]="catalystFamily.commercialFamilyName"
+                      (change)="catalystFamilychange($event.target.value)">
+                  </div>
+                </div>
+                <div class="col-lg-12 mt-2 mb-3">
+                  <button type="button" class="btn btn-transparent mr-3"
+                    (click)="resetcatalystFamilyForm()">Reset</button>
+                  <button type="button" class="btn btn-default" [disabled]="!(family.value)"
+                    (click)="familyFind(catalystFamily)">Find</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div *ngIf="flyoutCatalystFamilyDTO.catalystfamilytotalRecords > 0 then dataTable1 else noData1"></div>
+          <div class="col-lg-12">
+            <ng-template #dataTable1>
+              <app-custom-table class="flyout-table" [columns]="flyoutCatalystFamilyDTO.familycols"
+                [value]="catalystMainMastersDTO.catalystListfamily" (ondelete)="deleteConfirmation($event)"
+                (onEdit)="onFamilyEdit($event)" [selectedRows]="catalystFamily"
+                [totalRecords]="flyoutCatalystFamilyDTO.catalystfamilytotalRecords"
+                [nOfRecordPage]="flyoutCatalystFamilyDTO.catalystfamilynOfRecordPage">
+              </app-custom-table>
+            </ng-template>
+            <ng-template #noData1>
+              <div class="inner-container mt-3 mb-2 p-2 ng-star-inserted">No Records Found</div>
+            </ng-template>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 pt-2">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div id="flyoutModal2" class="stickyFlyoutModal modal fade" tabindex="-1" role="dialog" aria-labelledby="gridModalLabel"
+  style="display: none;" aria-hidden="true" (click)="leaderFormReset()">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="mb-0">Catalyst Leader</h3>
+        <button id="catalystModal" type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">×</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid bd-example-row">
+          <div class="row">
+            <div *ngIf="userService.loading" class="overlay_loader">
+              <div class="overlay__inner">
+                <div class="overlay__content"><span class="spinner"></span></div>
+              </div>
+            </div>
+            <form class="col-lg-12" [formGroup]="flyoutCatalystLeaderDTO.teamLeadForm">
+              <div class="row">
+
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label>Leader Eid</label>
+                    <input ref-eid type="text" class="form-control" formControlName="eId" placeholder="Eid"
+                      formControlName="eId" (change)="catalysteIdchange($event.target.value)" [(ngModel)]="user.eId">
+                  </div>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label>Leader First Name</label>
+                    <input ref-fname type="text" class="form-control" formControlName="firstName"
+                      placeholder="First Name" (change)="catalystFirstNamechange($event.target.value)"
+                      [(ngModel)]="user.firstName">
+                  </div>
+
+                </div>
+
+
+                <div class="col-lg-12 mt-2 mb-3">
+                  <button type="button" class="btn btn-transparent mr-3" (click)="resetTeamLeadForm()">Reset</button>
+                  <button type="button" class="btn btn-default" [disabled]="!(eid.value|| fname.value)"
+                    (click)="leaderFind(user)">Find</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="row">
+            <div class="col-lg-12">
+              <div *ngIf="flyoutCatalystLeaderDTO.catalystLeadertotalRecords > 0 then dataTable2 else noData2"></div>
+              <div class="col-lg-12 pt-2">
+                <ng-template #dataTable2>
+                  <app-custom-table class="flyout-table" [columns]="flyoutCatalystLeaderDTO.leadercols"
+                    [value]="catalystMainMastersDTO.catalystLeader" (ondelete)="deleteConfirmation($event)"
+                    (onEdit)="onLeaderEdit($event)" [selectedRows]="user"
+                    [totalRecords]="flyoutCatalystLeaderDTO.catalystLeadertotalRecords"
+                    [nOfRecordPage]="flyoutCatalystLeaderDTO.catalystLeadernOfRecordPage">
+                  </app-custom-table>
+                </ng-template>
+                <ng-template #noData2>
+                  <div class="inner-container mt-3 mb-2 p-2 ng-star-inserted">No Records Found</div>
+                </ng-template>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

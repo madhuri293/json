@@ -1,0 +1,73 @@
+<div class="main-container mb-5 float-left">
+  <div class="col-lg-12 pt-4">
+
+    <div class="inner-container">
+      <h3 class="pt-3 pb-3 pl-3 pr-3">Reports - Charts</h3>
+      <div *ngIf="chartDto.loading" class="overlay_loader">
+        <div class="overlay__inner">
+          <div class="overlay__content"><span class="spinner"></span></div>
+        </div>
+      </div>
+      <form class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" [formGroup]="chartDto.chartForm">
+        <div class="row">
+          <div class="col-lg-3">
+            <div class="form-group">
+              <label for="inputState">Technology <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="technology" [(ngModel)]="reportsCharts.technologyId"
+                disabled>
+                <option *ngFor="let technology of chartDto.technologyData" [value]="technology.technologyId">
+                  {{technology.technologyName}}</option>
+              </select>
+              <app-error [control]=chartDto.chartForm.controls.technology></app-error>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="form-group">
+              <label>Chart Name <span class="mandatory-feild"></span></label>
+              <input type="text" class="form-control" formControlName="name" [(ngModel)]="reportsCharts.chartName"
+                placeholder="Chart Name">
+              <app-error [control]=chartDto.chartForm.controls.name></app-error>
+            </div>
+          </div>
+
+          <div class="col-lg-3">
+            <div class="form-group">
+              <label>Chart Description <span class="mandatory-feild"></span></label>
+              <textarea class="form-control" formControlName="description" [(ngModel)]="reportsCharts.description"
+                placeholder="http://www.example.com">
+                  </textarea>
+              <app-error [control]=chartDto.chartForm.controls.description></app-error>
+            </div>
+          </div>
+
+
+          <div class="col-lg-12 mt-2 mb-3">
+            <p class="mandatory-para p-0 mt-0 mb-2 ml-0 mr-0">All fields marked with <span
+                class="mandatory-feild"></span> are mandatory.</p>
+            <button type="button" class="btn btn-transparent mr-3" (click)="resetCharts()">Reset</button>
+            <button type="button" class="btn btn-transparent mr-3" data-dismiss="modal"
+              (click)="findChart(reportsCharts)"
+              [disabled]="!(chartDto.chartForm.dirty || chartDto.chartForm.valid)">Find</button>
+            <button id="submit" type="button" class="btn btn-default" (click)="saveChart(reportsCharts)"
+              [disabled]="(!chartDto.chartForm.valid || chartDto.isDisabled)"
+              [hidden]="!chartDto.privilege">Save</button>
+          </div>
+
+        </div>
+      </form>
+    </div>
+
+    <div *ngIf="chartDto.totalRecords > 0 then dataTable else noRecords"></div>
+    <ng-template #dataTable>
+      <app-custom-table [columns]="chartDto.columns" [value]="chartDto.rows" [nOfRecordPage]="chartDto.nOfRecordPage"
+        [totalRecords]="chartDto.totalRecords" (ondelete)="deleteConfirmation($event)"
+        (onEdit)="onChartEditClick($event)" [selectedRows]="reportsCharts">
+      </app-custom-table>
+    </ng-template>
+    <ng-template #noRecords>
+      <div class="inner-container mt-4 mb-2 p-2">No Records Found</div>
+    </ng-template>
+
+
+  </div>
+</div>

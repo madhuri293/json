@@ -1,0 +1,70 @@
+<div class="main-container mb-5 float-left">
+  <div class="col-lg-12 pt-4">
+
+    <div class="inner-container">
+
+
+      <h3 class="pt-3 pb-3 pl-3 pr-3">Catalyst - Catalyst Size</h3>
+
+      <div *ngIf="catalystSizeDto.loading" class="overlay_loader">
+        <div class="overlay__inner">
+          <div class="overlay__content"><span class="spinner"></span></div>
+        </div>
+      </div>
+      <form class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" [formGroup]="catalystSizeDto.catalystSizeForm">
+        <div class="row">
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Catalyst Size <span class="mandatory-feild"></span></label>
+              <input type="text" formControlName="catalystSizeCode" [(ngModel)]="catalystSize.sizeCode"
+                class="form-control" placeholder="Catalyst Size">
+              <app-error [control]=catalystSizeDto.catalystSizeForm.controls.catalystSizeCode></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Status <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="status" [(ngModel)]="catalystSize.status">
+                <option [ngValue]="null" disabled [selected]="true">Select</option>
+                <option *ngFor="let data of catalystSizeDto.statusList" [value]="data.status">{{data.status}}</option>
+              </select>
+              <app-error [control]=catalystSizeDto.catalystSizeForm.controls.status></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-lg-12 mt-2">
+            <p class="mandatory-para p-0 mt-0 mb-2 ml-0 mr-0">All fields marked with <span
+                class="mandatory-feild"></span> are mandatory.</p>
+            <button type="button" class="btn btn-transparent mr-3 mb-3" (click)="onResetClick()">Reset</button>
+            <button type="button" class="btn btn-transparent mr-3 mb-3"
+              [disabled]="!(catalystSizeDto.catalystSizeForm.dirty || catalystSizeDto.isEnable)"
+              (click)="find(catalystSize)">Find</button>
+            <button id="submit" type="button"
+              [disabled]="(!catalystSizeDto.catalystSizeForm.valid || catalystSizeDto.isDisabled)"
+              class="btn btn-default mb-3" [hidden]="!catalystSizeDto.privilege"
+              (click)="saveCatalystSizeData(catalystSize)">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12 pt-2">
+        <div *ngIf="catalystSizeDto.totalRecords > 0  then dataTable else noData"></div>
+        <ng-template #dataTable>
+          <app-custom-table [totalRecords]="catalystSizeDto.totalRecords"
+            [nOfRecordPage]="catalystSizeDto.nOfRecordPage" [columns]="catalystSizeDto.columns"
+            [value]="catalystSizeDto.rows" (onEdit)="onRoleEditClick($event)" [selectedRows]="catalystSize"
+            (ondelete)="deleteConfirmation($event)"> </app-custom-table>
+        </ng-template>
+        <ng-template #noData>
+          <div class="inner-container mt-3 mb-2 p-2">No Records found</div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

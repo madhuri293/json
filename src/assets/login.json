@@ -1,0 +1,32 @@
+{
+    "message": "Successfully LoggedIn",
+    "data": {
+      "token": "Bearer yVNGLjva48ImxRIXIsL/f1uxmgjXsq/ttbDWmMpoJH4F+V6VPUr+evr6BkZXsuSVIbMombrrs4+0uNmUvb9OrKAuspDQmHAYdIAJ68q0r57/lu3wbBSwEDiJDKLwhki6lOZMU9Wq9Rm3QugDtIQMFePQTQNoolG5Lup0TFkIA5f5u5YNTbdezslrZZE3TSxTuWl9hSuG3rIjHL23yKyLEQ5/8obHcLn5BXMQ8WAdb7srF0WQhKk8SJb956o1OSR4+uGLa1qeXmfDTNZ4o6XdKrHyMOoVsRvrilzYihtbdRK8V0OCVjmWoIc3/tpG0kr1Yd73mT/rgd6JRKaYIBGcLzwwjvTOuKJiJXIYEjBYbv5e1cKerdR0OBnZKHETDra4yO+K00W2pgu6dVFmE+NdSMZ582nbjfrKiB6ogjUz6ObgCuBuYDM3ddPgsok6yiJwCdnY8qoCFJzHmcxG+tJZdWePNgK+zkCK/y8B62Ha9SUPxLZ4AKeUvjn6RdeP5zrd4s/P5aNO3q1V8dsetGTLlGq8apVJhJw7BWkCX9LUwwklOIXAyv77UVDD66pznzqTIsZB1mWI+RWJRKaYIBGcL2MJ8SAvG5f/crt1lQpyhBv5thii+LhE0v9Y9Xhc7ynmFsEHqCwdOhu6dVFmE+NdSMZ582nbjfrKnN6EP+pyWQCdgru41WMk6eJG+DPmOWbi8xk8sYv3MyWn7nwbriRxIqrsF5lGDU3s2fqCmmDMcSs4Xby+1p4Lh/k8tsMoOPDMcy+tmh5/c9HtWZXg/rWFOm7Ey4Mau3dK9UwZD5zmDTU=",
+      "validFrom": "2020-02-18T07:08:50.0774451Z",
+      "validTo": "2020-02-19T07:08:50.0779202Z",
+      "userId": "3f0c972f-2c3d-4a29-929b-322a1592c282",
+      "eId": "Emp102",
+      "email": "honset@gmailcom",
+      "firstName": "Honest",
+      "lastName": null,
+      "technologyRoles": [
+        {
+          "technologyId": "62f9d4c2-8de5-42b2-b870-9bfb990bc905",
+          "technologyName": "HYDAT",
+          "colorCode": "#21da2c",
+          "roleId": "ac87fe9f-0136-4910-966e-22f4c1792d5c",
+          "roleName": "Associate Software Engineer",
+          "technologyDescription":"Description"
+        },
+        {
+          "technologyId": "e5276060-9a24-4c74-b000-fa21b3009d1e",
+          "technologyName": "LOWERDAT",
+          "colorCode": "#39607b",
+          "roleId": "693c66be-96df-42a7-aacb-83bf78f9c29c",
+          "roleName": "CEO",
+          "technologyDescription":"Description"
+        }
+      ]
+    },
+    "isValidated": true
+  }

@@ -1,0 +1,375 @@
+<div class="main-container mb-5 float-left">
+  <div class="col-lg-12 pt-4">
+
+    <div class="inner-container">
+      <h3 class="pt-3 pb-3 pl-3 pr-3">Manage - Adsorbents</h3>
+      <div *ngIf="adsorbentService.loading" class="overlay_loader">
+        <div class="overlay__inner">
+          <div class="overlay__content"><span class="spinner"></span></div>
+        </div>
+      </div>
+      <form class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" [formGroup]="manageAdsorbentDTO.manageAdsorbentForm">
+        <div class="row">
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+
+            <div class="form-group">
+              <label>Technology <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="technology" [(ngModel)]="manageAdsorbent.technologyId"
+                disabled>
+                <option *ngFor="let technology of manageAdsorbentDTO.technology" [value]="technology.technologyId">
+                  {{technology.technologyName}}</option>
+              </select>
+              <app-error [control]=manageAdsorbentDTO.manageAdsorbentForm.controls.technology></app-error>
+            </div>
+          </div>
+          <div class="col-lg-3">
+            <div class="input-group form-group mb-0">
+              <label class="col-lg-12 p-0">Product Name <span class="mandatory-feild"></span></label>
+              <input type="text" formControlName="productName" [(ngModel)]="manageAdsorbent.productName"
+                class="form-control" placeholder="Product Name" readonly />
+              <div class="input-group-append" data-toggle="modal" data-target="#flyoutModal"
+                (click)="onClickProductNameFlyOut($event)">
+                <span class="input-group-text rounded-0"><em class="fa fa-search-plus"></em></span>
+              </div>
+            </div>
+            <app-error [control]=manageAdsorbentDTO.manageAdsorbentForm.controls.productName></app-error>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Product Type <span class="mandatory-feild"></span></label>
+
+              <select class="form-control" formControlName="productType" [(ngModel)]="manageAdsorbent.productTypeId"
+                (change)="changeProductType($event.target.value)">
+                <option [ngValue]="null" disabled [selected]="manageAdsorbentDTO.typeList">Select</option>
+                <option *ngFor="let type of manageAdsorbentDTO.typeList" [value]="type.id">
+                  {{type.productTypeName}}</option>
+              </select>
+              <app-error [control]=manageAdsorbentDTO.manageAdsorbentForm.controls.productType></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Product Sub Type <span class="mandatory-feild"></span></label>
+
+              <select class="form-control" formControlName="productSubType"
+                [(ngModel)]="manageAdsorbent.productSubTypeId">
+                <option [value]="null" disabled [selected]="true">Select</option>
+                <option *ngFor="let Subtype of manageAdsorbentDTO.subTypeList" [value]="Subtype.id">
+                  {{Subtype.productSubTypeName}}</option>
+              </select>
+              <app-error [control]=manageAdsorbentDTO.manageAdsorbentForm.controls.productSubType></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>UOP # <span class="mandatory-feild"></span></label>
+              <input ref-uop type="text" formControlName="productUop" (change)="uopLotNoteAdd(manageAdsorbent)"
+                [(ngModel)]="manageAdsorbent.uop" class="form-control" placeholder="UOP Number" />
+              <app-error [control]=manageAdsorbentDTO.manageAdsorbentForm.controls.productUop></app-error>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label class="col-lg-12 p-0">Notebook # <span class="mandatory-feild"></span></label>
+              <input ref-note1 type="text"  formControlName="notePart1"
+                [(ngModel)]="manageAdsorbent.notePart1" (change)="uopLotNoteAdd(manageAdsorbent)"
+                placeholder="10 digits"
+                class="form-control mb-2 mb-sm-0 mb-md-0 mb-lg-0 mb-xl-0 col-12 col-sm-5 col-md-5 col-lg-5 mr-1 float-left" />
+              <input ref-note2 type="text"  formControlName="notePart2"
+                [(ngModel)]="manageAdsorbent.notePart2" (change)="uopLotNoteAdd(manageAdsorbent)" placeholder="4 digits"
+                class="form-control  mb-2 mb-sm-0 mb-md-0 mb-lg-0 mb-xl-0 col-12 col-lg-3 mr-1  col-sm-3 col-md-3  float-left" />
+              <input ref-note3 type="text" formControlName="notePart3"
+                [(ngModel)]="manageAdsorbent.notePart3" (change)="uopLotNoteAdd(manageAdsorbent)" placeholder="2 digits"
+                class="form-control col-12 col-sm-3 col-md-3 col-lg-3" />
+            </div>
+            <app-error [control]=manageAdsorbentDTO.manageAdsorbentForm.controls.notePart1></app-error>
+            <app-error [control]=manageAdsorbentDTO.manageAdsorbentForm.controls.notePart2></app-error>
+            <app-error [control]=manageAdsorbentDTO.manageAdsorbentForm.controls.notePart3></app-error>
+
+          </div>
+
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Lot # <span class="mandatory-feild"></span></label>
+              <input ref-lot type="text" formControlName="productLot" (change)="uopLotNoteAdd(manageAdsorbent)"
+                [(ngModel)]="manageAdsorbent.lot" class="form-control" placeholder="Lot Number" />
+              <app-error [control]=manageAdsorbentDTO.manageAdsorbentForm.controls.productLot></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Sample Description</label>
+              <textarea class="form-control" formControlName="sampleDescription"
+                [(ngModel)]="manageAdsorbent.sampleDescription" placeholder="Sample Description"></textarea>
+              <app-error [control]=manageAdsorbentDTO.manageAdsorbentForm.controls.sampleDescription></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Sample Type <span class="mandatory-feild"></span></label>
+
+              <select class="form-control" formControlName="sampleType" [(ngModel)]="manageAdsorbent.sampleTypeId">
+                <option [ngValue]="null" disabled [selected]="manageAdsorbentDTO.sampleTypeList">Select</option>
+                <option *ngFor="let sampleType of manageAdsorbentDTO.sampleTypeList" [value]="sampleType.id">
+                  {{sampleType.sampleTypeName}}</option>
+              </select>
+              <app-error [control]=manageAdsorbentDTO.manageAdsorbentForm.controls.sampleType></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Binder Type</label>
+
+              <select class="form-control" formControlName="binderType" [(ngModel)]="manageAdsorbent.binderTypeId">
+                <option [ngValue]="null" disabled [selected]="manageAdsorbentDTO.binderTypeList">Select</option>
+                <option *ngFor="let binderType of manageAdsorbentDTO.binderTypeList" [value]="binderType.id">
+                  {{binderType.binderTypeName}}</option>
+              </select>
+              <app-error [control]=manageAdsorbentDTO.manageAdsorbentForm.controls.binderType></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Nominal Size <span class="mandatory-feild"></span></label>
+
+
+              <select class="form-control" formControlName="normalSize" [(ngModel)]="manageAdsorbent.sizeId">
+                <option [ngValue]="null" disabled [selected]="manageAdsorbentDTO.sizeTypeList">Select</option>
+                <option *ngFor="let normalSize of manageAdsorbentDTO.sizeTypeList" [value]="normalSize.id">
+                  {{normalSize.sizeName}}</option>
+              </select>
+              <app-error [control]=manageAdsorbentDTO.manageAdsorbentForm.controls.normalSize></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Shape</label>
+
+              <select class="form-control" formControlName="shape" [(ngModel)]="manageAdsorbent.shapeId">
+                <option [ngValue]="null" disabled [selected]="manageAdsorbentDTO.shapeTypeList">Select</option>
+                <option *ngFor="let shape of manageAdsorbentDTO.shapeTypeList" [value]="shape.id">
+                  {{shape.shapeName}}</option>
+              </select>
+              <app-error [control]=manageAdsorbentDTO.manageAdsorbentForm.controls.shape></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Comments </label>
+              <textarea class="form-control" formControlName="comments" [(ngModel)]="manageAdsorbent.comments"
+                placeholder="Comments"></textarea>
+              <app-error [control]=manageAdsorbentDTO.manageAdsorbentForm.controls.comments></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>H <span class="mandatory-feild"></span></label>
+
+              <select class="form-control" formControlName="productH" [(ngModel)]="manageAdsorbent.hzrdNum">
+                <option [ngValue]="null" disabled [selected]="manageAdsorbentDTO.hTypeList">Select</option>
+                <option *ngFor="let hList of manageAdsorbentDTO.hTypeList" [value]="hList.id">
+                  {{hList.hmisNumber}}</option>
+              </select>
+              <app-error [control]=manageAdsorbentDTO.manageAdsorbentForm.controls.productH></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>F <span class="mandatory-feild"></span></label>
+
+              <select class="form-control" formControlName="productF" [(ngModel)]="manageAdsorbent.flameNum">
+                <option [ngValue]="null" disabled [selected]="manageAdsorbentDTO.fTypeList">Select</option>
+                <option *ngFor="let fList of manageAdsorbentDTO.fTypeList" [value]="fList.id">
+                  {{fList.hmisNumber}}</option>
+              </select>
+              <app-error [control]=manageAdsorbentDTO.manageAdsorbentForm.controls.productF></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>R <span class="mandatory-feild"></span></label>
+
+              <select class="form-control" formControlName="productR" [(ngModel)]="manageAdsorbent.reactNum">
+                <option [ngValue]="null" disabled [selected]="manageAdsorbentDTO.rTypeList">Select</option>
+                <option *ngFor="let rList of manageAdsorbentDTO.rTypeList" [value]="rList.id">
+                  {{rList.hmisNumber}}</option>
+              </select>
+              <app-error [control]=manageAdsorbentDTO.manageAdsorbentForm.controls.productR></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Color</label>
+              <input type="text" formControlName="productColor" [(ngModel)]="manageAdsorbent.color" placeholder="Color"
+                class="form-control" />
+              <app-error [control]=manageAdsorbentDTO.manageAdsorbentForm.controls.productColor></app-error>
+            </div>
+          </div>
+
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Adsorbent Condition <span class="mandatory-feild"></span></label>
+
+              <select class="form-control" formControlName="adsorbentCondition"
+                [(ngModel)]="manageAdsorbent.conditionId">
+                <option [ngValue]="null" disabled [selected]="manageAdsorbentDTO.conditionTypeList">Select</option>
+                <option *ngFor="let condition of manageAdsorbentDTO.conditionTypeList" [value]="condition.id">
+                  {{condition.conditionName}}</option>
+              </select>
+              <app-error [control]=manageAdsorbentDTO.manageAdsorbentForm.controls.adsorbentCondition></app-error>
+            </div>
+          </div>
+
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <app-uom-ctrl [(basevalue)]="manageAdsorbent.bulkDensity" pHolder="Bulk Density"
+                variableCategory="Manage - Adsorbents" variableName="Bulk Density"
+                (uomInstanceChange)="modeBulk($event)" uomCtrl=true feedData=false></app-uom-ctrl>
+              <app-error [control]=manageAdsorbentDTO.manageAdsorbentForm.controls.bulkDensity></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+
+            <div class="form-group">
+              <app-uom-ctrl [(basevalue)]="manageAdsorbent.meanPracticalDiameter" pHolder="Mean Particle Diameter"
+                variableCategory="Manage - Adsorbents" variableName="Mean Particle Diameter"
+                (uomInstanceChange)="modeMean($event)" uomCtrl=true feedData=false></app-uom-ctrl>
+              <app-error [control]=manageAdsorbentDTO.manageAdsorbentForm.controls.meanPracticalDiameter></app-error>
+            </div>
+          </div>
+
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Position </label>
+              <input type="text" formControlName="position" [(ngModel)]="manageAdsorbent.position"
+                placeholder="Position" class="form-control" />
+                <app-error [control]=manageAdsorbentDTO.manageAdsorbentForm.controls.position></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-9">
+            <div class="form-group">
+              <label class="col-lg-12 col-xl-12 p-0"><em class="fa fa-minus"></em>Lims Sample IDs </label>
+
+              <div class="row">
+                <div class="col-md-12 col-lg-12 col-xl-12">
+
+                  <p-chips formControlName="limsSampleId" [(ngModel)]="manageAdsorbent.limsSampleId"></p-chips>
+                </div>
+                <div class="col-md-12 col-lg-12 col-xl-12">
+                  <app-error [control]=manageAdsorbentDTO.manageAdsorbentForm.controls.limsSampleId></app-error>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-12 mt-2">
+            <p class="mandatory-para p-0 mt-0 mb-0 ml-0 mr-0">All fields marked with <span
+                class="mandatory-feild"></span> are mandatory.</p>
+            <p class="mandatory-para p-0 mt-0 mb-2 ml-0 mr-0">Only 1 from the choice of UOP#, Notebook#, or Lot# is
+              mandatory.</p>
+
+            <button type="button" class="btn btn-transparent mr-3 mb-3" (click)="onResetClick()">Reset</button>
+            <button type="button" class="btn btn-transparent mr-3 mb-3"
+              [disabled]="!(manageAdsorbentDTO.manageAdsorbentForm.dirty || manageAdsorbentDTO.uomInput|| manageAdsorbentDTO.uomDirty)"
+              (click)="find(manageAdsorbent)">Find</button>
+            <button type="button" class="btn btn-default mb-3"
+              [disabled]="!((manageAdsorbentDTO.manageAdsorbentForm.valid)&&((uop.value||lot.value||note1.value||note2.value||note3.value))&& (manageAdsorbentDTO.uomInput))"
+              (click)="savemanageAdsorbentData(manageAdsorbent)" [hidden]="!manageAdsorbentDTO.privilege">Save </button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12 col-xl-12 pt-2 mb-2">
+        <div *ngIf="manageAdsorbentDTO.totalRecords > 0 then dataTable else noData"></div>
+        <ng-template #dataTable>
+          <app-custom-table [totalRecords]="manageAdsorbentDTO.totalRecords"
+            [nOfRecordPage]="manageAdsorbentDTO.nOfRecordPage" [columns]="manageAdsorbentDTO.columns"
+            [value]="manageAdsorbentDTO.rows" (ondelete)="onDelete($event)" (onEdit)="onRoleEditClick($event)"
+            [selectedRows]="manageAdsorbent"></app-custom-table>
+        </ng-template>
+
+        <ng-template #noData>
+          <div class="inner-container mt-3 mb-2 p-2 ng-star-inserted">No Records Found</div>
+        </ng-template>
+      </div>
+    </div>
+
+
+
+  </div>
+</div>
+
+
+
+<div id="flyoutModal" *ngIf="manageAdsorbentDTO.flyOutPopUp" class="stickyFlyoutModal modal fade" tabindex="-1"
+  role="dialog" aria-labelledby="gridModalLabel" style="display: none;" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="mb-0">Products</h3>
+        <button type="button" id="productFlyOut" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">×</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid bd-example-row">
+          <div class="row">
+            <form class="col-lg-12" [formGroup]="manageAdsorbentDTO.adsorbentForm">
+              <div class="row">
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label>Product Name</label>
+                    <input ref-prodName type="text" formControlName="productName"
+                      [(ngModel)]="productName.productName" class="form-control" placeholder="Product Name">
+                  </div>
+                </div>
+
+                <div class="col-lg-12 mt-2 mb-3">
+                  <button type="button" class="btn btn-transparent mr-3" (click)="resetFlyout()">Reset</button>
+                  <button type="button" class="btn btn-default"   [disabled]="!(prodName.value)"(click)="onFindClickPop(productName)">Find</button>
+                </div>
+              </div>
+            </form>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-12 pt-2">
+              <div *ngIf="manageAdsorbentDTO.flyTotalRecords > 0  then dataTable1 else noData1"></div>
+              <ng-template #dataTable1>
+                <app-custom-table class="flyout-table" [columns]="manageAdsorbentDTO.cols" [value]="manageAdsorbentDTO.productDataList"
+                  (onEdit)="onProductEdit($event)" (ondelete)="deleteConfirmation($event)" [selectedRows]="productName"
+                  [totalRecords]="manageAdsorbentDTO.flyTotalRecords"
+                  [nOfRecordPage]="manageAdsorbentDTO.nOfFlyRecordPage"> </app-custom-table>
+              </ng-template>
+              <ng-template #noData1>
+                <div class="inner-container mt-3 mb-2 p-2">No Records found</div>
+              </ng-template>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+    </div>

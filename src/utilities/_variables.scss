@@ -1,0 +1,91 @@
+/*
+ * Application global variables.
+ */
+
+// Set Font Awesome font path
+// $fa-font-path: "~@fortawesome/fontawesome-free-webfonts/webfonts";
+
+// ---------------------------------------------------------------------------
+// Bootstrap variables
+//
+// Override Bootstrap variables here to suite your theme.
+// Copy variables you want to customize from node_modules/bootstrap/scss/_variables.scss
+
+//brand colors
+$body-bg: #eeeeee;
+$body-font-color: #303030;
+
+$white: #ffffff;
+// $brand-color: #ffa101;
+// $brand-grey: #464646;
+
+// //text
+$text-upper: uppercase;
+$text-lower: lowercase;
+$text-capitalize: capitalize;
+$style-non: none;
+$style-zero: 0;
+
+//font-size
+$font-8: 8px;
+$font-9: 9px;
+$font-10: 10px;
+$font-11: 11px;
+$font-12: 12px;
+$font-13: 13px;
+$font-14: 14px;
+$font-15: 15px;
+$font-16: 16px;
+$font-17: 17px;
+$font-18: 18px;
+$font-19: 19px;
+$font-20: 20px;
+$font-22: 22px;
+$font-24: 24px;
+$font-26: 26px;
+$font-28: 28px;
+$font-30: 30px;
+$font-32: 32px;
+$font-36: 36px;
+$font-38: 38px;
+$font-40: 40px;
+$font-42: 42px;
+
+$font-wt-light: lighter;
+$font-wt-normal: normal;
+$font-wt-100: 100;
+$font-wt-200: 200;
+$font-wt-300: 300;
+$font-wt-400: 400;
+$font-wt-500: 500;
+$font-wt-600: 600;
+$font-wt-700: 700;
+$font-wt-800: 800;
+
+$hundred-per: 100%;
+
+$cursor-point: pointer;
+
+$style-l: left;
+$style-r: right;
+$style-b: both;
+$style-aut: auto;
+
+$honeywell-sansmedium: "SansMedium", sans-serif;
+$honeywell-sansbold: "SansBold", sans-serif;
+
+// $font-condensedlight: 'open_sanscondensed_light';
+// $font-light: 'open_sanslight';
+// $font-regular: 'open_sansregular';
+// $font-semibold: 'open_sanssemibold';
+
+$display-n: none;
+$display-b: block;
+$display-i: inline;
+$display-i-b: inline-block;
+$display-t: table;
+
+$position-s: static;
+$position-r: relative;
+$position-a: absolute;
+$position-f: fixed;

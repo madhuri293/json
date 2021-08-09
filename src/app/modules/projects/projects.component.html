@@ -1,0 +1,30 @@
+<div class="main-container mb-5 float-left">
+  <div class="col-lg-12 pt-4">
+    <ul class="nav nav-pills mb-3 project-tabs" id="pills-tab" role="tablist">
+      <li class="nav-item" *ngFor="let type of projectTypeList; let i = index">
+        <a id="pills-npd-tab" data-toggle="pill" href="#pills-npd" role="tab" aria-controls="pills-npd"
+          aria-selected="true" class="nav-link" (click)="onTabClick(type)"
+          [ngClass]="{'active' : type.projectTypeName === activeTab}">{{type.projectTypeName}}</a>
+      </li>
+    </ul>
+
+    <div class="tab-content">
+      <div *ngIf="projectType.projectTypeName === 'NPD'" class="tab-pane fade show active" id="pills-npd"
+        role="tabpanel" aria-labelledby="pills-npd-tab">
+        <app-npd *ngIf="projectType" [projectType]="projectType"></app-npd>
+      </div>
+      <div *ngIf="projectType.projectTypeName === 'Capability/Exploratory'" class="tab-pane fade show active"
+        id="pills-capability" role="tabpanel" aria-labelledby="pills-capability-tab">
+        <app-capability *ngIf="projectType" [projectType]="projectType"></app-capability>
+      </div>
+      <div *ngIf="projectType.projectTypeName === 'Customer/Manufacturer'" class="tab-pane fade show active"
+        id="pills-customer" role="tabpanel" aria-labelledby="pills-customer-tab">
+        <app-customer-or-manufaturer *ngIf="projectType" [projectType]="projectType"></app-customer-or-manufaturer>
+      </div>
+      <div *ngIf="projectType.projectTypeName === 'Project Files'" class="tab-pane fade show active"
+        id="pills-projectfiles" role="tabpanel" aria-labelledby="pills-projectfiles-tab">
+        <app-project-files></app-project-files>
+      </div>
+    </div>
+  </div>
+</div>

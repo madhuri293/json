@@ -1,0 +1,159 @@
+<aside class="sidebar float-left" [ngClass]=" sideBarDTO.hideSidebar ? 'mini-navbar' : 'expand-navbar'"
+    (mouseover)="onMouseEnter()" (mouseleave)="onMouseLeave()">
+    <ul class="accordion nav flex-column flex-nowrap" id="mainSidebar">
+        <li class="nav-item">
+            <a class="nav-link collapsed" (click)="onactive(0)"
+                [ngClass]="{'active' :  sideBarDTO.route=='/dashboard'}" [routerLink]="[ '/dashboard' ]">
+                <div class="sidenav-icon-box">
+                    <img src="assets/images/Home.svg" alt="home" class="sidenav-img-home">
+                </div>                
+                <span class="nav-text1 pl-2 text-truncate">Home</span>
+            </a>
+
+        </li>
+        <li class="nav-item" [hidden]="!sideBarDTO.manageMenuList.length">
+            <a (click)="onactive(1)" class="nav-link collapsed"
+                [ngClass]="{'active' :  sideBarDTO.activeval==1 }" id="parentNav2" href="#submenu1"
+                data-toggle="collapse" data-target="#submenu1" aria-expanded="true" aria-controls="submenu1">
+                <img src="assets/images/Manage.svg" alt="manage">
+                <span class="nav-text2 pl-2 text-truncate">{{sideBarDTO.menuName}} <span class="arrow-img float-right"></span></span>
+            </a>
+
+            <div id="submenu1" class="collapse" aria-labelledby="parentNav2" data-parent="#mainSidebar">
+                <ul class="flex-column pl-2 nav" *ngFor="let item of sideBarDTO.manageMenuList">
+                    <li class="nav-item"><a class="nav-link py-0"
+                            [ngClass]="{'active' :  sideBarDTO.route== '/'+item.path}"
+                            (click)="onSubMenuClick(item.path)"><span>{{item.label}}</span></a></li>
+
+                </ul>
+            </div>
+        </li>
+
+        <li class="nav-item" [hidden]="!sideBarDTO.inventoryMenuList.length">
+            <a class="nav-link collapsed" (click)="onactive(7)"
+                [ngClass]="{'active' :  sideBarDTO.activeval==7 }" id="parentNav3" href="#submenu3"
+                data-toggle="collapse" data-target="#submenu3" aria-expanded="true" aria-controls="submenu3">
+                <img src="assets/images/inventory.svg" alt="inventory">
+                <span class="nav-text3 pl-2 text-truncate">{{sideBarDTO.inventoryName}} <span
+                        class="arrow-img float-right"></span></span>
+            </a>
+            <div id="submenu3" class="collapse" aria-labelledby="parentNav3" data-parent="#mainSidebar">
+                <ul class="flex-column pl-2 nav" *ngFor="let item of sideBarDTO.inventoryMenuList">
+                    <li class="nav-item"><a class="nav-link py-0"
+                            [ngClass]="{'active' :  sideBarDTO.route== '/'+item.path}"
+                            (click)="onSubMenuClick(item.path)"><span>{{item.label}}</span></a></li>
+                </ul>
+            </div>
+        </li>
+
+        <li class="nav-item" [hidden]="!sideBarDTO.plantMenuList.length">
+            <a class="nav-link collapsed" (click)="onactive(2)"
+                [ngClass]="{'active' :  sideBarDTO.activeval==2 }" id="parentNav4" href="#submenu4"
+                data-toggle="collapse" data-target="#submenu4" aria-expanded="true" aria-controls="submenu4">
+                <div class="sidenav-icon-box">
+                    <img src="assets/images/plant.svg" alt="plant" class="sidenav-img-plant">
+                </div>
+                <span class="nav-text3 pl-2 text-truncate">{{sideBarDTO.plantName}} <span class="arrow-img float-right"></span></span>
+            </a>
+            <div id="submenu4" class="collapse" aria-labelledby="parentNav4" data-parent="#mainSidebar">
+                <ul class="flex-column pl-2 nav" *ngFor="let item of sideBarDTO.plantMenuList">
+                    <li class="nav-item"><a class="nav-link py-0"
+                            [ngClass]="{'active' : sideBarDTO.route == '/'+item.path}"
+                            (click)="onSubMenuClick(item.path)"><span>{{item.label}}</span></a></li>
+                </ul>
+            </div>
+        </li>
+
+        <li class="nav-item" [hidden]="!sideBarDTO.feedMenuList.length">
+            <a class="nav-link collapsed" (click)="onactive(3)"
+                [ngClass]="{'active' :  sideBarDTO.activeval==3 }" id="parentNav5" href="#submenu5"
+                data-toggle="collapse" data-target="#submenu5" aria-expanded="true" aria-controls="submenu5">
+                <img src="assets/images/feedstock.svg" alt="feedstock">
+                <span class="nav-text4 pl-2 text-truncate">{{sideBarDTO.feedName}} <span class="arrow-img float-right"></span></span>
+            </a>
+            <div id="submenu5" class="collapse" aria-labelledby="parentNav5" data-parent="#mainSidebar">
+                <ul class="flex-column pl-2 nav" *ngFor="let item of sideBarDTO.feedMenuList">
+                    <li class="nav-item"><a class="nav-link py-0"
+                            [ngClass]="{'active' :  sideBarDTO.route == '/'+item.path}"
+                            (click)="onSubMenuClick(item.path)"><span>{{item.label}}</span></a></li>
+                </ul>
+            </div>
+        </li>
+
+        <li class="nav-item" [hidden]="!sideBarDTO.projectMenuList.length">
+            <a class="nav-link collapsed" (click)="onactive(4)"
+                [ngClass]="{'active' :  sideBarDTO.activeval==4 }" id="parentNav6" href="#submenu6"
+                data-toggle="collapse" data-target="#submenu6" aria-expanded="true" aria-controls="submenu6">
+                <img src="assets/images/project.svg" alt="project">
+                <span class="nav-text5 pl-2 text-truncate">{{sideBarDTO.projectName}} <span
+                        class="arrow-img float-right"></span></span>
+            </a>
+            <div id="submenu6" class="collapse" aria-labelledby="parentNav6" data-parent="#mainSidebar">
+                <ul class="flex-column pl-2 nav" *ngFor="let item of sideBarDTO.projectMenuList">
+                    <li class="nav-item"><a class="nav-link py-0"
+                            [ngClass]="{'active' :  sideBarDTO.route == '/'+item.path}"
+                            (click)="onSubMenuClick(item.path)"><span>{{item.label}}</span></a></li>
+                </ul>
+            </div>
+        </li>
+
+        <li class="nav-item" [hidden]="!sideBarDTO.catalystMenuList.length">
+            <a class="nav-link collapsed" (click)="onactive(5)"
+                [ngClass]="{'active' :  sideBarDTO.activeval==5 }" id="parentNav7" href="#submenu7"
+                data-toggle="collapse" data-target="#submenu7" aria-expanded="true" aria-controls="submenu7">
+                <img src="assets/images/Catalyst.svg" alt="catalyst">
+                <span class="nav-text6 pl-2 text-truncate">{{sideBarDTO.catalystName}} <span
+                        class="arrow-img float-right"></span></span>
+            </a>
+            <div id="submenu7" class="collapse" aria-labelledby="parentNav7" data-parent="#mainSidebar">
+                <ul class="flex-column pl-2 nav" *ngFor="let item of sideBarDTO.catalystMenuList">
+                    <li class="nav-item"><a class="nav-link py-0"
+                            [ngClass]="{'active' :  sideBarDTO.route =='/'+item.path}"
+                            (click)="onSubMenuClick(item.path)"><span>{{item.label}}</span></a></li>
+
+                </ul>
+            </div>
+        </li>
+
+        <li class="nav-item" [hidden]="!sideBarDTO.limsMenuList.length">
+            <a class="nav-link collapsed" (click)="onactive(6)"
+                [ngClass]="{'active' :   sideBarDTO.activeval == 6 }" id="parentNav8" href="#submenu8"
+                data-toggle="collapse" data-target="#submenu8" aria-expanded="true" aria-controls="submenu8">
+                <img src="assets/images/Lims.svg" alt="lims">
+                <span class="nav-text7 pl-2 text-truncate">{{sideBarDTO.limsName}} <span class="arrow-img float-right"></span></span>
+            </a>
+            <div id="submenu8" class="collapse" aria-labelledby="parentNav8" data-parent="#mainSidebar">
+                <ul class="flex-column pl-2 nav" *ngFor="let item of sideBarDTO.limsMenuList">
+                    <li class="nav-item"><a class="nav-link py-0"
+                            [ngClass]="{'active' :  sideBarDTO.route == '/'+ item.path}"
+                            (click)="onSubMenuClick(item.path)"><span>{{item.label}}</span></a></li>
+                </ul>
+            </div>
+        </li>
+
+
+
+        <li class="nav-item" [hidden]="!sideBarDTO.reportMenuList?.length">
+            <a class="nav-link collapsed" (click)="onactive(8)"
+                [ngClass]="{'active' :  sideBarDTO.activeval == 8}" id="parentNav9" href="#submenu9"
+                data-toggle="collapse" data-target="#submenu9" aria-expanded="true" aria-controls="submenu9">
+                <img src="assets/images/report.svg" alt="report">
+                <span class="nav-text7 pl-2 text-truncate">{{sideBarDTO.reportsName}} <span
+                        class="arrow-img float-right"></span></span>
+            </a>
+            <div id="submenu9" class="collapse" aria-labelledby="parentNav9" data-parent="#mainSidebar">
+                <ul class="flex-column pl-2 nav" *ngFor="let item of sideBarDTO.reportMenuList">
+                    <li class="nav-item"><a class="nav-link py-0"
+                            [ngClass]="{'active' :  sideBarDTO.route == '/'+ item.path}"
+                            (click)="onSubMenuClick(item.path)"><span>{{item.label}}</span></a></li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+
+</aside>
+<div *ngIf="sideBarDTO.loading" class="overlay_loader">
+    <div class="overlay__inner">
+        <div class="overlay__content"><span class="spinner"></span></div>
+    </div>
+</div>

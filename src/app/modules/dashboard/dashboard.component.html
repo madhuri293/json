@@ -1,0 +1,261 @@
+<div class="main-container mb-5 float-left">
+    <div class="col-lg-12 pt-4">
+        <div *ngIf="dashboardService.loading" class="overlay_loader">
+            <div class="overlay__inner">
+                <div class="overlay__content"><span class="spinner"></span></div>
+            </div>
+        </div>
+        <h1>Technologies</h1>
+
+        <div class="row">
+            <div class="col-lg-12 mt-3">
+                <div class="row">
+                    <div class="col-6 col-sm-4 col-clg-5 mb-4"
+                        *ngFor="let technology of dashBoardDTO.technologyList;let i = index">
+                        <div class="box box-mn-ht p-3" [ngStyle]="{'border-color': technology.colorCode}">
+                            <h2 class="title-heading-class" data-toggle="tooltip" data-placement="bottom" title="{{technology.technologyName}}">{{technology.technologyName}} <span *ngIf="dashboardService.technologyId === technology.technologyId"><img src="assets/images/tick-icon.svg" alt="tick-icon" class="tick-icon float-right" /></span></h2>
+                            <p class="title-content-class pt-0" data-toggle="tooltip" data-placement="bottom" title="{{technology.technologyDescription}}">{{technology.technologyDescription}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-12 pt-3">
+        <h1>Charts <button type="button" class="btn view-all-btn p-0 mt-1 float-right" [hidden]="!dashBoardDTO.allChart?.length" (click)="toggleReport()">View All
+            <span [ngClass]="{'toggle-arrow-up': toggleFlag, 'toggle-arrow-down': !toggleFlag}"></span>
+            </button>
+        </h1>
+
+        <div class="row">
+            <div class="col-lg-12 mt-3">
+                <div class="row">
+                    <div class="col-6 col-sm-4 col-clg-5 mb-4">
+                        <button type="button" class="add-box p-2" (click)="chartFlyout()" data-toggle="modal"
+                            (click)="openModel(2)" data-target="#chartModal">
+                            <span class="icon-circle">
+                                <img class="add-icon" src="assets/images/add.svg" alt="add" />
+                            </span>
+                            <span class="pl-2">Add Chart</span>
+                        </button>
+                    </div>
+
+                    <!-- edit start  -->
+                    <div class="col-6 col-sm-4 col-clg-5 mb-4 " *ngFor="let chart of dashBoardDTO.allChart">
+                        <div class="box  p-2 pointer" [ngStyle]="{'border-color': chart.colorCode}">
+                            <div class="row">
+                                <div class="col-lg-10 col-xl-12 float-left text-left" (click)="redirect(chart.chartDescription)">
+                                    <p class="pt-1 pl-2 box-desc">{{chart.chartName}}</p>
+                                    <p class="pt-1 pl-2 box-desc" style=" visibility: hidden"  title={{chart.chartDescription}}>{{chart.chartDescription}}</p>
+                                    <p class="pt-1 pl-2 box-desc">{{chart.technologyName}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+
+
+    </div>
+
+    <div class="col-lg-12 pt-3">
+        <h1>Plots <button role="button" class="btn view-all-btn p-0 mt-1 float-right" [hidden]="!dashBoardDTO.allPlot?.length" (click)="toggleGraph()">View All
+                <span [ngClass]="{'toggle-arrow-up': toggleGraphFlag, 'toggle-arrow-down': !toggleGraphFlag}"></span>
+            </button></h1>
+
+        <div class="row">
+            <div class="col-lg-12 mt-3">
+                <div class="row">
+                    <div class="col-6 col-sm-4 col-clg-5 mb-4">
+                        <button class="add-box p-2 " (click)="plotFlyout()" data-toggle="modal"
+                            data-target="#plotModal">
+                            <span class="icon-circle">
+                                <img class="add-icon" src="assets/images/add.svg" alt="add" />
+                            </span>
+                            <span class="pl-2">Add Plot</span>
+                        </button>
+                    </div>
+                    <div class="col-6 col-sm-4 col-clg-5 mb-4" *ngFor="let plot of dashBoardDTO.allPlot">
+                        <div class="box p-2 pointer" [ngStyle]="{'border-color': plot.colorCode}">
+                            <div class="row">
+                                <div class="col-lg-10 float-left" (click)="redirect(plot.plotDescription)">
+                                    <p class="pt-1 pl-2 box-desc">{{plot.plotName}}</p>
+                                    <p class="pt-1 pl-2 box-desc"
+                                    style=" visibility: hidden" title={{plot.plotDescription}}>{{plot.plotDescription}}</p>
+                                    <p class="pt-1 pl-2 box-desc">{{plot.technologyName}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-12 pt-4">
+
+    </div>
+</div>
+
+
+<!-- Technology modal start  -->
+<div class="modal fade technologyModal custom-modal show" tabindex="-1" role="dialog" aria-labelledby="technologyModal"
+    aria-modal="true" [ngStyle]="{'display':dashBoardDTO.isTechnology}">
+    <div class="modal-dialog modal-dialog-centered modal-md" role="document">
+        <div class="modal-content">
+            <div class="modal-body">
+                <form [formGroup]="dashBoardDTO.dashboardTechnologyForm">
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <div class="form-group">
+                                <label for="inputState">Technologies <span class="mandatory-feild"></span></label>
+                                <select id="inputState" class="form-control" formControlName="technology"
+                                    [(ngModel)]="dashBoardDTO.dashboardTechnology">
+                                    <option [ngValue]="null" disabled [selected]="dashBoardDTO.technologyList">Select
+                                    </option>
+
+                                    <option *ngFor="let data of dashBoardDTO.technologyList"
+                                        [value]="data.technologyId">{{data.technologyName}}
+                                    </option>
+                                </select>
+                                <app-error [control]=dashBoardDTO.dashboardTechnologyForm.controls.technology>
+                                </app-error>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-12 text-right px-0">
+                        <button type="button" class="btn btn-default"
+                            [disabled]="!dashBoardDTO.dashboardTechnologyForm.valid"
+                            (click)="chooseTechnology(dashBoardDTO.dashboardTechnology);setTemplate() "
+                            data-dismiss="modal">Ok</button>
+                    </div>
+                </form>
+            </div>
+
+        </div>
+    </div>
+</div>
+<!-- Technology modal end  -->
+
+<!--  Add chartForm Flyout start-->
+<div id="chartModal" *ngIf="dashBoardDTO.chartFlyOut" class="stickyFlyoutModal modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="gridModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="mb-0">Add Chart</h3>
+                <button type="button" id="chartFlyout" (click)="closeFlyout()" class="close" data-dismiss="modal"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid bd-example-row">
+                    <div class="row">
+                        <form class="col-lg-12" [formGroup]="dashBoardDTO.chartForm">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label for="inputState">Technologies</label>
+                                        <select id="inputState" class="form-control" formControlName="technology"
+                                            (change)="onTechnologySelect($event.target.value)"
+                                            [(ngModel)]="report.technologyId">
+                                           
+
+                                            <option *ngFor="let data of dashBoardDTO.technologyListChartPlot"
+                                                [selected]="report.technologyId==data.technologyId"
+                                                [value]="data.technologyId">{{data.technologyName}}
+                                            </option>
+                                        </select>
+                                        <app-error [control]=dashBoardDTO.chartForm.controls.technology></app-error>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 mt-2 mb-3">
+                                    <button type="button" class="btn btn-default" [disabled]="dashBoardDTO.saveChanges"
+                                        (click)="savefavoriteCharts(dashBoardDTO.chartRows)">Save</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <!--Add grid here -->
+                    <div *ngIf="dashBoardDTO.chartTotalRecords > 0 then dataTable else noRecords"></div>
+                    <ng-template #dataTable>
+                        <app-custom-table class="dashboard-table flyout-table" [columns]="dashBoardDTO.chartColumns" [value]="dashBoardDTO.chartRows"
+                            [nOfRecordPage]="dashBoardDTO.chartnOfRecordPage"
+                            [totalRecords]="dashBoardDTO.chartTotalRecords"
+                            (checkBoxSelect)="checkBoxSelectChart($event)" (pageChange1)="changePageEvent($event)">
+                        </app-custom-table>
+                    </ng-template>
+                    <ng-template #noRecords>
+                        <div class="inner-container mt-4 mb-2 p-2">No Records Found</div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- add report flyout end -->
+
+<!--  Add graph Flyout start-->
+
+<div id="plotModal" *ngIf="dashBoardDTO.plotFlyout" class="stickyFlyoutModal modal fade" tabindex="-1" role="dialog"
+    aria-labelledby="gridModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="mb-0">Add Plot</h3>
+                <button type="button" id="plotFlyout" (click)=" closeFlyout()" class="close" data-dismiss="modal"
+                    aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="container-fluid bd-example-row">
+                    <div class="row">
+                        <form class="col-lg-12" [formGroup]="dashBoardDTO.plotForm">
+                            <div class="row">
+                                <div class="col-lg-4">
+                                    <div class="form-group">
+                                        <label for="inputState">Technologies</label>
+                                        <select id="inputState" class="form-control" formControlName="technology"
+                                            (change)="onTechnologySelectPlots($event.target.value)"
+                                            [(ngModel)]="report.technologyId">
+                                          
+
+                                            <option *ngFor="let data of dashBoardDTO.technologyListChartPlot"
+                                                [selected]="report.technologyId === data.technologyId"
+                                                [value]="data.technologyId">{{data.technologyName}}
+                                            </option>
+                                        </select>
+                                        <app-error [control]=dashBoardDTO.plotForm.controls.technology></app-error>
+                                    </div>
+                                </div>
+                                <div class="col-lg-12 mt-2 mb-3">
+                                    <button type="button" class="btn btn-default" [disabled]="dashBoardDTO.saveChanges"
+                                        (click)="savefavoritePlots(dashBoardDTO.plotRows)">Save</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+
+
+                    <div *ngIf="dashBoardDTO.plotTotalRecords > 0 then dataTable else noRecords"></div>
+                    <ng-template #dataTable>
+                        <app-custom-table class="dashboard-table flyout-table" [columns]="dashBoardDTO.plotColumns" [value]="dashBoardDTO.plotRows"
+                            [nOfRecordPage]="dashBoardDTO.plotnOfRecordPage"
+                            [totalRecords]="dashBoardDTO.plotTotalRecords" (checkBoxSelect)="checkBoxSelectPlot($event)"
+                            (pageChange1)="changePageEvent($event)"></app-custom-table>
+                    </ng-template>
+                    <ng-template #noRecords>
+                        <div class="inner-container mt-4 mb-2 p-2">No Records Found</div>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- add graph flyout end -->

@@ -1,0 +1,122 @@
+<div class="main-container mb-5 float-left">
+  <div class="col-lg-12 pt-4">
+    <div class="inner-container">
+      <h3 class="pt-3 pb-3 pl-3 pr-3">Catalyst - Diluent</h3>
+      <div *ngIf="diluentDTO.loading" class="overlay_loader">
+        <div class="overlay__inner">
+          <div class="overlay__content"><span class="spinner"></span></div>
+        </div>
+      </div>
+      <form class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" [formGroup]="diluentDTO.diluentForm">
+        <div class="row">
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Diluent Designation <span class="mandatory-feild"></span></label>
+              <input type="text" class="form-control" formControlName="diluentName" placeholder="Diluent Designation"
+                [(ngModel)]="diluent.diluentName">
+              <app-error [control]=diluentDTO.diluentForm.controls.diluentName></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Source <span class="mandatory-feild"></span></label>
+              <input type="text" class="form-control" formControlName="diluentSourceName" placeholder="Diluent Source"
+                [(ngModel)]="diluent.sourceName">
+              <app-error [control]=diluentDTO.diluentForm.controls.diluentSourceName></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Size <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="catalystSize" [(ngModel)]="diluent.diluentSizeId">
+                <option value="null" disabled [selected]="diluentDTO.sizeDataList">Select </option>
+                <option *ngFor="let sizeData of  diluentDTO.sizeDataList" [value]="sizeData.id">
+                  {{sizeData.diluentSizeName}}</option>
+              </select>
+              <app-error [control]=diluentDTO.diluentForm.controls.catalystSize></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <app-uom-ctrl [(basevalue)]="diluent.pdvf" pHolder="Piece Density" variableCategory="Diluent"
+                variableName="Piece Density" uomCtrl=true feedData=false [resetUnit]="diluentDTO.isReset"
+                (baseValueChange)="catalystDiluentValue($event,1)" (loadUnits)="units($event)"></app-uom-ctrl>
+              <app-error [control]=diluentDTO.diluentForm.controls.diluentPDVF></app-error>
+            </div>
+          </div>
+
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <app-uom-ctrl [(basevalue)]="diluent.abdvf" pHolder="Apparent Bulk Density" variableCategory="Diluent"
+                variableName="Apparent Bulk Density" uomCtrl=true feedData=false [resetUnit]="diluentDTO.isReset"
+                (baseValueChange)="catalystDiluentValue($event,2)"></app-uom-ctrl>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Reference <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="referenceDulientInd" [(ngModel)]="diluent.diluentInd">
+                <option [value]="null" disabled [selected]="diluentDTO.indicatorList">Select</option>
+                <option *ngFor="let data of diluentDTO.indicatorList" [value]="data.status">{{data.status}}</option>
+              </select>
+              <app-error [control]=diluentDTO.diluentForm.controls.referenceDulientInd></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Status <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="status" [(ngModel)]="diluent.status">
+                <option [value]="null" disabled [selected]="diluentDTO.statusList">Select</option>
+                <option *ngFor="let status of diluentDTO.statusList" [value]="status.status">{{status.status}}
+                </option>
+              </select>
+              <app-error [control]=diluentDTO.diluentForm.controls.status></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-12 col-md-12 col-lg-8 col-xl-9">
+            <div class="form-group">
+              <label>Description <span class="mandatory-feild"></span></label>
+              <textarea class="form-control" formControlName="diluentDescription" placeholder="Diluent Description"
+                [(ngModel)]="diluent.description"></textarea>
+              <app-error [control]=diluentDTO.diluentForm.controls.diluentDescription></app-error>
+            </div>
+
+          </div>
+
+          <div class="col-lg-12 mt-2">
+            <p class="mandatory-para p-0 mt-0 mb-2 ml-0 mr-0">All fields marked with <span
+                class="mandatory-feild"></span> are mandatory.</p>
+            <button type="button" class="btn btn-transparent mr-3 mb-3" (click)="reset()">Reset</button>
+            <button type="button" class="btn btn-transparent mr-3  mb-3"
+              [disabled]="!(diluentDTO.diluentForm.dirty || diluentDTO.uomFlag)" (click)="find(diluent)">Find</button>
+            <button id="submit" type="button"
+              [disabled]="!(diluentDTO.diluentForm.valid && diluentDTO.formValid && diluentDTO.uomFlag)"
+              class="btn btn-default  mb-3" (click)="saveDiluent(diluent)">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12 pt-2">
+        <div *ngIf="diluentDTO.totalRecords > 0  then dataTable else noData"></div>
+        <ng-template #dataTable>
+          <app-custom-table [columns]="diluentDTO.cols" [value]="diluentDTO.diluentList" (onEdit)="onEditClick($event)"
+            (ondelete)="deleteConfirmation($event)" [selectedRows]="diluent" [totalRecords]="diluentDTO.totalRecords"
+            [nOfRecordPage]="diluentDTO.nOfRecordPage"> </app-custom-table>
+        </ng-template>
+        <ng-template #noData>
+          <div class="inner-container mt-3 mb-2 p-2">No Records found</div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

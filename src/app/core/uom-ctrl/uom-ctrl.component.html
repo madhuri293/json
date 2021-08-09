@@ -1,0 +1,51 @@
+<div *ngIf="uomCtrl == 'true' && feedData == 'false'">
+  <label class="col-lg-12 p-0">{{pHolder}} <span [hidden]="hideElements" class="mandatory-feild"></span></label>
+  <input type="text" value="{{value}}" class="form-control col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7 float-left"
+    [(ngModel)]="displayValue" (blur)="updateBaseValue()" [disabled]="readonly" pattern="[0-9._-]*"
+    (keypress)="preventNonNumericalInput($event)" appCopyPaste>
+
+  <div class="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5 p-0 float-left">
+
+    <select class="form-control col-lg-12 pl-1 float-left mb-0 unit-dropdown" [(ngModel)]="defaultUnit"
+      (ngModelChange)="updateDisplayValue()">
+      <option *ngFor="let item of units" [ngValue]="item" readonly>{{item.unitDisplayName}}</option>
+    </select>
+  </div>
+  <span class="error-msg p-0 m-0" [hidden]="hideElements" *ngIf="baseValue === null">{{error}}</span>
+</div>
+
+<div *ngIf="uomCtrl == 'true' && feedData == true">
+  <div class="row">
+    <div class="col-4 col-xl-5 col-md-4 pr-0">
+      <label class="col-lg-12 p-0">IBP <span class="mandatory-feild"></span></label>
+      <input type="text" value="{{value}}"
+        class="form-control col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 float-left" [(ngModel)]="displayValue1"
+        (blur)="updateBaseValue1()" [disabled]="isDisabled" pattern="[0-9._-]*"
+        (keypress)="preventNonNumericalInput($event)" appCopyPaste>
+      <span class="error-msg p-0 m-0" *ngIf="baseValue1.value === null">{{error}}</span>
+
+    </div>
+    <div class="col-4 col-xl-5 col-md-4 p-0">
+      <label class="col-lg-12 col-md-12 p-0">FBP <span class="mandatory-feild"></span></label>
+      <input type="text" value="{{value}}"
+        class="form-control col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 float-left" [(ngModel)]="displayValue2"
+        (blur)="updateBaseValue2()" [disabled]="isDisabled" pattern="[0-9._-]*"
+        (keypress)="preventNonNumericalInput($event)" appCopyPaste>
+      <span class="error-msg p-0 m-0" *ngIf="baseValue2.value === null">{{error}}</span>
+
+    </div>
+    <div class="col-4 col-xl-2 col-md-4 p-0">
+      <label class="col-lg-12 col-md-12 p-0">&nbsp;</label>
+      <select class="form-control col-lg-12 p-0 float-left mb-0 unit-dropdown" [(ngModel)]="defaultUnit"
+        (ngModelChange)="updateDisplayValue1()">
+        <option *ngFor="let item of units" [ngValue]="item">{{item.unitDisplayName}}</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="uomCtrl == 'false' && feedData == 'false'">
+  <select (change)="unitsChange(defaultunit)" [(ngModel)]="defaultunit">
+    <option *ngFor="let unitsDetail of units" [ngValue]="unitsDetail">{{unitsDetail.unitDisplayName}}</option>
+  </select>
+</div>

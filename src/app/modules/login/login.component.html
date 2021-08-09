@@ -1,0 +1,40 @@
+<div class="main-container mb-5 float-left">
+  <div class="col-lg-12 pt-4">
+    <form class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 p-0">
+      <div *ngIf="loginService.loading" class="overlay_loader">
+        <div class="overlay__inner">
+          <div class="overlay__content"><span class="spinner"></span></div>
+        </div>
+      </div>
+
+      <div class="col-lg-12">
+        <div class="row pb-3">
+
+
+          <div class="loginwrapper">
+            <div id="formContent">
+
+              <form [formGroup]="loginForm">
+                <div class="form-group">
+                  <label>EID/ Email Id <span class="mandatory-feild"></span></label>
+                  <input type="text" id="login" class="fadeIn second" name="login" placeholder="EID/ Email id"
+                    formControlName="email" [(ngModel)]="user.userName">
+                  <app-error [control]=loginForm.controls.email></app-error>
+                </div>
+
+                <button type="submit" class="btn btn-transparent mr-3 mb-3" (click)="onSubmit(user)"
+                  [disabled]="!loginForm.valid">Log In</button>
+              </form>
+
+              <div id="formFooter">
+                <a href="https://qcwa.honeywell.com/sp/startSSO.ping?PartnerIdPId=idp:standard&RequestedAuthnCtx=45540&TargetResource=https%3A%2F%2Fwww.microserviceone.com%2F" target="_blank" (click)="onSubmitAws()" rel="noopener noreferrer">Login</a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>

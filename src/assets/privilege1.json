@@ -1,0 +1,95 @@
+
+    [
+     
+      
+      {
+        "label": "Palnt",
+        "functionCode": "FUN004",
+        "functionName": "Technology",
+        "isEnabled": true,
+        "privilege": [{
+          "label": "Edit",
+          "functionCode": "PRI01",
+          "functionName": "Edit",
+          "isEnabled": true
+        }, {
+          "label": "View",
+          "functionCode": "PRI02",
+          "functionName": "View",
+          "isEnabled": true
+        }]
+    
+      },
+      {
+        "label": "Location",
+        "functionCode": "FUN004",
+        "functionName": "Technology",
+        "isEnabled": true,
+        "privilege": [{
+          "label": "Edit",
+          "functionCode": "PRI01",
+          "functionName": "Edit",
+          "isEnabled": true
+        }, {
+          "label": "View",
+          "functionCode": "PRI02",
+          "functionName": "View",
+          "isEnabled": true
+        }]
+    
+      },
+      {
+        "label": "Building",
+        "functionCode": "FUN004",
+        "functionName": "Technology",
+        "isEnabled": true,
+        "privilege": [{
+          "label": "Edit",
+          "functionCode": "PRI01",
+          "functionName": "Edit",
+          "isEnabled": true
+        }, {
+          "label": "View",
+          "functionCode": "PRI02",
+          "functionName": "View",
+          "isEnabled": true
+        }]
+    
+      },
+      {
+        "label": "UomTemplate",
+        "functionCode": "FUN004",
+        "functionName": "Technology",
+        "isEnabled": true,
+        "privilege": [{
+          "label": "Edit",
+          "functionCode": "PRI01",
+          "functionName": "Edit",
+          "isEnabled": true
+        }, {
+          "label": "View",
+          "functionCode": "PRI02",
+          "functionName": "View",
+          "isEnabled": true
+        }]
+    
+      },
+      {
+        "label": "Uom",
+        "functionCode": "FUN004",
+        "functionName": "Technology",
+        "isEnabled": true,
+        "privilege": [{
+          "label": "Edit",
+          "functionCode": "PRI01",
+          "functionName": "Edit",
+          "isEnabled": true
+        }, {
+          "label": "View",
+          "functionCode": "PRI02",
+          "functionName": "View",
+          "isEnabled": true
+        }]
+    
+      }
+      ]

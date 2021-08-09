@@ -1,0 +1,124 @@
+<div class="main-container mb-5 float-left">
+    <div class="col-lg-12 pt-4">
+        <div class="inner-container">
+            <h3 class="pt-3 pb-3 pl-3 pr-3">Manage - Unit Of Measurement</h3>
+            <div *ngIf="measurementService.loading" class="overlay_loader">
+                <div class="overlay__inner">
+                    <div class="overlay__content"><span class="spinner"></span></div>
+                </div>
+            </div>
+            <form class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12"
+                [formGroup]="unitOfMeasurementtDTO.measurementForm">
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                        <div class="form-group">
+                            <label>UOM Unit Name <span _ngcontent-c1="" class="mandatory-feild"></span></label>
+                            <input type="text" class="form-control" placeholder="UOM Unit Name"
+                                formControlName="uomUnitName" [(ngModel)]="unitOfMeasurement.unitName">
+                            <app-error [control]=unitOfMeasurementtDTO.measurementForm.controls.uomUnitName></app-error>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                        <div class="form-group">
+                            <label>UOM Group Name <span _ngcontent-c1="" class="mandatory-feild"></span></label>
+                            <select class="form-control" formControlName="uomGroupName"
+                                [(ngModel)]="unitOfMeasurement.groupId">
+                                <option value="null" disabled [selected]="unitOfMeasurementtDTO.uomGroupNameList">Select
+                                </option>
+                                <option *ngFor="let data of unitOfMeasurementtDTO.uomGroupNameList" [ngValue]="data.id">
+                                    {{data.groupName}}</option>
+                            </select>
+                            <app-error [control]=unitOfMeasurementtDTO.measurementForm.controls.uomGroupName>
+                            </app-error>
+                        </div>
+                    </div>
+
+
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                        <div class="form-group">
+                            <label>UOM Unit Display Name <span _ngcontent-c1="" class="mandatory-feild"></span></label>
+                            <input type="text" class="form-control" placeholder="UOM Unit Display Name"
+                                formControlName="uomUnitDisplayName" [(ngModel)]="unitOfMeasurement.unitDisplayName">
+                            <app-error [control]=unitOfMeasurementtDTO.measurementForm.controls.uomUnitDisplayName>
+                            </app-error>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                        <div class="form-group">
+                            <label>Base Unit Indicator <span _ngcontent-c1="" class="mandatory-feild"></span></label>
+                            <select class="form-control" formControlName="baseUnitIndicator"
+                                [(ngModel)]="unitOfMeasurement.baseUnitStatus">
+                                <option value="null" disabled
+                                    [selected]="unitOfMeasurementtDTO.baseUnitIndicator[0].name">Select</option>
+                                <option *ngFor="let unitIndicator of unitOfMeasurementtDTO.baseUnitIndicator"
+                                    [ngValue]="unitIndicator.id">
+                                    {{unitIndicator.name}}</option>
+
+                            </select>
+                            <app-error [control]=unitOfMeasurementtDTO.measurementForm.controls.baseUnitIndicator>
+                            </app-error>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                        <div class="form-group">
+                            <label>Slope Value <span _ngcontent-c1="" class="mandatory-feild"></span></label>
+                            <input type="text" class="form-control" min=1.00 max="999999999.00"
+                                placeholder="Slope Value" formControlName="slopeValue"  pattern="[0-9._-]*"
+                                [(ngModel)]="unitOfMeasurement.slopeValueCs" (keypress)="preventNonNumericalInput($event)" appCopyPaste>
+                            <app-error [control]=unitOfMeasurementtDTO.measurementForm.controls.slopeValue></app-error>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+                        <div class="form-group">
+                            <label>Intercept Value <span _ngcontent-c1="" class="mandatory-feild"></span></label>
+                            <input  appCopyPaste type="text" class="form-control" placeholder="Intercept Value"  pattern="[0-9._-]*"
+                                formControlName="interceptValue" [(ngModel)]="unitOfMeasurement.interceptValueCs" (keypress)="preventNonNumericalInput($event)" >
+                            <app-error [control]=unitOfMeasurementtDTO.measurementForm.controls.interceptValue >
+                            </app-error>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-12 col-xl-12 mt-2">
+                        <p class="mandatory-para p-0 mt-0 mb-2 ml-0 mr-0">All fields marked with <span
+                                class="mandatory-feild"></span> are mandatory.</p>
+                        <button type="button" class="btn btn-transparent mr-3 mb-3" data-dismiss="modal"
+                            (click)="formReset()">Reset</button>
+                        <button type="button" [disabled]="!(unitOfMeasurementtDTO.measurementForm.valid || unitOfMeasurementtDTO.measurementForm.dirty)" class="btn btn-transparent mr-3 mb-3" data-dismiss="modal"
+                            (click)="findUnitOfMeasurement(unitOfMeasurement)">Find</button>
+                        <button id="submit" type="button" class="btn btn-default mb-3"
+                            [hidden]="!unitOfMeasurementtDTO.privilege"
+                            (click)="saveUnitOfMeasurement(unitOfMeasurement)"
+                            [disabled]="(!unitOfMeasurementtDTO.measurementForm.valid || unitOfMeasurementtDTO.isDisable)">Save</button>
+
+                    </div>
+
+                </div>
+            </form>
+
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12 col-xl-12 pt-2 mb-2">
+                <div *ngIf="unitOfMeasurementtDTO.totalRecords > 0 then dataTable else noData"></div>
+
+                <ng-template #dataTable>
+                    <app-custom-table [nOfRecordPage]="unitOfMeasurementtDTO.nOfRecordPage"
+                        [totalRecords]="unitOfMeasurementtDTO.totalRecords" [columns]="unitOfMeasurementtDTO.cols"
+                        [value]="unitOfMeasurementtDTO.measurementValues" (ondelete)="deleteConfirmation($event)"
+                        (onEdit)="onRoleEditClick($event)" [selectedRows]="unitOfMeasurement">
+                    </app-custom-table>
+                </ng-template>
+
+                <ng-template #noData>
+                    <div class="inner-container mt-4 mb-2 p-2">No Records Found</div>
+                </ng-template>
+
+            </div>
+        </div>
+    </div>
+
+</div>

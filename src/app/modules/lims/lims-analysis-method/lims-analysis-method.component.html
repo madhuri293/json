@@ -1,0 +1,166 @@
+<div class="main-container mb-5 float-left">
+  <div class="col-lg-12 pt-4">
+
+    <div class="inner-container">
+      <h3 class="pt-3 pb-3 pl-3 pr-3">LIMS - LIMS Analysis Method</h3>
+      <div *ngIf="limsAnalysisService.loading" class="overlay_loader">
+        <div class="overlay__inner">
+          <div class="overlay__content"><span class="spinner"></span></div>
+        </div>
+      </div>
+      <form class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" [formGroup]="limsAnalysisDTO.limsAnalysisForm">
+        <div class="row">
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Method Name <span class="mandatory-feild"></span></label>
+              <input type="text" formControlName="methodName" [(ngModel)]="limsAnalysis.methodName"
+                (blur)="methodNameInput(limsAnalysis)" class="form-control" placeholder="Method Name">
+              <app-error [control]=limsAnalysisDTO.limsAnalysisForm.controls.methodName></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Method Number <span class="mandatory-feild"></span></label>
+              <input type="text" formControlName="methodNumber" [(ngModel)]="limsAnalysis.methodNumber"
+                class="form-control" placeholder="Method Number">
+              <app-error [control]=limsAnalysisDTO.limsAnalysisForm.controls.methodNumber></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>UOM Group <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="uomGroup" [(ngModel)]="limsAnalysis.uomGroup.id">
+                <option value="null" disabled [selected]="limsAnalysisDTO.uomGroupNameList">Select</option>
+                <option *ngFor="let data of limsAnalysisDTO.uomGroupNameList" [ngValue]="data.id">{{data.groupName}}
+                </option>
+
+              </select>
+              <app-error [control]=limsAnalysisDTO.limsAnalysisForm.controls.uomGroup></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>LIMS Operation <span class="mandatory-feild"></span></label>
+              <input type="text" formControlName="limsOperation" [(ngModel)]="limsAnalysis.limsOperation"
+                class="form-control" placeholder="LIMS Operation">
+              <app-error [control]=limsAnalysisDTO.limsAnalysisForm.controls.limsOperation></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Source Name <span class="mandatory-feild"></span></label>
+              <p-multiSelect [options]="limsAnalysisDTO.sourceNameList" class="col-lg-12 p-0 chkmultiselect-dropdown"
+                (onChange)="onSourceSelect(limsAnalysisDTO.SourceId)" itemSize="2" formControlName="sourceName"
+                name="sourceName" [(ngModel)]="limsAnalysisDTO.SourceId" [panelStyle]="{minWidth:'12em'}"
+                [filter]="false">
+                <ng-template let-value pTemplate="selectedItems">
+                  <div *ngFor="let val of value" class="">
+                    <span class="display-inline" *ngFor="let sourceName of limsAnalysisDTO.sourceNameList">
+                      <span *ngIf="val === sourceName.value" class="display-inline">{{sourceName.name}}</span>
+                    </span>
+                  </div>
+
+                  <span *ngIf="!value || value.length === 0"
+                    class="ui-multiselected-empty-token ui-corner-all">Select</span>
+                </ng-template>
+                <ng-template let-sourceName pTemplate="item">
+                  <div style="font-size:14px;float:right;margin-top:4px">{{sourceName.name}}</div>
+                </ng-template>
+              </p-multiSelect>
+              <span class="error-msg" *ngIf="limsAnalysisDTO.errorMessage !== null">
+                {{limsAnalysisDTO.errorMessage}}</span>
+              <app-error [control]=limsAnalysisDTO.limsAnalysisForm.controls.sourceName></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Method Description</label>
+              <textarea class="form-control" placeholder="Description" formControlName="description"
+                [(ngModel)]="limsAnalysis.methodDescription"></textarea>
+              <app-error [control]=limsAnalysisDTO.limsAnalysisForm.controls.description></app-error>
+            </div>
+          </div>
+
+          <div class="col-lg-12 mt-2">
+            <p class="mandatory-para p-0 mt-0 mb-2 ml-0 mr-0">All fields marked with <span
+                class="mandatory-feild"></span> are mandatory.
+            </p>
+            <button type="button" class="btn btn-transparent mr-3 mb-3" (click)="onResetClick()">Reset</button>
+            <button type="button" class="btn btn-transparent mr-3 mb-3" (click)="find(limsAnalysis)"
+              [disabled]="!(limsAnalysisDTO.limsAnalysisForm.valid || limsAnalysisDTO.limsAnalysisForm.dirty)">Find</button>
+            <button type="button" class="btn btn-default mb-3" (click)="savelimsAnalysisData(limsAnalysis)"
+              [disabled]="!(limsAnalysisDTO.limsAnalysisForm.valid && limsAnalysisDTO.disableSave)"
+              [hidden]="!limsAnalysisDTO.privilege">Save
+            </button>
+          </div>
+
+        </div>
+      </form>
+    </div>
+
+  
+  </div>
+  <div class="col-lg-12 pt-4">
+
+
+    <div *ngIf="limsAnalysisDTO.totalRecords > 0 then dataTable else noData">
+      <p class="mb-2 pb-1 d-inline-block"> {{limsAnalysisDTO.totalRecords}} Records Fetched</p>
+    </div>
+
+    <ng-template #dataTable>
+      <p class="mb-2 pb-1 d-inline-block"> {{limsAnalysisDTO.totalRecords}} Records Fetched</p>
+
+      <p-paginator class="float-right" (onPageChange)="paginate($event)" [rows]="limsAnalysisDTO.nOfRecordPage"
+        [totalRecords]="limsAnalysisDTO.totalRecords" [rowsPerPageOptions]="[10,20,50,100]"></p-paginator>
+      <div class="table-responsive">
+        <p-table class="ptable-container action-sort-none" [value]="limsAnalysisDTO.limsAnalysisList" [selection]="limsAnalysis" [customSort]="true">
+          <ng-template pTemplate="header">
+            <tr>
+              <th *ngFor="let col of limsAnalysisDTO.columns" [pSortableColumn]="col.field"
+                (click)="customSort(col.field);" id="table-header">
+                {{col.header}}
+                <p-sortIcon [field]="col.field"></p-sortIcon>
+              </th>
+            </tr>
+          </ng-template>
+          <ng-template pTemplate="body" let-car>
+            <tr>
+              <td *ngFor="let col of limsAnalysisDTO.columns">
+                <div (click)="onLimsEdit(car)">
+                  <div *ngIf="col.subfield;then nested_object_content else normal_content"></div>
+                  <ng-template #nested_object_content>
+                    {{car[col.field][col.subfield]}}
+                  </ng-template>
+                  <ng-template #normal_content>
+                    {{car[col.field]}}
+                  </ng-template>
+
+                </div>
+                <button *ngIf="col.header === 'Action'" class="btn btn-privilege" type="button"
+                  (click)="deleteConfirmation(car)">
+                  <img src="assets/images/delete-icon.svg" alt="delete">
+                </button>
+              </td>
+            </tr>
+
+          </ng-template>
+
+
+        </p-table>
+      </div>
+    </ng-template>
+    <ng-template #noData>
+      <div class="inner-container mt-3 mb-2 p-2">No Records found</div>
+    </ng-template>
+  </div>

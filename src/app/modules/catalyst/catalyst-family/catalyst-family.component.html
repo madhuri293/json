@@ -1,0 +1,180 @@
+<div class="main-container mb-5 float-left">
+  <div class="col-lg-12 pt-4">
+
+    <div class="inner-container">
+      <h3 class="pt-3 pb-3 pl-3 pr-3">Catalyst - Catalyst Family</h3>
+      <div *ngIf="catalystFamilyDTO.loading" class="overlay_loader">
+        <div class="overlay__inner">
+          <div class="overlay__content"><span class="spinner"></span></div>
+        </div>
+      </div>
+      <form class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" [formGroup]="catalystFamilyDTO.catalystFamilyForm">
+        <div class="row">
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>
+                <input type="radio" [checked]="catalystFamilyDTO.isRadio1" (click)="commercialFamilyRadio($event)"
+                  id="radio1" name="commercialFamilyName" value="radio1" class="mr-1"
+                  style="position: relative; top: 1px;">Commercial Name
+              </label>
+              <input type="text" formControlName="commercialFamilyName"
+                [(ngModel)]="catalystFamily.commercialFamilyName" class="form-control" placeholder="Commercial Name">
+              <app-error [control]=catalystFamilyDTO.catalystFamilyForm.controls.commercialFamilyName></app-error>
+
+            </div>
+          </div>
+         
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>
+                <input type="radio" [checked]="catalystFamilyDTO.isRadio2" (click)="programFamilyRadio($event)"
+                  id="radio2" name="commercialFamilyName" value="radio2" class="mr-1"
+                  style="position: relative; top: 1px;">Program Name
+              </label>
+              <input type="text" formControlName="programFamilyName" [(ngModel)]="catalystFamily.programFamilyName"
+                class="form-control" placeholder="Program Name">
+              <app-error [control]=catalystFamilyDTO.catalystFamilyForm.controls.programFamilyName></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Type <span class="mandatory-feild"></span></label>
+              <select id="type" class="form-control" formControlName="catalystTypeId"
+                [(ngModel)]="catalystFamily.catalystTypeId"
+                (change)="getCatalystApplication(catalystFamily.catalystTypeId)">
+                <option [ngValue]="null" disabled [selected]="catalystFamilyDTO.catalystTypeList">Select</option>
+                <option *ngFor="let type of catalystFamilyDTO.catalystTypeList" [value]="type.id">{{type.typeName}}
+                </option>
+              </select>
+              <app-error [control]=catalystFamilyDTO.catalystFamilyForm.controls.catalystTypeId></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Catalyst Application <span class="mandatory-feild"></span></label>
+              <select id="application" class="form-control" formControlName="catalystApplicationId"
+                [(ngModel)]="catalystFamily.catalystApplicationId">
+                <option [ngValue]="null" disabled [selected]="catalystFamilyDTO.isEdit">Select</option>
+                <option *ngFor="let application of catalystFamilyDTO.applicationDetailsList" [value]="application.id">
+                  {{application.applicationName}}</option>
+              </select>
+              <app-error [control]=catalystFamilyDTO.catalystFamilyForm.controls.catalystApplicationId></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 mb-3">
+            <div class="form-group">
+              <app-uom-ctrl [(basevalue)]="catalystFamily.pieceDensityArMin" pHolder="Piece Density (AR) Min Spec"
+                variableCategory="Catalyst Family" [resetUnit]='catalystFamilyDTO.isReset'
+                variableName="Piece Density (AR) Min Spec" uomCtrl=true feedData=false
+                (baseValueChange)="catalystFamilyValue($event,1)" (loadUnits)="units($event)"></app-uom-ctrl>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 mb-3">
+            <div class="form-group">
+              <app-uom-ctrl [(basevalue)]="catalystFamily.pieceDensityArMax" pHolder="Piece Density (AR) Max Spec"
+                variableCategory="Catalyst Family" [resetUnit]='catalystFamilyDTO.isReset'
+                variableName="Piece Density (AR) Max Spec" uomCtrl=true feedData=false
+                (baseValueChange)="catalystFamilyValue($event,2)"></app-uom-ctrl>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 mb-3 mb-3">
+            <div class="form-group">
+              <app-uom-ctrl [(basevalue)]="catalystFamily.loiMin" pHolder="LOI@500C Min Spec"
+                variableCategory="Catalyst Family" [resetUnit]='catalystFamilyDTO.isReset'
+                variableName="LOI@500 Min Spec" uomCtrl=true feedData=false
+                (baseValueChange)="catalystFamilyValue($event,3)"></app-uom-ctrl>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 mb-3">
+            <div class="form-group">
+              <app-uom-ctrl [(basevalue)]="catalystFamily.loiMax" pHolder="LOI@500C Max Spec"
+                variableCategory="Catalyst Family" [resetUnit]='catalystFamilyDTO.isReset'
+                variableName="LOI@500 Max Spec" uomCtrl=true feedData=false
+                (baseValueChange)="catalystFamilyValue($event,4)"></app-uom-ctrl>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 mb-3">
+            <div class="form-group">
+              <app-uom-ctrl [(basevalue)]="catalystFamily.sulfurMin" pHolder="Sulfur (U864) Min"
+                variableCategory="Catalyst Family" [resetUnit]='catalystFamilyDTO.isReset'
+                variableName="Sulfur (U864) Min Spec" uomCtrl=true feedData=false
+                (baseValueChange)="catalystFamilyValue($event,5)"></app-uom-ctrl>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3 mb-3">
+            <div class="form-group">
+              <app-uom-ctrl [(basevalue)]="catalystFamily.sulfurMax" pHolder="Sulfur (U864) Max"
+                variableCategory="Catalyst Family" [resetUnit]='catalystFamilyDTO.isReset'
+                variableName="Sulfur (U864) Max Spec" uomCtrl=true feedData=false
+                (baseValueChange)="catalystFamilyValue($event,6)"></app-uom-ctrl>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>SDS# <span class="mandatory-feild"></span></label>
+              <input type="text" formControlName="sdsNum" [(ngModel)]="catalystFamily.sdsNum" class="form-control"
+                placeholder="SDS#">
+              <app-error [control]=catalystFamilyDTO.catalystFamilyForm.controls.sdsNum></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Status <span class="mandatory-feild"></span></label>
+              <select id="status" class="form-control" formControlName="status" [(ngModel)]="catalystFamily.status">
+                <option [ngValue]="null" disabled [selected]="true">Select</option>
+                <option *ngFor="let data of catalystFamilyDTO.statusList" [value]="data.status">{{data.status}}
+                </option>
+              </select>
+              <app-error [control]=catalystFamilyDTO.catalystFamilyForm.controls.status></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-lg-12 mt-2">
+            <p class="mandatory-para p-0 mt-0 mb-2 ml-0 mr-0">All fields marked with <span
+                class="mandatory-feild"></span> are mandatory.</p>
+            <button type="button" class="btn btn-transparent mr-3 mb-3" (click)="onResetClick(false)">Reset</button>
+            <button type="button" class="btn btn-transparent mr-3  mb-3"
+              [disabled]="!(catalystFamilyDTO.catalystFamilyForm.dirty || catalystFamilyDTO.uomFlag)"
+              (click)="find(catalystFamily)">Find</button>
+            <button id="submit" type="button" [hidden]="!catalystFamilyDTO.privilege"
+              [disabled]="!(catalystFamilyDTO.catalystFamilyForm.valid && catalystFamilyDTO.formValid && catalystFamilyDTO.uomFlag && catalystFamilyDTO.radioFlag && (catalystFamily.commercialFamilyName || catalystFamily.programFamilyName) || catalystFamilyDTO.isDisabled)"
+              class="btn btn-default  mb-3" (click)="saveCatalystFamilyData(catalystFamily)">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+
+    <div class="row">
+      <div class="col-lg-12 pt-2">
+        <div *ngIf="catalystFamilyDTO.totalRecords > 0 then dataTable else noData"></div>
+        <ng-template #dataTable>
+          <app-custom-table [totalRecords]="catalystFamilyDTO.totalRecords"
+            [nOfRecordPage]="catalystFamilyDTO.nOfRecordPage" [columns]="catalystFamilyDTO.columns"
+            [value]="catalystFamilyDTO.rows" (onEdit)="onRoleEditClick($event)" [selectedRows]="catalystFamily"
+            (ondelete)="deleteConfirmation($event)"> </app-custom-table>
+        </ng-template>
+
+        <ng-template #noData>
+          <div class="inner-container mt-3 mb-2 p-2">No Records found</div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,333 @@
+<div class="inner-container">
+  <h3 class="pt-3 pb-3 pl-3 pr-3">Project - Customer/Manufacturer</h3>
+  <div *ngIf="projectsService.loading" class="overlay_loader">
+    <div class="overlay__inner">
+      <div class="overlay__content"><span class="spinner"></span></div>
+    </div>
+  </div>
+  <form class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" [formGroup]="projectDTO.projectForm">
+    <div class="row">
+      <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+        <div class="form-group">
+          <label>Technology <span class="mandatory-feild"></span></label>
+          <select class="form-control" formControlName="technology" [(ngModel)]="projectDTO.project.technologyId"
+            disabled>
+
+            <option *ngFor="let technology of projectDTO.technologyList" [ngValue]="technology.id"
+              [selected]="projectDTO.technologyList">{{technology.technologyName}}</option>
+
+          </select>
+          <app-error [control]="projectDTO.projectForm.controls.technology"></app-error>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+        <div class="form-group">
+          <label>Project Name <span class="mandatory-feild"></span></label>
+          <input type="text" class="form-control" formControlName="projectName" placeholder="Manaul Project Name"
+            [(ngModel)]="projectDTO.project.projectName">
+          <app-error [control]="projectDTO.projectForm.controls.projectName"></app-error>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+        <div class="form-group">
+          <label>Business Group <span class="mandatory-feild"></span></label>
+          <select class="form-control" formControlName="buisnessGroup" [(ngModel)]="projectDTO.project.businessGroupId">
+            <option value=null disabled [selected]="projectDTO.buisnessGroup">Select</option>
+            <option *ngFor="let data of projectDTO.buisnessGroup" [ngValue]="data.id">{{data.businessGroupName}}
+            </option>
+          </select>
+          <app-error [control]="projectDTO.projectForm.controls.buisnessGroup"></app-error>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+        <div class="input-group form-group mb-0">
+          <label class="col-lg-12 p-0">Technical Team Lead <span class="mandatory-feild"></span></label>
+          <input type="text" class="form-control" formControlName="technicalTeamLead" placeholder="Technical Team Lead"
+            [(ngModel)]="projectDTO.project.technicalLeadId" readonly>
+          <div class="input-group-append" data-toggle="modal" data-target="#flyoutModal" (click)="onFlyoutLoad()">
+            <span class="input-group-text rounded-0"><em class="fa fa-search-plus"></em></span>
+          </div>
+        </div>
+        <app-error [control]="projectDTO.projectForm.controls.technicalTeamLead"></app-error>
+      </div>
+
+      <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+        <div class="form-group">
+          <label>Business Justification</label>
+          <select class="form-control" formControlName="buisnessJustification"
+            [(ngModel)]="projectDTO.project.businessJustifyId">
+            <option value=null disabled [selected]="projectDTO.buisnessJustificationList">Select</option>
+            <option *ngFor="let data of projectDTO.buisnessJustificationList" [ngValue]="data.id">
+              {{data.businessJustificationName}}</option>
+          </select>
+          <app-error [control]="projectDTO.projectForm.controls.buisnessJustification"></app-error>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+        <div class="form-group">
+          <label>Network Number 1 (US - Based) <span class="mandatory-feild"></span></label>
+          <input type="text" class="form-control" formControlName="networkNumber1"
+            placeholder="Network Number 1 (US - Based)" [(ngModel)]="projectDTO.project.uopNetworkNum1">
+          <app-error [control]="projectDTO.projectForm.controls.networkNumber1"></app-error>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+        <div class="form-group">
+          <label>Network Number 2 (ITC - Labor) <span class="mandatory-feild"></span></label>
+          <input type="text" class="form-control" formControlName="networkNumber2"
+            placeholder="Network Number 2 (ITC - Labor)" [(ngModel)]="projectDTO.project.uopNetworkNum2">
+          <app-error [control]="projectDTO.projectForm.controls.networkNumber2"></app-error>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+        <div class="form-group">
+          <label>Network Number 3 (ITC - PP/LIMS) <span class="mandatory-feild"></span></label>
+          <input type="text" class="form-control" formControlName="networkNumber3"
+            placeholder="Network Number 3 (ITC - PP/LIMS)" [(ngModel)]="projectDTO.project.uopNetworkNum3">
+          <app-error [control]="projectDTO.projectForm.controls.networkNumber3"></app-error>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+        <div class="form-group">
+          <label>PP Priority <span class="mandatory-feild"></span></label>
+          <select class="form-control" formControlName="ppPriority" [(ngModel)]="projectDTO.project.ppPriorityId">
+            <option value=null disabled [selected]="projectDTO.currentPhasePriority">Select</option>
+            <option *ngFor="let data of projectDTO.currentPhasePriority" [ngValue]="data.id">{{data.ppPriorityName}}
+            </option>
+          </select>
+          <app-error [control]="projectDTO.projectForm.controls.ppPriority"></app-error>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+        <div class="form-group">
+          <label>Business Objective <span class="mandatory-feild"></span></label>
+          <select class="form-control" formControlName="buisnessObjective"
+            [(ngModel)]="projectDTO.project.businessObjectionId">
+            <option value=null disabled [selected]="projectDTO.buisnessObjective">Select</option>
+            <option *ngFor="let data of projectDTO.buisnessObjective" [ngValue]="data.id">{{data.businessObjectiveName}}
+            </option>
+          </select>
+          <app-error [control]="projectDTO.projectForm.controls.buisnessObjective"></app-error>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+        <div class="form-group">
+          <label>Application <span class="mandatory-feild"></span></label>
+          <select class="form-control" formControlName="application"
+            [(ngModel)]="projectDTO.project.projectApplicationId">
+            <option value=null disabled [selected]="projectDTO.applicationList">Select</option>
+            <option *ngFor="let data of projectDTO.applicationList" [ngValue]="data.id">{{data.projectAppName}}</option>
+          </select>
+          <app-error [control]="projectDTO.projectForm.controls.application"></app-error>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+        <div class="form-group">
+          <label>Description <span class="mandatory-feild"></span></label>
+          <textarea class="form-control" placeholder="Description" formControlName="description"
+            [(ngModel)]="projectDTO.project.description"></textarea>
+          <app-error [control]="projectDTO.projectForm.controls.description"></app-error>
+        </div>
+      </div>
+
+      <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+        <div class="form-group">
+          <label>SFDC#</label>
+          <input type="number" class="form-control" placeholder="SFDC#" formControlName="sfdc"
+            [(ngModel)]="projectDTO.project.sfdc">
+          <app-error [control]="projectDTO.projectForm.controls.sfdc"></app-error>
+        </div>
+      </div>
+      <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+        <div class="form-group">
+          <label>Status <span class="mandatory-feild"></span></label>
+          <select class="form-control" formControlName="status" [(ngModel)]="projectDTO.project.projectStatusId">
+            <option value=null disabled [selected]="projectDTO.statusList">Select</option>
+            <option *ngFor="let status of projectDTO.statusList" [ngValue]="status.id">{{status.projectStatusName}}
+            </option>
+          </select>
+          <app-error [control]="projectDTO.projectForm.controls.status"></app-error>
+        </div>
+      </div>
+
+    </div>
+  </form>
+</div>
+<div class="inner-container mt-4">
+  <h3 class="pt-3 pb-3 pl-3 pr-3">Other Info</h3>
+  <form class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" [formGroup]="projectDTO.fileUploadForm">
+    <div class="row">
+
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-3 mb-3">
+        <button type="button" class="btn btn-default" (click)="addFileData()">Upload Files</button>
+        <span class="pl-2">Attach Multiple files (pdf, word, excel, jpeg, ppt, csv or txt) with less than 6 MB size
+          each.</span>
+      </div>
+      <div formArrayName="uploadData"
+        *ngFor="let item of projectDTO.fileUploadForm.get('uploadData')['controls']; let i = index;"
+        class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <div [formGroupName]="i" class="upload-files-wrapper ">
+          <div class="row" *ngIf="projectDTO.files">
+            <div class="col-9 col-sm-9 col-md-9 col-lg-5 col-xl-5 mb-2 mb-sm-2 mb-md-2  pr-0">
+
+              <!-- Added on saturday-start-->
+              <div class='file-input position-relative'>
+                <input type='file' (change)="onUploadClick($event,i)"
+                  accept=".xlsx,.xls,.pdf,.excel,.jpeg,.pptx,.csv,.txt,.docx,.doc,.jpg,.jfif,.jpe"
+                  data-tip-text="fileArray[i]?.fileName">
+                <span class='button'><em class="fa fa-upload"></em></span>
+
+                <label *ngIf="!projectDTO.fileArray[i]?.fileName" class='label' data-js-label>No file selected</label>
+                <label *ngIf="projectDTO.fileArray[i]?.fileName" for=""
+                  class="uploadedFileLabel">{{projectDTO.fileArray[i]?.fileName}}</label>
+                <button type="button" class="btn btn-download float-right text-right"
+                  (click)="downloadFile(projectDTO.fileArray[i])">
+                  <em class="fa fa-download" aria-hidden="true"></em>
+                </button>
+              </div>
+              <!-- end-->
+            </div>
+            <div class="col-9 col-sm-9 col-md-9 col-lg-5  col-xl-5">
+              <div class="form-group">
+                <label class="sr-only">Description</label>
+                <textarea class="form-control" placeholder="Description" formControlName="description"></textarea>
+                <app-error [control]="formArray.controls[i].get('description')"></app-error>
+              </div>
+            </div>
+            <div class="col-3 col-sm-3 col-md-3 col-lg-2 col-xl-2 p-0">
+              <button type="button" class="btn btn-action-border" (click)="remove(i)">
+                <img src="assets/images/delete-icon.svg" alt="delete">
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <span class="error-msg" *ngIf="projectDTO.fileSizeErrorMessage !== null">{{fileSizeErrorMessage}}</span>
+      <div class="col-lg-12 mt-3">
+        <p class="mandatory-para p-0 mt-0 mb-2 ml-0 mr-0">All fields marked with <span class="mandatory-feild"></span>
+          are
+          mandatory.</p>
+        <button type="button" class="btn btn-transparent mr-3 mb-3" data-dismiss="modal"
+          (click)="reset()">Reset</button>
+        <button type="button" class="btn btn-transparent mr-3 mb-3" data-dismiss="modal"
+          (click)="find(projectDTO.project)"
+          [disabled]="!(projectDTO.projectForm.dirty || this.projectDTO.projectForm.controls['technicalTeamLead'].valid)">Find</button>
+        <button id="submit" type="button" class="btn btn-default mb-3" [hidden]="!projectDTO.privilege"
+          [disabled]="(!projectDTO.projectForm.valid || projectDTO.isDisabled)"
+          (click)="save(projectDTO.project)">Save</button>
+      </div>
+
+    </div>
+  </form>
+</div>
+
+
+
+<div class="row">
+  <div class="col-lg-12">
+    <div *ngIf="projectDTO.totalRecords > 0  then dataTable else noData"></div>
+    <ng-template #dataTable>
+      <app-custom-table [totalRecords]="projectDTO.totalRecords" [nOfRecordPage]="projectDTO.nOfRecordPage"
+        [columns]="projectDTO.cols" [value]="projectDTO.projectData" [selectedRows]="projectDTO.project"
+        (onEdit)="onProjectEdit($event)" (ondelete)="deleteConfirmation($event)"> </app-custom-table>
+    </ng-template>
+
+    <ng-template #noData>
+      <div class="inner-container mt-3 mb-2 p-2">No Records found</div>
+    </ng-template>
+  </div>
+</div>
+
+
+
+
+
+<!-- Modal Pop up start-->
+<div id="flyoutModal" class="stickyFlyoutModal modal fade" tabindex="-1" role="dialog" aria-labelledby="gridModalLabel"
+  style="display: none;" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="mb-0">Technical Team Lead</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">×</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid bd-example-row">
+          <div class="row">
+            <form class="col-lg-12" [formGroup]="technicalLeadFlyoutDTO.teamLeadForm">
+              <div class="row">
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label>Eid</label>
+                    <input ref-eid type="text" class="form-control" formControlName="eid"
+                      [(ngModel)]="technicalLeadFlyoutDTO.user.eId" placeholder="Eid">
+                  </div>
+                </div>
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label>First Name</label>
+                    <input ref-fname type="text" class="form-control" formControlName="firstName"
+                      [(ngModel)]="technicalLeadFlyoutDTO.user.firstName" placeholder="First Name">
+                  </div>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label>Last Name</label>
+                    <input ref-lname type="text" class="form-control" formControlName="lastName"
+                      [(ngModel)]="technicalLeadFlyoutDTO.user.lastName" placeholder="Last Name">
+                  </div>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label>Email</label>
+                    <input ref-email type="email" class="form-control" formControlName="email"
+                      [(ngModel)]="technicalLeadFlyoutDTO.user.email" placeholder="Email">
+                  </div>
+                </div>
+
+
+
+                <div class="col-lg-12 mt-2 mb-3">
+                  <button type="button" class="btn btn-transparent mr-3" (click)="flyoutFormReset()">Reset</button>
+                  <button type="button" class="btn btn-default" (click)="findLead(technicalLeadFlyoutDTO.user)"
+                    [disabled]="!(eid.value || fname.value ||lname.value|| email.value)">Find</button>
+                </div>
+              </div>
+            </form>
+
+          </div>
+          <div class="row">
+            <div class="col-lg-12" *ngIf="technicalLeadFlyoutDTO.loadFlyoutTable">
+              <div *ngIf="technicalLeadFlyoutDTO.flyOutTotalRecords > 0  then dataTable else noData"></div>
+              <ng-template #dataTable>
+                <app-custom-table [totalRecords]="technicalLeadFlyoutDTO.flyOutTotalRecords"
+                  [nOfRecordPage]="technicalLeadFlyoutDTO.nOfRecords" [columns]="technicalLeadFlyoutDTO.columnList"
+                  [value]="technicalLeadFlyoutDTO.teamLeadList" (onEdit)="onEditClick($event)"
+                  (ondelete)="deleteConfirmation($event)" [selectedRows]="technicalLeadFlyoutDTO.user"> </app-custom-table>
+              </ng-template>
+
+              <ng-template #noData>
+                <div class="inner-container mt-3 mb-2 p-2">No Records found</div>
+              </ng-template>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- Modal Pop up ends-->

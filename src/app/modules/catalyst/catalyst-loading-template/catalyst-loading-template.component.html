@@ -1,0 +1,323 @@
+<div class="main-container mb-5 float-left">
+  <div class="col-lg-12 pt-4">
+    <div *ngIf="catalystLoadingTemplateService.loading" class="overlay_loader">
+      <div class="overlay__inner">
+        <div class="overlay__content"><span class="spinner"></span></div>
+      </div>
+    </div>
+    <form class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 p-0" [formGroup]="catalystLoadingDTO.catalystForm">
+      <div class="inner-container">
+        <h3 class="pt-3 pb-3 pl-3 pr-3">Catalyst - Catalyst Loading Template</h3>
+        <div class="col-lg-12">
+          <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+              <p>The MiniDAT catalyst loading template specifies the catalyst configuration only. The Mini-Hydro Reactor
+                Loading procedure not seen here provides standard volumes of diluent preheat and endpack to ensure the
+                90CC loading in the standard reactor is situated appropriately for stable target temperatures that can
+                be measured with TC's of standarrd length. Loading template that exceed 90CC in the standard reactor
+                diameter or a bed length >32.5 in should be reviewed carefully to ensure all performance measurements
+                can be achieved.</p>
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+              <div class="form-group">
+                <label for="inputState">Technology <span class="mandatory-feild"></span></label>
+                <select id="technology" class="form-control" formControlName="technology"
+                  [(ngModel)]="catalystLoading.technologyId" disabled>
+                  <option *ngFor="let technology of catalystLoadingDTO.technologyList" disabled
+                    [ngValue]="technology.id">
+                    {{technology.technologyName}}</option>
+                </select>
+                <app-error [control]=catalystLoadingDTO.catalystForm.controls.technology></app-error>
+              </div>
+            </div>
+            <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+              <div class="form-group">
+                <label>Template Name <span class="mandatory-feild"></span></label>
+                <input type="text" class="form-control" placeholder="Template Name" formControlName="templateName"
+                  [(ngModel)]="catalystLoading.templateName" (keyup)="templateNameEvent($event)">
+                <app-error [control]=catalystLoadingDTO.catalystForm.controls.templateName></app-error>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+              <div class="form-group">
+                <label>Status <span class="mandatory-feild"></span></label>
+                <select class="form-control" [(ngModel)]="catalystLoading.status" formControlName="status"
+                  (change)="statusSelect($event)">
+                  <option [ngValue]="null" disabled [selected]="catalystLoadingDTO.statusList">Select</option>
+                  <option *ngFor="let status of catalystLoadingDTO.statusList" [value]="status.id">{{status.status}}
+                  </option>
+                </select>
+                <app-error [control]=catalystLoadingDTO.catalystForm.controls.status></app-error>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="inner-container mt-4">
+        <h3 class="pt-3 pb-3 pl-3 pr-3">Customize Loading</h3>
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 pb-3 customize_loading_container">
+
+          <div class="row">
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 customize_loading_label">
+              <div class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-11 col-xl-11">
+                  <div class="row">
+                    <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-1">
+                      <div class="form-group">
+                        <label>Bed# <span class="mandatory-feild"></span></label>
+                      </div>
+                    </div>
+                    <div class="col-12 col-sm-5 col-md-5 col-lg-5 col-xl-3">
+                      <div class="form-group">
+                        <label>Catalyst Volume <span class="mandatory-feild"></span></label>
+                      </div>
+                    </div>
+                    <div class="col-6 col-sm-5 col-md-4 col-lg-5 col-xl-2">
+                      <div class="form-group">
+                        <label>split <span class="mandatory-feild"></span></label>
+                      </div>
+                    </div>
+                    <div class="col-12 col-sm-5 col-md-6 col-lg-5 col-xl-2">
+                      <div class="form-group">
+                        <label class="col-lg-12 p-0">Diluent Designation <span class="mandatory-feild"></span></label>
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-sm-5 col-md-5 col-lg-5 col-xl-3">
+                      <div class="form-group">
+                        <label>Diluent Volume <span class="mandatory-feild"></span></label>
+                      </div>
+                    </div>
+                    <div class="col-4 col-sm-2 col-md-2 col-lg-2 col-xl-1">
+                      <div class="form-group">
+                        <label>Remove</label>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12 col-sm-12 col-md-1 col-lg-1 col-xl-1 customize_loading_label">
+                </div>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 customize_loading_field-container">
+              <div class="row">
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-11 customize_loading_fields"
+                  formArrayName="customize"
+                  *ngFor="let item of catalystLoadingDTO.catalystForm.get('customize')['controls']; let i = index;">
+                  <div class="row" [formGroupName]="i">
+                    <div class="col-6 col-sm-2 col-md-2 col-lg-2 col-xl-1">
+                      <div class="form-group">
+                        <label>Bed# <span class="mandatory-feild"></span></label>
+                        <input type="text" class="form-control" value="{{1+i}}" formControlName="bedNumber"
+                          placeholder="1" readonly />
+                        <app-error [control]=catalystLoadingDTO.catalystForm.controls.bedNumber></app-error>
+                      </div>
+                    </div>
+
+                    <div class="col-12 col-sm-5 col-md-5 col-lg-5 col-xl-3">
+                      <div class="form-group">
+                        <app-uom-ctrl (loadUnits)="units($event)" [basevalue]="catalystLoading.beds[i]?.volume" pHolder="Catalyst Volume"
+                          variableCategory="Catalyst Loading Template" variableName="Catalyst Volume" uomCtrl=true
+                          [resetUnit]='catalystLoadingDTO.isReset' feedData=false
+                          (uomInstanceChange)="catalystVolume($event, i);isFormValid();formEnableForFind()">
+                        </app-uom-ctrl>
+                      </div>
+                    </div>
+
+                    <div class="col-6 col-sm-5 col-md-4 col-lg-5 col-xl-2">
+                      <div class="form-group">
+                        <label>split  <span class="mandatory-feild"></span></label>
+                        <input type="text" class="form-control" placeholder="split" 
+                          [value]="catalystLoadingDTO.customize.value[i]?.split"
+                          (change)="splitChange($event, i);isFormValid();formEnableForFind()" (click)="splitChange1($event, i)" (keypress)="preventNonNumericalInput($event)" />
+                          <span class="error-msg" *ngIf="catalystLoadingDTO.isError && catalystLoadingDTO.errorIndex===i">{{catalystLoadingDTO.errorMessage}}</span>
+                      </div>
+                    </div>
+                    <div class="col-12 col-sm-5 col-md-6 col-lg-5 col-xl-2">
+                      <div class="input-group form-group">
+                        <label class="col-lg-12 p-0">Diluent Designation <span class="mandatory-feild"></span></label>
+                        <input type="text" *ngIf="catalystLoadingDTO.customizeflag==true" class="form-control"
+                          placeholder="Diluent Name" readonly>
+                        <input type="text" *ngIf="catalystLoadingDTO.customizeflag!=true"
+                          [value]="catalystLoadingDTO.customize.value[i]?.diluentName" class="form-control"
+                          placeholder="Diluent Name" readonly>
+                        <div class="input-group-append" (click)="diluentChange(i);formEnableForFind()" data-toggle="modal"
+                          data-target="#flyoutModal">
+                          <span class="input-group-text rounded-0"><em class="fa fa-search-plus"></em></span>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-8 col-sm-5 col-md-5 col-lg-5 col-xl-3">
+                      <div class="form-group">
+                        <app-uom-ctrl  (loadUnits)="units($event)" [basevalue]="catalystLoading.beds[i]?.diluentVolume" pHolder="Diluent Volume"
+                          variableCategory="Catalyst Loading Template" variableName="Diluent Volume" uomCtrl=true
+                         feedData=false
+                          (uomInstanceChange)="diluentVolume($event, i);isFormValid();formEnableForFind()"></app-uom-ctrl>
+                      </div>
+
+                    </div>
+
+                    <div class="col-4 col-sm-2 col-md-2 col-lg-2 col-xl-1">
+                      <div class="form-group">
+                        <label>Remove</label>
+                        <div class="form-control text-center border" (click)="remove(i)">
+                          <em class="fa fa-trash" aria-hidden="true"></em>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+
+                </div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-1">
+                  <div class="position-relative " (click)="addItem()">
+                    <em class="fa fa-plus-circle float-right float-sm-right float-md-right float-lg-right  float-xl-left mt-0 mt-sm-0 pt-0 pt-sm-0 mt-md-0 pt-md-0 mb-3 mt-xl-2 "
+                      aria-hidden="true"></em>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="inner-container mt-4">
+        <h3 class="pt-3 pb-3 pl-3 pr-3">Reactor Information</h3>
+
+        <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+          <div class="row">
+
+            <div class="col-12 col-sm-5 col-md-5 col-lg-5 col-xl-3">
+              <div class="form-group">
+                <app-uom-ctrl [(basevalue)]="catalystLoading.reactors.internalDiameter" pHolder="Internal Diameter"
+                  variableCategory="Catalyst Loading Template" variableName="Internal Diameter" uomCtrl=true
+                  feedData=false (baseValueChange)="internalDiameter($event)" [resetUnit]='catalystLoadingDTO.isReset'>
+                </app-uom-ctrl>
+              </div>
+            </div>
+            <div class="col-12 col-sm-5 col-md-5 col-lg-5 col-xl-3">
+              <div class="form-group">
+                <app-uom-ctrl [(basevalue)]="catalystLoading.reactors.bedLength" pHolder="Bed Length"
+                  variableCategory="Catalyst Loading Template" variableName="Bed Length" uomCtrl=true feedData=false
+                  (baseValueChange)="internalDiameter($event)" [resetUnit]='catalystLoadingDTO.isReset'></app-uom-ctrl>
+              </div>
+            </div>
+
+            <div class="col-12 col-sm-5 col-md-5 col-lg-5 col-xl-3">
+              <div class="form-group">
+                <app-uom-ctrl [(basevalue)]="catalystLoading.reactors.bedVolume" pHolder="Bed Volume"
+                  variableCategory="Catalyst Loading Template" variableName="Bed Volume" uomCtrl=true feedData=false
+                  (baseValueChange)="internalDiameter($event)" [resetUnit]='catalystLoadingDTO.isReset'></app-uom-ctrl>
+              </div>
+            </div>
+
+            <div class="col-lg-12 mt-4">
+              <p class="mandatory-para p-0 mt-0 mb-2 ml-0 mr-0">All fields marked with <span
+                  class="mandatory-feild"></span> are mandatory.</p>
+              <button type="button" class="btn btn-transparent mr-3 mb-3" (click)="onReset()">Reset</button>
+              <button type="button" class="btn btn-transparent mr-3 mb-3" (click)="find(catalystLoading)" [disabled]="!(catalystLoadingDTO.formValidForFind ||catalystLoadingDTO.catalystForm.valid || catalystLoadingDTO.catalystForm.dirty )">Find</button>
+              <button type="button" [disabled]="!(catalystLoadingDTO.formValid) || catalystLoadingDTO.isDisabled" *ngIf="catalystLoadingDTO.flag" class="btn btn-default mb-3"
+                 (click)="save(catalystLoading)" 
+                [hidden]="!catalystLoadingDTO.privilege">Save</button>
+              <button type="button" [disabled]="!(catalystLoadingDTO.formValid) || catalystLoadingDTO.isDisabled" *ngIf="!catalystLoadingDTO.flag" class="btn btn-default mb-3"
+                 (click)="Update(catalystLoading)" 
+                [hidden]="!catalystLoadingDTO.privilege">Save</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+
+
+    <div class="row">
+      <div class="col-lg-12 pt-2">
+        <div *ngIf="catalystLoadingDTO.totalRecords > 0 then dataTable else noData"></div>
+        <ng-template #dataTable>
+          <app-custom-table [columns]="catalystLoadingDTO.cols" [value]="catalystLoadingDTO.catalystList"
+            (ondelete)="deleteConfirmation($event)" (onEdit)="templateEdit($event)" [selectedRows]="catalystLoading"
+            [totalRecords]="catalystLoadingDTO.totalRecords" [nOfRecordPage]="catalystLoadingDTO.nOfRecordPage">
+          </app-custom-table>
+        </ng-template>
+        <ng-template #noData>
+          <div class="inner-container mt-3 mb-2 p-2 ng-star-inserted">No Records Found</div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Pop up start-->
+<div id="flyoutModal" class="stickyFlyoutModal modal fade" tabindex="-1" role="dialog" aria-labelledby="gridModalLabel"
+  style="display: none;" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="mb-0">Diluents</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">×</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid bd-example-row">
+          <div class="row">
+            <form class="col-lg-12" [formGroup]="catalystLoadingDTO.diluentForm">
+              <div class="row">
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label>Diluent Designation</label>
+                    <input ref-dname type="text" class="form-control" placeholder="Diluent Designation"
+                      formControlName="designation" [(ngModel)]="diluent.diluentName">
+                  </div>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label>Diluent Source</label>
+                    <input ref-dsource type="text" class="form-control" placeholder="Diluent Source" formControlName="sourceName"
+                      [(ngModel)]="diluent.sourceName">
+                  </div>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label>Description</label>
+                    <textarea ref-ddesc class="form-control" placeholder="Description" formControlName="description"
+                      [(ngModel)]="diluent.description"></textarea>
+                  </div>
+                </div>
+
+                <div class="col-lg-12 mt-2 mb-3">
+                  <button type="button" class="btn btn-transparent mr-3" 
+                    (click)="flyoutReset()">Reset</button>
+                  <button type="button" class="btn btn-default" (click)="onDiluentFind(diluent)" 
+                  [disabled]="!(dname.value || dsource.value || ddesc.value)">Find</button>
+                </div>
+              </div>
+            </form>
+          </div>
+          <div class="row">
+            <div class="col-lg-12 pt-2">
+              <div *ngIf="catalystLoadingDTO.diluenttotalRecords > 0 then dataTable1 else noData1"></div>
+              <ng-template #dataTable1>
+                <app-custom-table class="flyout-table" [totalRecords]="catalystLoadingDTO.diluenttotalRecords"
+                  [nOfRecordPage]="catalystLoadingDTO.diluentnOfRecordPage" [columns]="catalystLoadingDTO.colsdiluents"
+                  [value]="catalystLoadingDTO.catalystdiluents" (onEdit)="flyoutEdit($event)" [selectedRows]="diluent"
+                  (ondelete)="deleteConfirmation($event)"> </app-custom-table>
+              </ng-template>
+              <ng-template #noData1>
+                <div class="inner-container mt-3 mb-2 p-2">No Records found</div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal Pop up ends-->

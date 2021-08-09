@@ -1,0 +1,441 @@
+<div class="inner-container">
+  <h3 class="pt-3 pb-3 pl-3 pr-3">Project - NPD</h3>
+  <div *ngIf="projectsService.loading" class="overlay_loader">
+    <div class="overlay__inner">
+      <div class="overlay__content"><span class="spinner"></span></div>
+    </div>
+  </div>
+  <div *ngIf="projectsDTO.loading" class="overlay_loader">
+    <div class="overlay__inner">
+      <div class="overlay__content"><span class="spinner"></span></div>
+    </div>
+  </div>
+  <form class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" [formGroup]="projectsDTO.projectForm">
+    <div class="row">
+      <div class="col-md-12 col-lg-12 col-xl-9">
+        <div class="row">
+          <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
+            <div class="form-group">
+              <label for="inputState">Technology <span class="mandatory-feild"></span></label>
+              <select id="technology" class="form-control" formControlName="technologyCode"
+                [(ngModel)]="projectsDTO.project.technologyId" disabled>
+
+                <option *ngFor="let technology of projectsDTO.technologyData" [selected]="projectsDTO.technologyData"
+                  [ngValue]="technology.id">{{technology.technologyName}}</option>
+              </select>
+              <app-error [control]="projectsDTO.projectForm.controls.technologyCode"></app-error>
+            </div>
+          </div>
+          <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
+            <div class="form-group">
+              <label>Project Name <span class="mandatory-feild"></span></label>
+              <input type="text" class="form-control" formControlName="projectName" placeholder="Manaul Project Name"
+                [(ngModel)]="projectsDTO.project.projectName">
+              <app-error [control]="projectsDTO.projectForm.controls.projectName"></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
+            <div class="form-group">
+              <label>Current Phase Priority <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="currentPhasePriority"
+                [(ngModel)]="projectsDTO.project.currentPhasePriorityId">
+                <option value=null disabled [selected]="projectsDTO.currentPhaseList">Select</option>
+                <option *ngFor="let phase of projectsDTO.currentPhaseList" [ngValue]="phase.id">
+                  {{phase.currentPhasePriorityName}}</option>
+              </select>
+              <app-error [control]="projectsDTO.projectForm.controls.currentPhasePriority"></app-error>
+            </div>
+          </div>
+
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
+            <div class="input-group form-group mb-0">
+              <label class="col-lg-12 p-0">Technical Team Lead <span class="mandatory-feild"></span></label>
+              <input type="text" class="form-control" placeholder="Technical Team Lead"
+                formControlName="technicalTeamLead" [(ngModel)]="projectsDTO.project.technicalLeadId" readonly>
+              <div class="input-group-append" data-toggle="modal" (click)="onClick();getLead()" data-target="#flyoutModal">
+                <span class="input-group-text rounded-0"><em class="fa fa-search-plus"></em></span>
+              </div>
+            </div>
+            <app-error [control]="projectsDTO.projectForm.controls.technicalTeamLead"></app-error>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
+            <div class="form-group">
+              <label>Network Number 1 (US - Based) <span class="mandatory-feild"></span></label>
+              <input type="text" class="form-control" placeholder="Network Number 1 (US - Based)"
+                formControlName="networkNumber1" [(ngModel)]="projectsDTO.project.uopNetworkNum1">
+              <app-error [control]="projectsDTO.projectForm.controls.networkNumber1"></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
+            <div class="form-group">
+              <label>Network Number 2 (ITC - Labor) <span class="mandatory-feild"></span></label>
+              <input type="text" class="form-control" placeholder="Network Number 2 (ITC - Labor)"
+                formControlName="networkNumber2" [(ngModel)]="projectsDTO.project.uopNetworkNum2">
+              <app-error [control]="projectsDTO.projectForm.controls.networkNumber2"></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
+            <div class="form-group">
+              <label>Network Number 3 (ITC - PP/LIMS) <span class="mandatory-feild"></span></label>
+              <input type="text" class="form-control" placeholder="Network Number 3 (ITC - PP/LIMS)"
+                formControlName="networkNumber3" [(ngModel)]="projectsDTO.project.uopNetworkNum3">
+              <app-error [control]="projectsDTO.projectForm.controls.networkNumber3"></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
+            <div class="form-group">
+              <label>UOP SEG <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="UOPSEG"
+                (change)="onUopSegmentSelection(projectsDTO.project.uopSegmentId)"
+                [(ngModel)]="projectsDTO.project.uopSegmentId">
+                <option value=null disabled [selected]="projectsDTO.uopSegment">Select</option>
+                <option *ngFor="let data of projectsDTO.uopSegment" [ngValue]="data.id">{{data.uopSegmentName}}</option>
+              </select>
+              <app-error [control]="projectsDTO.projectForm.controls.UOPSEG"></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
+            <div class="form-group">
+              <label>Current Phase Name <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="currentPhaseName"
+                [(ngModel)]="projectsDTO.project.currentPhaseNameId">
+                <option value=null disabled [selected]="projectsDTO.currentPhaseNameList">Select</option>
+                <option *ngFor="let phaseName of projectsDTO.currentPhaseNameList" [ngValue]="phaseName.id">
+                  {{phaseName.currentPhaseName}}
+                </option>
+              </select>
+              <app-error [control]="projectsDTO.projectForm.controls.currentPhaseName"></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
+            <div class="form-group">
+              <label>PP Priority <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="ppPriority" [(ngModel)]="projectsDTO.project.ppPriorityId">
+                <option value=null disabled [selected]="projectsDTO.currentPhasePriority">Select</option>
+                <option *ngFor="let data of projectsDTO.currentPhasePriority" [ngValue]="data.id">
+                  {{data.ppPriorityName}}</option>
+              </select>
+              <app-error [control]="projectsDTO.projectForm.controls.ppPriority"></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-4 sbu-unit">
+            <div class="form-group">
+              <label class="col-lg-12 p-0">SBU <span class="mandatory-feild"></span></label>
+              <div class="row">
+                <div class="col-12 col-sm-6 col-md-6 col-lg-6 pr-1">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">CAS</div>
+                    </div>
+                    <select class="form-control" formControlName="cas"
+                      (change)="onCasSelect(projectsDTO.project.casPercent,projectsDTO.project.ptePercent)"
+                      [(ngModel)]="projectsDTO.project.casPercent">
+                      <option value=null disabled [selected]="projectsDTO.casList">Select</option>
+                      <option *ngFor="let cas of projectsDTO.casList">{{cas.value}}</option>
+                    </select>
+                    <app-error [control]="projectsDTO.projectForm.controls.cas"></app-error>
+
+                  </div>
+                </div>
+                <div class="col-12 col-sm-6 col-md-6 col-lg-6 pl-0">
+                  <div class="input-group">
+                    <div class="input-group-prepend">
+                      <div class="input-group-text">PTE</div>
+                    </div>
+                    <select class="form-control" formControlName="pte"
+                      (change)="onPteSelect(projectsDTO.project.casPercent, projectsDTO.project.ptePercent)"
+                      [(ngModel)]="projectsDTO.project.ptePercent">
+                      <option value=null disabled [selected]="projectsDTO.petList">Select</option>
+                      <option *ngFor="let pet of projectsDTO.petList">{{pet.value}}</option>
+                    </select>
+                    <app-error [control]="projectsDTO.projectForm.controls.pte"></app-error>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
+            <div class="form-group">
+              <label>Description <span class="mandatory-feild"></span></label>
+              <textarea class="form-control" formControlName="description" placeholder="Description"
+                [(ngModel)]="projectsDTO.project.description"></textarea>
+              <app-error [control]="projectsDTO.projectForm.controls.description"></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4">
+            <div class="form-group">
+              <label>Status <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="status" [(ngModel)]="projectsDTO.project.projectStatusId">
+                <option value=null disabled [selected]="projectsDTO.statusList">Select</option>
+                <option *ngFor="let status of projectsDTO.statusList" [ngValue]="status.id">{{status.projectStatusName}}
+                </option>
+              </select>
+              <app-error [control]="projectsDTO.projectForm.controls.status"></app-error>
+            </div>
+          </div>
+
+
+
+        </div>
+      </div>
+
+
+      <div class="col-md-12 col-lg-6 col-xl-3">
+        <div class="row">
+          <div class="col-lg-12">
+            <label for="">Gate Graphic Date</label>
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">Gate 2 </div>
+                </div>
+                <p-calendar class="calendar-container" [(ngModel)]="projectsDTO.project.gate2.gateDate" dateFormat="dd/mm/yy"
+                  placeholder="dd/mm/yyyy" [showIcon]="true" [readonlyInput]="true" formControlName="gate2">
+                </p-calendar>
+
+                <app-error [control]="projectsDTO.projectForm.controls.gate2"></app-error>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">Gate 3</div>
+                </div>
+                <p-calendar class="calendar-container" [(ngModel)]="projectsDTO.project.gate3.gateDate" dateFormat="dd/mm/yy"
+                  placeholder="dd/mm/yyyy" [showIcon]="true" [readonlyInput]="true" formControlName="gate3">
+                </p-calendar>
+
+                <app-error [control]="projectsDTO.projectForm.controls.gate3"></app-error>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">Gate 4</div>
+                </div>
+                <p-calendar class="calendar-container" [(ngModel)]="projectsDTO.project.gate4.gateDate" dateFormat="dd/mm/yy"
+                  placeholder="dd/mm/yyyy" [showIcon]="true" [readonlyInput]="true" formControlName="gate4">
+                </p-calendar>
+
+                <app-error [control]="projectsDTO.projectForm.controls.gate4"></app-error>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">Gate 5</div>
+                </div>
+                <p-calendar class="calendar-container" [(ngModel)]="projectsDTO.project.gate5.gateDate" dateFormat="dd/mm/yy"
+                  placeholder="dd/mm/yyyy" [showIcon]="true" [readonlyInput]="true" formControlName="gate5">
+                </p-calendar>
+
+                <app-error [control]="projectsDTO.projectForm.controls.gate5"></app-error>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text">Gate 6</div>
+                </div>
+                <p-calendar class="calendar-container" [(ngModel)]="projectsDTO.project.gate6.gateDate" dateFormat="dd/mm/yy"
+                  placeholder="dd/mm/yyyy" [showIcon]="true" [readonlyInput]="true" formControlName="gate6">
+                </p-calendar>
+
+                <app-error [control]="projectsDTO.projectForm.controls.gate6"></app-error>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </form>
+</div>
+
+<div class="inner-container mt-4">
+  <h3 class="pt-3 pb-3 pl-3 pr-3">Other Info</h3>
+  <form class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" [formGroup]="projectsDTO.fileUploadForm">
+    <div class="row">
+
+      <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 mt-3 mb-3">
+        <button type="button" class="btn btn-default" (click)="addFileData()">Upload Files</button>
+        <span class="pl-2">Attach Multiple files (pdf, word, excel, jpeg, ppt, csv or txt) with less than 6 MB size
+          each.</span>
+      </div>
+      <div formArrayName="uploadData"
+        *ngFor="let item of projectsDTO.fileUploadForm.get('uploadData')['controls']; let i = index;"
+        class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
+        <div [formGroupName]="i" class="upload-files-wrapper ">
+
+          <div class="row" *ngIf="projectsDTO.files">
+            <div class="col-9 col-sm-9 col-md-9 col-lg-5 col-xl-5 mb-2 mb-sm-2 mb-md-2  pr-0">
+
+              <!-- Added on saturday-start-->
+              <div class='file-input position-relative'>
+                <input type='file' (change)="onUploadClick($event,i, projectsDTO.fileUploadForm.value)"
+                  accept=".xlsx,.xls,.pdf,.excel,.jpeg,.pptx,.csv,.txt,.docx,.doc,.jpg,.jfif,.jpe"
+                  data-tip-text="fileArray[i]?.fileName">
+                <span class='button'><em class="fa fa-upload"></em></span>
+
+                <label *ngIf="!projectsDTO.fileArray[i]?.fileName" class='label' data-js-label>No file selected</label>
+                <label *ngIf="projectsDTO.fileArray[i]?.fileName" for=""
+                  class="uploadedFileLabel">{{projectsDTO.fileArray[i]?.fileName}}</label>
+                <button type="button" class="btn btn-download float-right text-right"
+                  (click)="downloadFile(projectsDTO.fileArray[i])">
+                  <em class="fa fa-download" aria-hidden="true"></em>
+                </button>
+              </div>
+              <!-- end-->
+            </div>
+            <div class="col-9 col-sm-9 col-md-9 col-lg-5  col-xl-5">
+              <div class="form-group">
+                <label class="sr-only">Description </label>
+                <textarea class="form-control" placeholder="Description" formControlName="description"></textarea>
+                <app-error [control]="formArray.controls[i].get('description')"></app-error>
+              </div>
+            </div>
+            <div class="col-3 col-sm-3 col-md-3 col-lg-2 col-xl-2 p-0">
+              <button type="button" class="btn btn-action-border" (click)="remove(i)">
+                <img src="assets/images/delete-icon.svg" alt="delete">
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <span class="error-msg" *ngIf="projectsDTO.fileSizeErrorMessage !== null">{{fileSizeErrorMessage}}</span>
+      <div class="col-lg-12 mt-3">
+        <p class="mandatory-para p-0 mt-0 mb-2 ml-0 mr-0">All fields marked with <span class="mandatory-feild"></span>
+          are
+          mandatory.</p>
+        <button type="button" class="btn btn-transparent mr-3 mb-3" data-dismiss="modal"
+          (click)="reset()">Reset</button>
+        <button type="button" class="btn btn-transparent mr-3 mb-3" data-dismiss="modal"
+          (click)="find(projectsDTO.project)"
+          [disabled]="!(projectsDTO.projectForm.dirty || projectsDTO.projectForm.controls['technicalTeamLead'].valid)">Find</button>
+        <button id="submit" type="button" class="btn btn-default mb-3"
+          [disabled]="(!projectsDTO.projectForm.valid || projectsDTO.isDisabled)"
+          (click)="save(projectsDTO.project)">Save</button>
+      </div>
+    </div>
+  </form>
+</div>
+
+<div class="row">
+  <div class="col-lg-12">
+    <div *ngIf="projectsDTO.totalRecords > 0  then dataTable else noData"></div>
+    <ng-template #dataTable>
+
+      <app-custom-table [nOfRecordPage]="projectsDTO.nOfRecordPage" [totalRecords]="projectsDTO.totalRecords"
+        [columns]="projectsDTO.cols" [value]="projectsDTO.projectRecord" [selectedRows]="projectsDTO.project"
+        (onEdit)="onEditClick($event)" (ondelete)="deleteConfirmation($event)">
+      </app-custom-table>
+    </ng-template>
+
+    <ng-template #noData>
+      <div class="inner-container mt-3 mb-2 p-2">No Records found</div>
+    </ng-template>
+  </div>
+</div>
+
+
+<!-- Modal Pop up start-->
+<div id="flyoutModal" *ngIf="technicalLeadFlyoutDTO.flyOutPopUp" class="stickyFlyoutModal modal fade" tabindex="-1"
+  role="dialog" aria-labelledby="gridModalLabel" style="display: none;" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="mb-0">Technical Team Lead</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
+            aria-hidden="true">×</span></button>
+      </div>
+      <div class="modal-body">
+        <div class="container-fluid bd-example-row">
+          <div class="row">
+            <form class="col-lg-12" [formGroup]="technicalLeadFlyoutDTO.flyOutForm">
+              <div class="row">
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label>Eid</label>
+                    <input ref-eid type="text" class="form-control" formControlName="eId"
+                      [(ngModel)]="technicalLeadFlyoutDTO.user.eId" placeholder="Eid">
+                  </div>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label>First Name</label>
+                    <input ref-fname type="text" class="form-control" formControlName="firstName"
+                      [(ngModel)]="technicalLeadFlyoutDTO.user.firstName" placeholder="First Name">
+                  </div>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label>Last Name</label>
+                    <input ref-lname type="text" class="form-control" formControlName="lastName"
+                      [(ngModel)]="technicalLeadFlyoutDTO.user.lastName" placeholder="Last Name">
+                  </div>
+                </div>
+
+                <div class="col-lg-4">
+                  <div class="form-group">
+                    <label>Email</label>
+                    <input ref-email type="email" class="form-control" formControlName="email"
+                      [(ngModel)]="technicalLeadFlyoutDTO.user.email" placeholder="Email">
+                  </div>
+                </div>
+
+
+
+                <div class="col-lg-12 mt-2 mb-3">
+                  <button type="button" class="btn btn-transparent mr-3" (click)="flyoutFormReset()">Reset</button>
+                  <button type="button" class="btn btn-default" (click)="flyOutFind(technicalLeadFlyoutDTO.user)"
+                    [disabled]="!(eid.value || fname.value ||lname.value|| email.value)">Find</button>
+                </div>
+              </div>
+
+            </form>
+          </div>
+          <div class="row">
+
+            <div class="col-lg-12 pt-2">
+
+              <div *ngIf="technicalLeadFlyoutDTO.flyOutTotalRecords > 0  then dataTable else noData"></div>
+              <ng-template #dataTable>
+                <app-custom-table class="flyout-table" [nOfRecordPage]="technicalLeadFlyoutDTO.fluOutnOfRecordPage"
+                  [totalRecords]="technicalLeadFlyoutDTO.flyOutTotalRecords" [selectedRows]="technicalLeadFlyoutDTO.user"
+                  [columns]="technicalLeadFlyoutDTO.flyOutcols" [value]="technicalLeadFlyoutDTO.technicalTeamLeadList"
+                  (onEdit)="onCustomerClick($event)" (ondelete)="deleteConfirmation($event)"> </app-custom-table>
+              </ng-template>
+              <ng-template #noData>
+                <div class="inner-container mt-3 mb-2 p-2">No Records found</div>
+              </ng-template>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+<!-- Modal Pop up ends-->

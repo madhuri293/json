@@ -1,0 +1,324 @@
+<div class="main-container mb-5 float-left">
+  <div class="col-lg-12 pt-4">
+
+    <div class="inner-container">
+      <h3 class="pt-3 pb-3 pl-3 pr-3">LIMS - LIMS Component</h3>
+      <div *ngIf="limsService.loading" class="overlay_loader">
+        <div class="overlay__inner">
+          <div class="overlay__content"><span class="spinner"></span></div>
+        </div>
+      </div>
+      <form class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" [formGroup]="limsDTO.limsForm">
+        <div class="row">
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="input-group form-group mb-0">
+              <label class="col-lg-12 p-0">LIMS Operation <span class="mandatory-feild"></span></label>
+              <input type="text" formControlName="limsOperation" [(ngModel)]="lims.limsOperationName"
+                class="form-control" placeholder="LIMS Operation" readonly>
+              <div class="input-group-append" data-toggle="modal" data-target="#flyoutModal1">
+                <span class="input-group-text rounded-0"><em class="fa fa-search-plus"
+                    (click)="onClickLimsOperationFlyOut(lims)"></em></span>
+              </div>
+            </div>
+            <app-error [control]=limsDTO.limsForm.controls.limsOperation></app-error>
+          </div>
+
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label class="col-lg-12 p-0"> LIMS Component <span class="mandatory-feild"></span></label>
+              <input type="text" formControlName="limsComponent" [(ngModel)]="lims.limsComponent" class="form-control"
+                placeholder="LIMS Component">
+              <app-error [control]=limsDTO.limsForm.controls.limsComponent></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="input-group form-group mb-0">
+              <label class="col-lg-12 p-0">Standard Component <span class="mandatory-feild"></span></label>
+              <input readonly type="text" formControlName="standardComponent" [(ngModel)]="lims.fdmsComponent"
+                class="form-control" placeholder="Standard Component">
+              <div class="input-group-append" data-toggle="modal" (click)="resetStandardComponentForm()" data-target="#flyoutModal2">
+                <span class="input-group-text rounded-0"><em class="fa fa-search-plus"
+                    (click)="standardComponentFlyout()"></em></span>
+              </div>
+            </div>
+            <app-error [control]=limsDTO.limsForm.controls.standardComponent></app-error>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>UOM Group <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="uomGroup" [(ngModel)]="lims.uomGroupId" disabled>
+                <option [ngValue]="null" disabled [selected]="true">Select</option>
+                <option *ngFor="let data of limsDTO.uomGroupNameList" [value]="data.id">{{data.groupName}}</option>
+              </select>
+              <app-error [control]=limsDTO.limsForm.controls.uomGroup></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>UOM Name <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="uomName" [(ngModel)]="lims.uomUnitId">
+                <option [ngValue]="null" disabled [selected]="true">Select</option>
+                <option *ngFor="let data of limsDTO.uomGroupNameSelect" [ngValue]="data.id">{{data.unitDisplayName}}
+                </option>
+              </select>
+              <app-error [control]=limsDTO.limsForm.controls.uomName></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Precision <span class="mandatory-feild"></span></label>
+              <input type="text" min="1.00" max="999999999.00"  formControlName="precision" [(ngModel)]="lims.precision" class="form-control"
+                placeholder="Precision"   (keypress)="preventNonNumericalInput($event)">
+              <app-error [control]=limsDTO.limsForm.controls.precision></app-error>
+
+            </div>
+          </div>
+
+          <div class="col-lg-12 mt-2 mb-3">
+            <p class="mandatory-para p-0 mt-0 mb-2 ml-0 mr-0">All fields marked with <span
+                class="mandatory-feild"></span> are mandatory.</p>
+            <button type="button" class="btn btn-transparent mr-3 mb-3" (click)="onResetClick()">Reset</button>
+            <button type="button" class="btn btn-transparent mr-3 mb-3" (click)="find(lims)" 
+             [disabled]="!(limsDTO.limsForm.valid || limsDTO.limsForm.dirty || lims.limsOperationName !=='' || lims.fdmsComponent !=='' )">Find</button>
+            <button type="button" class="btn btn-default mb-3" [hidden]="!limsDTO.privilege"
+              [disabled]="!limsDTO.limsForm.valid" (click)="savelimsData(lims)">Save</button>
+          </div>
+
+        </div>
+      </form>
+    </div>
+    <div *ngIf="limsDTO.totalRecords > 0 then dataTable else noData">
+
+    </div>
+
+    <ng-template #dataTable>
+      <p class="mt-2 mb-2 pt-2 pb-1 d-inline-block"> {{limsDTO.totalRecords}} Records Fetched</p>
+      <p-paginator class="float-right mt-3 d-inline-block" (onPageChange)="paginate($event)"
+        [rows]="limsDTO.nOfRecordPage" [totalRecords]="limsDTO.totalRecords" [rowsPerPageOptions]="[10,20,50,100]">
+      </p-paginator>
+
+      <p-table class="ptable-container custom-pagination" [value]="limsDTO.limsList" [customSort]="true" [selection]="lims" selectionMode="single" [selection]="selectedRows">
+        <ng-template pTemplate="header" let-columns>
+          <tr>
+            <th *ngFor="let col of limsDTO.columns" [pSortableColumn]="col.field" (click)="customSort(col.field);" id="table-header">
+              {{col.header}}
+              <p-sortIcon [field]="col.field"></p-sortIcon>
+            </th>
+          </tr>
+
+        </ng-template>
+
+        <ng-template pTemplate="body" let-limsData let-columns="limsDTO.columns">
+          <tr [pSelectableRow]="limsData">
+            <td *ngFor="let col of limsDTO.columns">
+              <div (click)="onlimsOperationsEditMainClick(limsData)">
+                <div *ngIf="col.subfield;then nested_object_content else normal_content"></div>
+                <ng-template #nested_object_content>
+                  {{limsData[col.field][col.subfield]}}
+                </ng-template>
+                <ng-template #normal_content>
+                  {{limsData[col.field]}}
+                </ng-template>
+              </div>
+              <button *ngIf="col.header === 'Action'" class="btn btn-privilege" type="button"
+                (click)="deleteConfirmation(limsData)">
+                <img src="assets/images/delete-icon.svg" alt="delete">
+              </button>
+            </td>
+          </tr>
+
+        </ng-template>
+      </p-table>
+    </ng-template>
+    <ng-template #noData>
+      <div class="inner-container mt-3 mb-2 p-2">No Records found</div>
+    </ng-template>
+   
+  </div>
+
+  <!-- Modal Pop up start-->
+  <div id="flyoutModal1" *ngIf="limsDTO.LimsOperationFlyOut" class="stickyFlyoutModal modal fade" tabindex="-1"
+    role="dialog" aria-labelledby="gridModalLabel" style="display: none;" aria-hidden="true">
+    <div class="flyout-overlay" data-dismiss="modal" aria-label="Close" aria-hidden="true" (click)="closeFlyout()">
+    </div>
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="mb-0">LIMS Operation</h3>
+          <button type="button" id="LimsOperationFlyOut" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true" (click)="closeFlyout()">×</span></button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid bd-example-row">
+            <div class="row">
+              <form class="col-lg-12" [formGroup]="limsDTO.limsOperationsFlyOutForm">
+                <div class="row">
+
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <label>Analysis Type </label>
+                      <input ref-analysis type="text" class="form-control" formControlName="analysisType"
+                        placeholder="Analysis Type" [(ngModel)]="lims.analysisTypeName">
+                    </div>
+                  </div>
+
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <label>LIMS Operation </label>
+                      <input ref-operation type="text" class="form-control" formControlName="limsOperation"
+                        placeholder="LIMS Operation" [(ngModel)]="lims.limsOperationName">
+                    </div>
+                  </div>
+
+                  <div class="col-lg-12 mt-2 mb-3">
+                    <button type="button" class="btn btn-transparent mr-3"
+                      (click)="onlimsOperationsResetClick()">Reset</button>
+                    <button type="button" class="btn btn-default" [disabled]="!(operation.value || analysis.value)"
+                      (click)="onlimsOperationsfind(lims)">Find</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="row" *ngIf="limsDTO.limsOperationsDataList">
+              <div class="col-lg-12 pt-2">
+               
+                <div *ngIf="limsDTO.limsTotalRecords> 0 then dataTable1 else noData"></div>
+                <ng-template #dataTable1>
+                  <p class="mt-0 mb-0 pt-2 pb-1 d-inline-block"> {{limsDTO.limsTotalRecords}} Records Fetched</p>
+                  <p-paginator (onPageChange)="paginateOperationTable($event)" [rows]="limsDTO.limsnOfRecordPage"
+                    [totalRecords]="limsDTO.limsTotalRecords" [rowsPerPageOptions]="[10,20,50,100]"></p-paginator>
+                    <div class="table-responsive">
+                      <p-table  class="ptable-container custom-pagination" [columns]="limsDTO.limsOperationColumns" [value]="limsDTO.limsOperationsDataList" [selection]="lims" [customSort]="true"
+                       selectionMode="single" [selection]="selectedRows">
+                        <ng-template pTemplate="header" let-columns>
+                          <tr>
+                            <th *ngFor="let col of limsDTO.limsOperationColumns" [pSortableColumn]="col.field"
+                              (click)="sortOPerationListTable(col.field);" id="table-header">
+                              {{col.header}}
+                              <p-sortIcon [field]="col.field"></p-sortIcon>
+                            </th>
+                          </tr>
+    
+                        </ng-template>
+                        <ng-template pTemplate="body" let-limsData let-columns="limsDTO.limsOperationColumns">
+                          <tr [pSelectableRow]="limsData">
+                            <td *ngFor="let col of limsDTO.limsOperationColumns; let i=index" (click)="onlimsOperationsEditClick(limsData)">
+    
+                              {{limsData[col.field]}}
+    
+                            </td>
+                          </tr>
+    
+                        </ng-template>
+                      </p-table>
+                    </div>                  
+                </ng-template>
+                <ng-template #noData>
+                  <div class="inner-container mt-3 mb-2 p-2">No Records found</div>
+                </ng-template>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal Pop up start-->
+  <div id="flyoutModal2" *ngIf="limsDTO.standardComponentFlyOut" class="stickyFlyoutModal modal fade" tabindex="-1"
+    role="dialog" aria-labelledby="gridModalLabel" style="display: none;" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3 class="mb-0">Standard Component</h3>
+          <button type="button" id="standardComponentFlyOut" class="close" data-dismiss="modal" aria-label="Close"><span
+              aria-hidden="true">×</span></button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid bd-example-row">
+            <div class="row">
+              <form class="col-lg-12" [formGroup]="limsDTO.standardFlyOutForm">
+                <div class="row">
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <label>Component Type </label>
+                      <input ref-component type="text" class="form-control" [(ngModel)]="limsStandard.componentType"
+                        formControlName="componentType" placeholder="Component Type">
+                    </div>
+                  </div>
+
+                  <div class="col-lg-4">
+                    <div class="form-group">
+                      <label>Component Name </label>
+                      <input ref-name type="text" class="form-control" [(ngModel)]="limsStandard.componentLabel"
+                        formControlName="componentName" placeholder="Component Name">
+                    </div>
+                  </div>
+
+                  <div class="col-lg-12 mt-2 mb-3">
+                    <button type="button" class="btn btn-transparent mr-3"
+                      (click)="onResetStandardClick()">Reset</button>
+                    <button type="button" class="btn btn-default" [disabled]="!(name.value || component.value)"
+                      (click)="findStandard(limsStandard)" >Find</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="row">
+              <div class="col-lg-12 pt-2">
+
+                <div *ngIf="limsDTO.standardTotalRecords > 0 then table else noData">
+
+                </div>
+              
+                <ng-template #table>
+                  <p class="mt-0 mb-0 pt-2 pb-1 d-inline-block"> {{limsDTO.standardTotalRecords}} Records Fetched</p>
+                  <p-paginator (onPageChange)="paginateStandardFlyout($event)" [rows]="limsDTO.nOfRecordPage"
+                    [totalRecords]="limsDTO.standardTotalRecords" [rowsPerPageOptions]="[10,20,50,100]"></p-paginator>
+                  <p-table  class="ptable-container custom-pagination" [value]="limsDTO.standardCompnentDataList" [selection]="lims" [customSort]="true" 
+                  selectionMode="single" [selection]="selectedRows">
+                    <ng-template pTemplate="header" let-columns>
+                      <tr>
+                        <th *ngFor="let col of limsDTO.standardComponentColumns" [pSortableColumn]="col.field"
+                          (click)="sortStandardFlyout(col.field);" id="table-header">
+                          {{col.header}}
+                          <p-sortIcon [field]="col.field"></p-sortIcon>
+                        </th>
+                      </tr>
+
+                    </ng-template>
+                    <ng-template pTemplate="body" let-limsData let-columns="limsDTO.standardComponentColumns">
+                      <tr [pSelectableRow]="limsData">
+                        <td *ngFor="let col of limsDTO.standardComponentColumns; let i=index" (click)="onStandardEditClick(limsData)">
+                          {{limsData[col.field]}}
+                        </td>
+                      </tr>
+
+                    </ng-template>
+                  </p-table>
+                </ng-template>
+                <ng-template #noData>
+                  <div class="inner-container mt-3 mb-2 p-2">No Records found</div>
+                </ng-template>
+              </div>
+
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+  <!-- Modal Pop up ends-->

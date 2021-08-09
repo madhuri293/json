@@ -1,0 +1,128 @@
+<div class="main-container mb-5 float-left">
+  <div class="col-lg-12 pt-4">
+
+    <div class="inner-container">
+      <h3 class="pt-3 pb-3 pl-3 pr-3">Manage - Recipe</h3>
+      <div *ngIf="manageRecipeDTO.loading" class="overlay_loader">
+        <div class="overlay__inner">
+          <div class="overlay__content"><span class="spinner"></span></div>
+        </div>
+      </div>
+      <form class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12" [formGroup]="manageRecipeDTO.manageRecipeForm">
+        <div class="row">
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Technology <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="technology" [(ngModel)]="manageRecipe.technologyId"
+                (change)="getPlantList()" disabled>
+                <option *ngFor="let technology of manageRecipeDTO.manageTechnologyList"
+                  [value]="technology.technologyId">{{technology.technologyName}}</option>
+              </select>
+              <app-error [control]=manageRecipeDTO.manageRecipeForm.controls.technology></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Plant <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="plant" [(ngModel)]="manageRecipe.plantId">
+                <option [ngValue]="null" disabled [selected]="true">Select</option>
+                <option *ngFor="let plant of manageRecipeDTO.managePlantList" [value]="plant.id">{{plant.code}}</option>
+              </select>
+              <app-error [control]=manageRecipeDTO.manageRecipeForm.controls.plant></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Code Recipe Tag <span class="mandatory-feild"></span></label>
+              <input type="text" formControlName="recipeTag" [(ngModel)]="manageRecipe.tagCode" class="form-control"
+                placeholder="Tag Code" />
+              <app-error [control]=manageRecipeDTO.manageRecipeForm.controls.recipeTag></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Description <span class="mandatory-feild"></span></label>
+              <input type="text" formControlName="description" [(ngModel)]="manageRecipe.tagName" class="form-control"
+                placeholder="Description" />
+              <app-error [control]=manageRecipeDTO.manageRecipeForm.controls.description></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Recipe UOM <span class="mandatory-feild"></span></label>
+              <select class="form-control" formControlName="recipeUOM" [(ngModel)]="manageRecipe.uomId">
+                <option [ngValue]="null" disabled [selected]="manageRecipeDTO.manageRecipeUOMList">Select</option>
+                <option *ngFor="let recipeUom of manageRecipeDTO.manageRecipeUOMList" [value]="recipeUom.id">
+                  {{recipeUom.unitDisplayName}}</option>
+              </select>
+              <app-error [control]=manageRecipeDTO.manageRecipeForm.controls.recipeUOM></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Min Value </label>
+              <input type="number" formControlName="minValue" (keyup)=checkmin($event.target.value)
+                [(ngModel)]="manageRecipe.tagMinValue" class="form-control" placeholder="Min Value" />
+              <span class="error-msg" *ngIf="manageRecipeDTO.minerrormsg!==''">{{manageRecipeDTO.minerrormsg}}</span>
+              <app-error [control]=manageRecipeDTO.manageRecipeForm.controls.minValue></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Max Value </label>
+              <input type="number" formControlName="maxValue" (keyup)=checkmax($event.target.value)
+                [(ngModel)]="manageRecipe.tagMaxValue" class="form-control" placeholder="Max Value" />
+              <app-error [control]=manageRecipeDTO.manageRecipeForm.controls.maxValue></app-error>
+            </div>
+          </div>
+
+          <div class="col-12 col-sm-6 col-md-6 col-lg-4 col-xl-3">
+            <div class="form-group">
+              <label>Energized </label>
+              <input type="text" formControlName="energized" [(ngModel)]="manageRecipe.energized"  class="form-control" (ngModelChange)="convertUppercase($event)"
+                placeholder="Energized" />
+              <app-error [control]=manageRecipeDTO.manageRecipeForm.controls.energized></app-error>
+            </div>
+          </div>
+
+          <div class="col-lg-12 mt-2">
+            <p class="mandatory-para p-0 mt-0 mb-2 ml-0 mr-0">All fields marked with <span
+                class="mandatory-feild"></span> are mandatory.</p>
+            <button type="button" class="btn btn-transparent mr-3 mb-3" (click)="onResetClick()">Reset</button>
+            <button type="button" class="btn btn-transparent mr-3 mb-3"
+              [disabled]="!(manageRecipeDTO.manageRecipeForm.dirty || manageRecipeDTO.isEnable)"
+              (click)="find(manageRecipe)">Find</button>
+            <button type="button" [disabled]="!(manageRecipeDTO.manageRecipeForm.valid || manageRecipeDTO.isDisabled)"
+              class="btn btn-default mb-3" (click)="saveManageRecipe(manageRecipe)"
+              [hidden]="!manageRecipeDTO.privilege">Save</button>
+          </div>
+        </div>
+      </form>
+    </div>
+
+    <div class="row">
+      <div class="col-lg-12 col-xl-12 pt-2 mb-2">
+        <div *ngIf="manageRecipeDTO.totalRecords > 0  then dataTable else noData"></div>
+        <ng-template #dataTable>
+          <app-custom-table [totalRecords]="manageRecipeDTO.totalRecords"
+            [nOfRecordPage]="manageRecipeDTO.nOfRecordPage" [columns]="manageRecipeDTO.columns"
+            [value]="manageRecipeDTO.rows" (onEdit)="onRoleEditClick($event)" (ondelete)="deleteConfirmation($event)"
+            [selectedRows]="manageRecipe">
+          </app-custom-table>
+        </ng-template>
+
+        <ng-template #noData>
+          <div class="inner-container mt-3 mb-2 p-2">No Records found</div>
+        </ng-template>
+      </div>
+    </div>
+
+  </div>
+</div>
